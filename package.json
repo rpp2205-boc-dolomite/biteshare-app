@@ -11,12 +11,22 @@
     "url": "git+https://github.com/rpp2205-boc-dolomite/biteshare-app.git"
   },
   "keywords": [
-    "boc", "biteshare", "dolomite"
+    "boc",
+    "biteshare",
+    "dolomite"
   ],
   "author": "Team Dolomite",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/rpp2205-boc-dolomite/biteshare-app/issues"
   },
-  "homepage": "https://github.com/rpp2205-boc-dolomite/biteshare-app#readme"
+  "homepage": "https://github.com/rpp2205-boc-dolomite/biteshare-app#readme",
+  "devDependencies": {
+    "eslint": "^8.32.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.32.1",
+    "eslint-plugin-react-hooks": "^4.6.0"
+  }
 }
