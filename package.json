@@ -1,0 +1,22 @@
+{
+  "name": "biteshare-app",
+  "version": "1.0.0",
+  "description": "BiteShare - Check-splitting app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'BiteShare tests would run here!'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rpp2205-boc-dolomite/biteshare-app.git"
+  },
+  "keywords": [
+    "boc", "biteshare", "dolomite"
+  ],
+  "author": "Team Dolomite",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rpp2205-boc-dolomite/biteshare-app/issues"
+  },
+  "homepage": "https://github.com/rpp2205-boc-dolomite/biteshare-app#readme"
+}
