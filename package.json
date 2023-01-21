@@ -11,12 +11,22 @@
     "url": "git+https://github.com/rpp2205-boc-dolomite/biteshare-app.git"
   },
   "keywords": [
-    "boc", "biteshare", "dolomite"
+    "boc",
+    "biteshare",
+    "dolomite"
   ],
   "author": "Team Dolomite",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/rpp2205-boc-dolomite/biteshare-app/issues"
   },
-  "homepage": "https://github.com/rpp2205-boc-dolomite/biteshare-app#readme"
+  "homepage": "https://github.com/rpp2205-boc-dolomite/biteshare-app#readme",
+  "devDependencies": {
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "helmet": "^6.0.1",
+    "morgan": "^1.10.0"
+  }
 }
