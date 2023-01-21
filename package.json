@@ -4,6 +4,8 @@
   "description": "BiteShare - Check-splitting app",
   "main": "index.js",
   "scripts": {
+    "react-dev": "npx webpack --watch",
+    "build": "npx webpack",
     "test": "echo 'BiteShare tests would run here!'"
   },
   "repository": {
@@ -11,12 +13,30 @@
     "url": "git+https://github.com/rpp2205-boc-dolomite/biteshare-app.git"
   },
   "keywords": [
-    "boc", "biteshare", "dolomite"
+    "boc",
+    "biteshare",
+    "dolomite"
   ],
   "author": "Team Dolomite",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/rpp2205-boc-dolomite/biteshare-app/issues"
   },
-  "homepage": "https://github.com/rpp2205-boc-dolomite/biteshare-app#readme"
+  "homepage": "https://github.com/rpp2205-boc-dolomite/biteshare-app#readme",
+  "dependencies": {
+    "@babel/core": "^7.20.12",
+    "axios": "^1.2.3",
+    "babel-loader": "^9.1.2",
+    "node": "^19.4.0",
+    "nodemon": "^2.0.20",
+    "path": "^0.12.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.18.6"
+  }
 }
