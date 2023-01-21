@@ -4,6 +4,8 @@
   "description": "BiteShare - Check-splitting app",
   "main": "index.js",
   "scripts": {
+    "dev": "NODE_ENV=development nodemon server/server.js",
+    "start": "NODE_ENV=production node server/server.js",
     "react-dev": "npx webpack --watch",
     "build": "npx webpack",
     "test": "echo 'BiteShare tests would run here!'"
