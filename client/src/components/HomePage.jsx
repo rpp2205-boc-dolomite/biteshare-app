@@ -1,21 +1,27 @@
 import React from 'react';
-import {Box, ThemeProvider, createTheme} from '@mui/system';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+//import Box from '@mui/system';
+import {Grid, Button, Box} from '@mui/material';
+//import Button from '@mui/material/Button';
 import Carousel from 'react-material-ui-carousel'
-
+import { Link } from 'react-router-dom'
 
 const HomePage = (props) => {
   var images = [
-    {name: "bg1", src: "/Users/rain/hackreactor/biteshare-app/client/src/images/bg5.jpeg"},
-    {name: "bg2", src: "/Users/rain/hackreactor/biteshare-app/client/src/images/bg4.jpeg"},
-    {name: "bg3", src: "/Users/rain/hackreactor/biteshare-app/client/src/images/bg8.jpeg"},
+    {name: "bg1", src: "../images/bg5.jpeg"},
+    {name: "bg2", src: "../images/bg4.jpeg"},
+    {name: "bg3", src: "../images/bg8.jpeg"},
   ]
   var titleStyle = {
     fontSize:'3em',
     textAlign:'center',
     textShadow:'2px 2px 2px white ',
 
+  }
+  var btnStyle = {
+    m: 2,
+    padding: '18px 36px',
+    fontSize:'18px',
+    '&:hover': {backgroundColor:'lightgrey'}
   }
   return (
     <Carousel autoPlay infiniteLoop showThumbs={false} animation="fade" navButtonsAlwaysInvisible={true} indicators={false} duration="400">
@@ -26,9 +32,10 @@ const HomePage = (props) => {
               <h1 style={titleStyle}>Bite Share</h1>
               <h3>Make splitting bills simple and easy</h3>
             </Grid>
-            <Grid item sx={{ '& button': { m: 2, padding: "18px 36px", fontSize: "18px", '&:hover': {backgroundColor:'lightgrey'}} }}>
-                <Button variant="contained" size="large" sx={{backgroundColor: "white", color: "black"}}>Sign Up</Button>
-                <Button variant="contained" size="large" sx={{backgroundColor: "black"}}>Sign In</Button>
+            <Grid item>
+              {/* set button as Link component so it will link to the path we set in the index.jsx file */}
+              <Button component={Link} to="/signup" variant="contained" size="large" sx={{...btnStyle, backgroundColor: "white", color: "black"}}>Sign Up</Button>
+              <Button component={Link} to="/login" variant="contained" size="large" sx={{...btnStyle, backgroundColor:'black'}}>Sign In</Button>
             </Grid>
           </Grid>
         </Box>)

@@ -1,9 +1,8 @@
 import React from 'react';
-import HomePage from './HomePage.jsx'
+import HomePage from './HomePage.jsx';
 
 
 const App = (props) => {
-
   return (
     <HomePage />
   )
