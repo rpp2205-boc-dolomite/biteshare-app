@@ -1,15 +1,11 @@
 import React from 'react';
+import HomePage from './HomePage.jsx'
+
 
 const App = (props) => {
 
   return (
-    <>
-     <h2>Bite Share</h2>
-     <div>
-       <button>Sign Up</button>
-       <button>Sign In</button>
-     </div>
-    </>
+    <HomePage />
   )
 }
 

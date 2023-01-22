@@ -27,6 +27,9 @@
   "homepage": "https://github.com/rpp2205-boc-dolomite/biteshare-app#readme",
   "dependencies": {
     "@babel/core": "^7.20.12",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.11.5",
     "axios": "^1.2.3",
     "babel-loader": "^9.1.2",
     "node": "^19.4.0",
@@ -34,6 +37,7 @@
     "path": "^0.12.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-material-ui-carousel": "^3.4.2",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1"
   },
