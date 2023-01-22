@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const compression = require('compression');
 
@@ -14,6 +15,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use(cors({
   origin: process.env.CORS_ORIGIN,
 }));
+app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
