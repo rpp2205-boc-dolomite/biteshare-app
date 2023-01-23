@@ -1,7 +1,8 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
+mongoose.set("strictQuery", false)
 // const ObjectId = mongoose.Types.ObjectId;
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}/?retryWrites=true&w=majority/${process.env.DB_NAME}`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const db = mongoose.connect(uri).catch(err => console.log('ERROR CONNECTIONG TO DB...', err));
 const { Schema, model } = mongoose;
 
