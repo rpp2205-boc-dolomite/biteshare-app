@@ -32,7 +32,7 @@ const SessionSchema = new Schema({
 
 // Define the static methods
 UserSchema.statics = userStatics;
-SessionnSchema.statics = sessionStatics;
+SessionSchema.statics = sessionStatics;
 
 // Compile the schemas
 const User = model('User', UserSchema);
