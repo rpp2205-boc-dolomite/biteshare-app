@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 import App from './components/App.jsx';
-
+import AddFriends from './components/createMeal/AddFriends.jsx';
 
 import {
   createBrowserRouter,
@@ -10,6 +10,7 @@ import {
 
 const router = createBrowserRouter([
   {path:"/", element:<App/>},
+  // {path:"/addfriends", element:<AddFriends />}
   // {path:"/signup", element:<SignUp />}
   // {path:"/login", element:<LogIn />}
 ])
