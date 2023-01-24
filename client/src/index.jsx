@@ -5,6 +5,7 @@ import Meals from './components/Meals.jsx';
 
 import Navbar from './components/Navbar.jsx';
 import AddFriends from './components/createMeal/AddFriends.jsx';
+import Review from './components/Review.jsx';
 
 import {
   createBrowserRouter,
@@ -16,7 +17,8 @@ const router = createBrowserRouter([
   {path:"/addfriends", element:<AddFriends />},
   // {path:"/signup", element:<SignUp />},
   //{path:"/login", element:<LogIn />},
-  {path:"/meals", element:<Meals />}
+  {path:"/meals", element:<Meals />},
+  {path:"/review", element: <Review />}
 ])
 
 createRoot(document.getElementById('app')).render(
