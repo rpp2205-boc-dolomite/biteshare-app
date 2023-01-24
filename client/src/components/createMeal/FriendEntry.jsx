@@ -4,8 +4,12 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-const FriendEntry = ({friend, i}) => {
+const FriendEntry = ({friend, i, deleteOne}) => {
 
+   const deleteFriend = (e) => {
+    e.preventDefault();
+    deleteOne(i);
+   }
   return (
     <ListItem key={i}>
       <ListItemAvatar>
@@ -23,8 +27,8 @@ const FriendEntry = ({friend, i}) => {
        </ListItemSecondaryAction>
       )}
       <ListItemSecondaryAction>
-        <IconButton aria-label="delete">
-        <DeleteIcon />
+        <IconButton aria-label="delete" onClick={(e) => deleteFriend(e)}>
+         <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>
