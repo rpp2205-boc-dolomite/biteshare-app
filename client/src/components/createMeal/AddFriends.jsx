@@ -42,6 +42,7 @@ const AddFriends = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    //pass res_nest and friends to next component
     console.log('continue to create page')
   }
 
