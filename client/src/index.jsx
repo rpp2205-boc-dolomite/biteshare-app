@@ -1,6 +1,8 @@
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 import App from './components/App.jsx';
+import Meals from './components/Meals.jsx';
+
 import Navbar from './components/Navbar.jsx';
 import AddFriends from './components/createMeal/AddFriends.jsx';
 
@@ -14,7 +16,7 @@ const router = createBrowserRouter([
   {path:"/addfriends", element:<AddFriends />},
   // {path:"/signup", element:<SignUp />},
   //{path:"/login", element:<LogIn />},
-  {path:"/dashboard", element:<Navbar />}
+  {path:"/meals", element:<Meals />}
 ])
 
 createRoot(document.getElementById('app')).render(
