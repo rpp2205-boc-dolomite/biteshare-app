@@ -1,16 +1,11 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {TextField, Autocomplete, Box, Grid, Container, IconButton} from '@mui/material';
+import {TextField, Autocomplete, Box, Grid, Container, IconButton, Alert} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-// import parse from 'autosuggest-highlight/parse';
-// import match from 'autosuggest-highlight/match';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { createFilterOptions } from '@mui/material/Autocomplete';
+
+import NewFriendDialog from './NewFriendDialog.jsx';
 const fakeFriendsList2 = [
   "Anna: 123455677", "Bob: 31234456787", "David backham: 4455677888"
 ]
@@ -19,6 +14,7 @@ const SearchFriends = ({friends, setFriends, selectExistsFriend, existList, addN
   const [friendsList, setFriendsList] = useState([])
   const [value, setValue] = useState(null);
   const [open, toggleOpen] = useState(false);
+  const [alert, triggerAlert] = useState(false);
 
   const handleClose = () => {
     setDialogValue({
@@ -32,8 +28,22 @@ const SearchFriends = ({friends, setFriends, selectExistsFriend, existList, addN
   const addToList = (e) =>{
     console.log('select');
     let friend = value.split(': ');
-    console.log(friend);
-    setFriends(friends.concat([{name:friend[0], phone:friend[1]}]));
+    let cur = {name:friend[0], phone:friend[1]}
+    let isExists = false;
+    friends.forEach(friend => {
+      if (JSON.stringify(friend) === JSON.stringify(cur)) {
+        console.log('exists!@')
+        isExists=true;
+        triggerAlert(true)
+        return;
+      }
+    })
+    if (!isExists) {
+      console.log('new added')
+      setFriends(friends.concat([{name:friend[0], phone:friend[1]}]));
+      setValue(null);
+    }
+
   }
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,7 +52,6 @@ const SearchFriends = ({friends, setFriends, selectExistsFriend, existList, addN
   }
   console.log('value: ', value)
   const handleChange = (e, newValue) => {
-
     if (typeof newValue === 'string') {
       setValue(newValue);
     } else if (newValue && newValue.inputValue) {
@@ -71,6 +80,7 @@ const SearchFriends = ({friends, setFriends, selectExistsFriend, existList, addN
   return (
     // <Container maxWidth="95%" sx={{p:1, m:1,  width:"92%", justifyContent:"center"}}>
     <>
+
       <Box component="span" sx={{ display:'block', fontSize: 'larger'}}>
          Add Friends:
       </Box>
@@ -114,50 +124,8 @@ const SearchFriends = ({friends, setFriends, selectExistsFriend, existList, addN
         </IconButton>
         </Grid>
       </Grid>
-
-      <Dialog open={open} onClose={handleClose}>
-        <form onSubmit={handleSubmit}>
-          <DialogTitle>Add a new friend to share your bill</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              New Friend? Please, add it!
-            </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              value={dialogValue.name}
-              onChange={(event) =>
-                setDialogValue({
-                  ...dialogValue,
-                  name: event.target.value,
-                })
-              }
-              label="name"
-              type="text"
-              variant="standard"
-            />
-            <TextField
-              margin="dense"
-              id="name"
-              value={dialogValue.phone}
-              onChange={(event) =>
-                setDialogValue({
-                  ...dialogValue,
-                  phone: event.target.value,
-                })
-              }
-              label="phone"
-              type="tel"
-              variant="standard"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit">Add</Button>
-          </DialogActions>
-        </form>
-      </Dialog>
+      {alert &&  <Alert severity="error" onClose={() => triggerAlert(false)}>You already add this friend to this bill!</Alert>}
+      <NewFriendDialog open={open} setDialogValue={setDialogValue} dialogValue={dialogValue} handleClose={handleClose} handleSubmit={handleSubmit}/>
     </>
 
 
