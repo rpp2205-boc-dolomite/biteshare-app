@@ -51,5 +51,3 @@ export default function Meals(props) {
       </Box>
     );
 }
-
-export default Meals;
