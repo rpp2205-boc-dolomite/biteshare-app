@@ -14,12 +14,12 @@ function Navbar (props) {
 
   return(
     <div>
-      <h1>Bite Shre</h1>
+      <h1>Bite Share</h1>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" color="default">
           <Toolbar>
             <Typography component="div" sx={{ flexGrow: 1}}>
-              <Button component={Link} to="/dashboard" color="inherit">Meals</Button>
+              <Button size="large" variant="text" component={Link} to="/meals" color="inherit">Meals</Button>
               <Button color="inherit">Friends</Button>
             </Typography>
             <Button component={Link} to="/" color="inherit">Logout</Button>

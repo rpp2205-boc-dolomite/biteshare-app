@@ -1,6 +1,8 @@
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 import App from './components/App.jsx';
+import Meals from './components/Meals.jsx';
+
 import Navbar from './components/Navbar.jsx';
 import AddFriends from './components/createMeal/AddFriends.jsx';
 import SignUp from './components/SignUp.jsx';
