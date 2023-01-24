@@ -11,21 +11,20 @@ const FriendEntry = ({friend, i, deleteOne}) => {
     deleteOne(i);
    }
   return (
-    <ListItem key={i}>
+    <ListItem
+      key={i}
+      secondaryAction={
+        <IconButton aria-label="delete" onClick={(e) => deleteFriend(e)}>
+          <DeleteIcon />
+        </IconButton>
+      }>
       <ListItemAvatar>
        <Avatar>
          <AccountBoxIcon />
        </Avatar>
       </ListItemAvatar>
-      <ListItemText key={i + 1} primary={friend.name} />
-      <ListItemText key={i + 2} primary={friend.phone} />
-
-
-      <ListItemSecondaryAction>
-        <IconButton aria-label="delete" onClick={(e) => deleteFriend(e)}>
-         <DeleteIcon />
-        </IconButton>
-      </ListItemSecondaryAction>
+      <ListItemText primary={friend.name} />
+      <ListItemText primary={friend.phone} />
     </ListItem>
 
 
