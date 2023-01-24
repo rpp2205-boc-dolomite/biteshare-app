@@ -17,15 +17,10 @@ const FriendEntry = ({friend, i, deleteOne}) => {
          <AccountBoxIcon />
        </Avatar>
       </ListItemAvatar>
-      {!friend.name ? <TextField /> : <ListItemText primary={friend.name} />}
-      {!friend.phone ? <TextField /> : <ListItemText primary={friend.phone} />}
-      {!friend.name || !friend.phone && (
-        <ListItemSecondaryAction>
-         <IconButton aria-label="add">
-           <AddIcon />
-         </IconButton>
-       </ListItemSecondaryAction>
-      )}
+      <ListItemText key={i + 1} primary={friend.name} />
+      <ListItemText key={i + 2} primary={friend.phone} />
+
+
       <ListItemSecondaryAction>
         <IconButton aria-label="delete" onClick={(e) => deleteFriend(e)}>
          <DeleteIcon />
