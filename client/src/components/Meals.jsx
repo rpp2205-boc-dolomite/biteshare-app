@@ -1,6 +1,13 @@
-
 import * as React from 'react';
 import Navbar from './Navbar.jsx';
+import {Button, Box, Typography, Stack, List, ListItem, ListItemButton} from '@mui/material';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { Link } from 'react-router-dom'
+
+//sampleData Will delete later
+
+var array = [{restName: 'Chilis', host: 'Jack Daniels', amount: 15.35},
+{restName: 'Applebees', host: 'Jane Doe', amount: 23.43}, {restName: 'Bluebird Pizza', host: 'Adam Sandler', amount: 471.3}]
 import {Button, Box, Typography, Stack, List, ListItem, ListItemButton} from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Link } from 'react-router-dom'
@@ -54,3 +61,4 @@ export default function Meals(props) {
     );
 }
 
+export default Meals;
