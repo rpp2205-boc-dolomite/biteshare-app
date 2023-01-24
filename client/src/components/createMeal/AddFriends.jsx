@@ -61,11 +61,10 @@ const AddFriends = (props) => {
     <Container maxWidth="95%" sx={{p:1, m:1,  width:"92%", justifyContent:"center"}}>
       <SearchFriends friends={friends} setFriends={setFriends} selectExistsFriend={selectExistsFriend} existList={existList} addNewFriend={createNewFriend} setInput={setInput}/>
       <hr/>
-      <div>
       <Box component="span" sx={{dispaly:'block', fontSize:'larger'}}>
         Friends List
       </Box>
-      <Box component="div" sx={{width=""}}>
+      <Box component="div">
         {!friends.length ? (<h2>No friends in this meal yet</h2>)
         : (<List>
            {friends.map((friend, i) =>
@@ -73,14 +72,8 @@ const AddFriends = (props) => {
            )}
          </List>)
         }
-      </div>
-    </div>
-
+      </Box>
     </Container>
-
-
-
-
   )
 }
 
