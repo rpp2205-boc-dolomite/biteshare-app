@@ -36,7 +36,6 @@ const HomePage = (props) => {
               {/* set button as Link component so it will link to the path we set in the index.jsx file */}
               <Button component={Link} to="/signup" variant="contained" size="large" sx={{...btnStyle, backgroundColor: "white", color: "black"}}>Sign Up</Button>
               <Button component={Link} to="/login" variant="contained" size="large" sx={{...btnStyle, backgroundColor:'black'}}>Sign In</Button>
-              <Button component={Link} to="/dashboard" variant = "contained" size="large" sx={{...btnStyle, backgroundColor:'red'}}>Admin</Button>
             </Grid>
           </Grid>
         </Box>)
