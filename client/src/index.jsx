@@ -3,7 +3,8 @@ import React from 'react';
 import App from './components/App.jsx';
 import Navbar from './components/Navbar.jsx';
 import AddFriends from './components/createMeal/AddFriends.jsx';
-
+import SignUp from './components/SignUp.jsx';
+import Login from './components/Login.jsx';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -12,8 +13,8 @@ import {
 const router = createBrowserRouter([
   {path:"/", element:<App/>},
   {path:"/addfriends", element:<AddFriends />},
-  // {path:"/signup", element:<SignUp />},
-  //{path:"/login", element:<LogIn />},
+  {path:"/signup", element:<SignUp />},
+  {path:"/login", element:<Login />},
   {path:"/dashboard", element:<Navbar />}
 ])
 

@@ -65,7 +65,7 @@ const AddFriends = (props) => {
           }
         </Box>
         <Box sx={{justifyContent:"center",textAlign:'center', pt:"20%", m:1}}>
-           <Button onClick={(e) => hanldeSubmit(e)} variant="contained" size="large" sx={{width:'60%', backgroundColor:'orange', '&:hover': {backgroundColor:'orange'}}}>Continue</Button>
+           <Button onClick={(e) => handleSubmit(e)} variant="contained" size="large" sx={{width:'60%', backgroundColor:'orange', '&:hover': {backgroundColor:'orange'}}}>Continue</Button>
         </Box>
 
       </Container>
