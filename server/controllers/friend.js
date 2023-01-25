@@ -9,12 +9,12 @@ exports.getFriends = function (req, res) {
 
   db.User.findOne({ _id: userId }, { _id: 'user_id', friends: 1 })
     .populate('friends')
-    .exec((err, document) => {
+    .exec((err, doc) => {
       if (err) {
         res.status(500).send(err.toString());
       } else {
-        console.log('doc', document);
         res.status(200).send(document);
+
       }
     });
 }
