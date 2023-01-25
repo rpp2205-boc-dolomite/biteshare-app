@@ -4,36 +4,47 @@ const db = require('../db/db');
 
 
 exports.getUser = function (req, res) {
-  const userId = req.params.user_id;
+  const userId = req.query.user_id;
+  console.log(typeof req.query.user_id, userId);
   if (!userId) {
-    res.status(400).end();
-    return;
-  }
-
-  db.User.findById(userId)
-    .then(doc => {
-      res.status(200).send(doc);
-    })
-    .catch(err => {
+    db.User.find({})
+    .exec((err, document) => {
+    if (err) {
       res.status(500).send(err.toString());
+    } else {
+      res.status(200).send(document);
+    }
+  });
+    // res.status(400).end();
+    // return;
+  } else {
+    db.User.findOne({ _id: userId })
+    .exec((err, document) => {
+      if (err) {
+        res.status(500).send(err.toString());
+      } else {
+        res.status(200).send(document);
+      }
     });
+  }
 };
 
-exports.addUser = function (req, res) {
+exports.addUser = (req, res) => {
+  console.log('new user', req.body)
   const docs = req.body;
   if (!docs || !(docs instanceof Object)) {
     res.status(400).end();
     return;
   }
-
-  db.User.create(docs)
-    .then(reply => {
-      res.status(200).send(reply);
+  let newUser = new db.User(req.body);
+  newUser.save()
+    .then((result)=>{
+      console.log('res',result);
+      res.status(201).send(result.id);
     })
-    .catch(err => {
-      res.status(500).send(err.toString());
-    });
+    .catch(err => console.error(err))
 }
+
 
 exports.updateUser = function (req, res) {
   const userId = req.params.user_id;
@@ -55,3 +66,4 @@ exports.updateUser = function (req, res) {
       res.status(500).send(err.toString());
     });
 }
+

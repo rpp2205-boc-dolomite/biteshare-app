@@ -6,8 +6,9 @@ const compression = require('compression');
 const helmet = require('helmet');
 const cors = require('cors');
 
-const { getUser, addUser, updateUser } = require('./controllers/user');
-const { getFriends } = require('./controllers/friend');
+
+const userControllers = require('./controllers/user'); // This line will be changed. It is here to trigger the DB to load.
+const friendsControllers = require('./controllers/friend');
 
 app.use(helmet());
 if (process.env.NODE_ENV === 'development') {
@@ -30,16 +31,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-app.get('/api/users/:user_id', getUser);
-app.post('/api/users', addUser);
-app.put('/api/users/:user_id', updateUser);
+//---  user's friends list ---//
+app.get('/api/friends', friendsControllers.getFriends)
+app.post('/api/friends', friendsControllers.addFriends)
 
-app.get('/api/friends', getFriends);
-
+//---- user info ---//
+app.get('/api/users', userControllers.getUser)
+app.post('/api/users', userControllers.addUser)
 
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
+
 
 module.exports = app;
