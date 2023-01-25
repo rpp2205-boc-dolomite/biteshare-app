@@ -4,17 +4,16 @@ import {TextField, Autocomplete, Box, Grid, Container, IconButton, Alert} from '
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import { createFilterOptions } from '@mui/material/Autocomplete';
-
 import NewFriendDialog from './NewFriendDialog.jsx';
-const fakeFriendsList2 = [
-  "Anna: 123455677", "Bob: 31234456787", "David backham: 4455677888"
-]
+
 const filter = createFilterOptions();
-const SearchFriends = ({friends, setFriends, selectExistsFriend, existList, addNewFriend, setInput}) => {
+const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
   const [friendsList, setFriendsList] = useState([])
   const [value, setValue] = useState(null);
   const [open, toggleOpen] = useState(false);
   const [alert, triggerAlert] = useState(false);
+  const [dialogValue, setDialogValue] = useState({name:'', phone:''});
+  const [add, setAdd] = useState(true)
 
   const handleClose = () => {
     setDialogValue({
@@ -24,7 +23,6 @@ const SearchFriends = ({friends, setFriends, selectExistsFriend, existList, addN
     toggleOpen(false);
   }
 
-  const [dialogValue, setDialogValue] = useState({name:'', phone:''});
   const addToList = (e) =>{
     console.log('select');
     let friend = value.split(': ');
@@ -48,39 +46,48 @@ const SearchFriends = ({friends, setFriends, selectExistsFriend, existList, addN
   const handleSubmit = (e) => {
     e.preventDefault();
     setValue(dialogValue.name+': ' + dialogValue.phone);
+
+    if (add) {
+      let temp = existList.push(value)
+      setExistList(temp);
+      // send post req to server add the value as new guest user to user collections
+      // return axios.put('/friends/:user_id', {name: dialogValue.name, phone_name:dialogValue.phone, is_guest:true, password:null})
+      // .then((result) => {
+      //   consoe.log(result);
+      //   handleClose();
+      // })
+      handleClose();
+    } else {
+      handleClose();
+    }
     handleClose();
   }
-  console.log('value: ', value)
+
   const handleChange = (e, newValue) => {
     if (typeof newValue === 'string') {
       setValue(newValue);
     } else if (newValue && newValue.inputValue) {
-      console.log('both', newValue, newValue.inputValue);
       toggleOpen(true);
       let phone = parseInt(newValue.inputValue);
       if (!phone) {
-        console.log('its a name', newValue);
         setTimeout(() => {
           toggleOpen(true);
           setDialogValue({name: newValue.inputValue, phone: ''})
         })
       } else {
-        console.log('its phone', newValue);
         setTimeout(() => {
           toggleOpen(true);
           setDialogValue({name: '', phone: newValue.inputValue})
         })
       }
-
     } else {
-      console.log('else: ', newValue);
       setValue(newValue);
     }
   }
-  return (
-    // <Container maxWidth="95%" sx={{p:1, m:1,  width:"92%", justifyContent:"center"}}>
-    <>
 
+
+  return (
+    <>
       <Box component="span" sx={{ display:'block', fontSize: 'larger'}}>
          Add Friends:
       </Box>
@@ -89,9 +96,10 @@ const SearchFriends = ({friends, setFriends, selectExistsFriend, existList, addN
           <Autocomplete
             value={value}
             onChange={(e, newValue) => handleChange(e, newValue)}
-            options={fakeFriendsList2}
+            options={existList}
             freeSolo={true}
             getOptionLabel={(option) => {
+              console.log('op', option);
               if (typeof option === 'string') {
                 return option;
               }
@@ -106,7 +114,7 @@ const SearchFriends = ({friends, setFriends, selectExistsFriend, existList, addN
               if (params.inputValue !=='') {
                 filtered.push({
                   inputValue: params.inputValue,
-                  name:`Add "${params.inputValue}"`
+                  name:`Add "${params.inputValue}" to this bill?`
                 })
               }
               return filtered;
@@ -115,7 +123,7 @@ const SearchFriends = ({friends, setFriends, selectExistsFriend, existList, addN
             selectOnFocus
             clearOnBlur
             handleHomeEndKeys
-            renderOption={(props, option) => <li {...props}>{typeof option === 'string' ? option : option.inputValue}</li>}
+            renderOption={(props, option) => <li {...props}>{typeof option === 'string' ? option : option.name}</li>}
           />
         </Grid>
         <Grid item justify="flex-end" alignItems="center" sx={{padding: 2}}>
@@ -125,7 +133,7 @@ const SearchFriends = ({friends, setFriends, selectExistsFriend, existList, addN
         </Grid>
       </Grid>
       {alert &&  <Alert severity="error" onClose={() => triggerAlert(false)}>You already add this friend to this bill!</Alert>}
-      <NewFriendDialog open={open} setDialogValue={setDialogValue} dialogValue={dialogValue} handleClose={handleClose} handleSubmit={handleSubmit}/>
+      <NewFriendDialog open={open} setDialogValue={setDialogValue} dialogValue={dialogValue} handleClose={handleClose} handleSubmit={handleSubmit} add={add} setAdd={setAdd}/>
     </>
 
 
