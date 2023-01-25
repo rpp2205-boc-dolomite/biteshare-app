@@ -13,7 +13,7 @@ exports.getFriends = function (req, res) {
       if (err) {
         res.status(500).send(err.toString());
       } else {
-        res.status(200).send(document);
+        res.status(200).send(doc);
 
       }
     });

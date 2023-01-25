@@ -53,14 +53,14 @@ const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
 
       // triggerAlert({status:true, severity:'success', msg:'Add to friends list!'})
       // handleClose();
-      return axios.post('/users', newUser)
+      return axios.post('/api/users', newUser)
         .then((result) => {
           console.log('adduser res', result.data);
-          return axios.post(`/friends/?user_id=${user_id}`,{guest_id: result.data} )
+          return axios.post(`/api/friends/?user_id=${user_id}`,{guest_id: result.data} )
         })
         .then(res => {
           if (res) {
-            setExistList(existList.push(value))
+            //setExistList(existList.push(value))
             triggerAlert({status:true, severity:'success', msg:'Add friends successfully!'})
             handleClose();
 
@@ -70,7 +70,7 @@ const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
           }
         })
     } else {
-      return axios.post('/users', newUser)
+      return axios.post('/api/users', newUser)
         .then(handleClose)
     }
   }

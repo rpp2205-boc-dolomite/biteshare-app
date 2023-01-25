@@ -16,8 +16,9 @@ const AddFriends = (props) => {
 
   //call the data to get the users exist friends list
   const getFriends = (id) => {
+    //for test use the defatul id
     let user_id=id || "63d15a5003999f4c14efb982";
-    return axios.get(`/friends/?user_id=${user_id}`)
+    return axios.get(`/api/friends/?user_id=${user_id}`)
       .then((result) => {
         console.log('client friends res:', result.data);
         //convert the result data to matche the fackfriendsList2 data
@@ -32,16 +33,7 @@ const AddFriends = (props) => {
   if (!existList) {
     getFriends();
   }
-  //if the length of friends list === 0 render You don't have any friends yet add Friends
-  // const selectExistsFriend = (e) => {
-  //   console.log('select friend',e.target);
-  //   if (e.target.innerText.length > 0) {
-  //     console.log('select');
-  //     let friend = e.target.innerText.split(': ');
-  //     console.log(friend);
-  //     setFriends(friends.concat([{name:friend[0], phone:friend[1]}]));
-  //   }
-  // }
+
   const deleteOne = (i) => {
     console.log(i);
     setFriends(friends.slice(0, i).concat(friends.slice(i+1)))
