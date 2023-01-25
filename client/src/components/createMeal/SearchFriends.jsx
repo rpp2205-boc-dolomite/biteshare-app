@@ -11,8 +11,8 @@ const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
   const [friendsList, setFriendsList] = useState([])
   const [value, setValue] = useState(null);
   const [open, toggleOpen] = useState(false);
-  const [alert, triggerAlert] = useState(false);
-  const [dialogValue, setDialogValue] = useState({name:'', phone:''});
+  const [alert, triggerAlert] = useState({status: false, severity:'', msg: ''});
+  const [dialogValue, setDialogValue] = useState({name:'', phone:'+1'});
   const [add, setAdd] = useState(true)
 
   const handleClose = () => {
@@ -32,7 +32,7 @@ const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
       if (JSON.stringify(friend) === JSON.stringify(cur)) {
         console.log('exists!@')
         isExists=true;
-        triggerAlert(true)
+        triggerAlert({status:true, severity:'error', msg:'You already added this friends to this bill!'})
         return;
       }
     })
@@ -41,26 +41,38 @@ const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
       setFriends(friends.concat([{name:friend[0], phone:friend[1]}]));
       setValue(null);
     }
-
   }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setValue(dialogValue.name+': ' + dialogValue.phone);
+    const newUser = {name: dialogValue.name, phone_num:dialogValue.phone, is_guest:true}
+    let user_id = "63d15a5003999f4c14efb982";
 
     if (add) {
-      let temp = existList.push(value)
-      setExistList(temp);
-      // send post req to server add the value as new guest user to user collections
-      // return axios.put('/friends/:user_id', {name: dialogValue.name, phone_name:dialogValue.phone, is_guest:true, password:null})
-      // .then((result) => {
-      //   consoe.log(result);
-      //   handleClose();
-      // })
-      handleClose();
+
+      // triggerAlert({status:true, severity:'success', msg:'Add to friends list!'})
+      // handleClose();
+      return axios.post('/users', newUser)
+        .then((result) => {
+          console.log('adduser res', result.data);
+          return axios.post(`/friends/?user_id=${user_id}`,{guest_id: result.data} )
+        })
+        .then(res => {
+          if (res) {
+            setExistList(existList.push(value))
+            triggerAlert({status:true, severity:'success', msg:'Add friends successfully!'})
+            handleClose();
+
+          } else {
+            handleClose();
+            triggerAlert({status:true, severity:'error', msg:'Add friends failed!'})
+          }
+        })
     } else {
-      handleClose();
+      return axios.post('/users', newUser)
+        .then(handleClose)
     }
-    handleClose();
   }
 
   const handleChange = (e, newValue) => {
@@ -72,12 +84,12 @@ const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
       if (!phone) {
         setTimeout(() => {
           toggleOpen(true);
-          setDialogValue({name: newValue.inputValue, phone: ''})
+          setDialogValue({name: newValue.inputValue, phone: '+1'})
         })
       } else {
         setTimeout(() => {
           toggleOpen(true);
-          setDialogValue({name: '', phone: newValue.inputValue})
+          setDialogValue({name: '', phone: '+1'+newValue.inputValue})
         })
       }
     } else {
@@ -85,12 +97,14 @@ const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
     }
   }
 
-
+  console.log('list', existList)
   return (
     <>
       <Box component="span" sx={{ display:'block', fontSize: 'larger'}}>
          Add Friends:
       </Box>
+      {alert.status &&  <Alert severity={alert.severity} onClose={() => triggerAlert(false)}>{alert.msg}</Alert>}
+
       <Grid container justifyContent="center" spacing={1}>
         <Grid item>
           <Autocomplete
@@ -132,7 +146,6 @@ const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
         </IconButton>
         </Grid>
       </Grid>
-      {alert &&  <Alert severity="error" onClose={() => triggerAlert(false)}>You already add this friend to this bill!</Alert>}
       <NewFriendDialog open={open} setDialogValue={setDialogValue} dialogValue={dialogValue} handleClose={handleClose} handleSubmit={handleSubmit} add={add} setAdd={setAdd}/>
     </>
 
