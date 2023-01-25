@@ -34,7 +34,7 @@ app.get('/api/users/:user_id', getUser);
 app.post('/api/users', addUser);
 app.put('/api/users/:user_id', updateUser);
 
-app.get('/api/friends/:user_id', getFriends);
+app.get('/api/friends', getFriends);
 
 
 

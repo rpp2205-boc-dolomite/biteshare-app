@@ -10,13 +10,12 @@ exports.getUser = function (req, res) {
     return;
   }
 
-  db.User.findOne({ _id: user_id })
-    .exec((err, document) => {
-      if (err) {
-        res.status(500).send(err.toString());
-      } else {
-        res.status(200).send(document);
-      }
+  db.User.findById(userId)
+    .then(doc => {
+      res.status(200).send(doc);
+    })
+    .catch(err => {
+      res.status(500).send(err.toString());
     });
 };
 
