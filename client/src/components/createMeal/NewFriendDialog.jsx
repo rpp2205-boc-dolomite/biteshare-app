@@ -7,8 +7,18 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import { createFilterOptions } from '@mui/material/Autocomplete';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handleSubmit, add, setAdd}) => {
+  const toggleLabel = (e) => {
+    if (e.target.checked) {
+      setAdd(true)
+    } else {
+      setAdd(false);
+    }
+  }
 
-const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handleSubmit}) => {
   return (
     <Dialog open={open} onClose={handleClose}>
       <form onSubmit={handleSubmit}>
@@ -46,6 +56,9 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
             type="tel"
             variant="standard"
           />
+          <FormGroup>
+            <FormControlLabel control={<Switch defaultChecked onChange={toggleLabel}/>} label={add ? 'Add to my friends list' : 'Do not add to my friends list'} />
+          </FormGroup>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

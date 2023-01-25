@@ -9,7 +9,7 @@ const fakeFriendsList2 = [
   "Anna: 111123123", "Bob: 312456789", "Davie Wang: 44556677"
 ]
 const AddFriends = (props) => {
-  const [existList, setExistList] = useState([])
+  const [existList, setExistList] = useState(fakeFriendsList2)
   const [friends, setFriends] = useState([]);
   console.log('friends', friends);
 
@@ -20,7 +20,7 @@ const AddFriends = (props) => {
   //       console.log(result);
   //       //convert the result data to matche the fackfriendsList2 data
   //       let list = result.data.map((friend) => {
-  //         return friend.name + ' - ' + friend.phone
+  //         return friend.name + ': ' + friend.phone
   //       })
   //       setExistList(list);
   //     })
@@ -51,7 +51,7 @@ const AddFriends = (props) => {
     <>
       <Navbar />
       <Container maxWidth="95%" sx={{p:1, m:1,  width:"92%", justifyContent:"center"}}>
-        <SearchFriends friends={friends} setFriends={setFriends} existList={existList}/>
+        <SearchFriends friends={friends} setFriends={setFriends} existList={existList} setExistList={setExistList}/>
         <hr/>
         <Box component="span" sx={{dispaly:'block', fontSize:'larger'}}>
           Friends List
