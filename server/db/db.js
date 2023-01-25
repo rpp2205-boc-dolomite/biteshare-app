@@ -25,7 +25,7 @@ const UserSchema = new Schema({
 });
 
 const SessionSchema = new Schema({
-  host: ObjectId,
+  host: { type: ObjectId, ref: 'User' },
   rest_name: { type: String, required: true },
   detail: Object,
   sub_total: { type: Number, required: true, min: 0 },
