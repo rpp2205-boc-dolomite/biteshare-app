@@ -5,6 +5,7 @@ import Meals from './components/Meals.jsx';
 
 import Navbar from './components/Navbar.jsx';
 import AddFriends from './components/createMeal/AddFriends.jsx';
+import Review from './components/Review.jsx';
 import SignUp from './components/SignUp.jsx';
 import Login from './components/Login.jsx';
 
