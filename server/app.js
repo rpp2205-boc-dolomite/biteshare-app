@@ -36,7 +36,7 @@ app.get('/api/friends', friendsControllers.getFriends)
 app.post('/api/friends', friendsControllers.addFriends)
 
 //---- user info ---//
-app.get('/api/users', userControllers.getUser)
+app.get('/api/users/:user_id', userControllers.getUser)
 app.post('/api/users', userControllers.addUser)
 
 
