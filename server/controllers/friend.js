@@ -7,27 +7,29 @@ exports.getFriends = function (req, res) {
     return;
   }
 
-  db.User.findOne({ _id: userId }, { _id: 'user_id', friends: 1 })
+  db.User.findOne({ _id: userId }, { friends: 1 })
     .populate('friends')
     .exec((err, doc) => {
       if (err) {
         res.status(500).send(err.toString());
       } else {
         res.status(200).send(doc);
-
       }
     });
 }
 
 exports.addFriends = function (req, res) {
-  console.log('post friends: ', req.query.user_id)
-  const userId = req.query.user_id
-  const guestId = req.body.guest_id
-  if(!userId) {
+  const userId = req.query.user_id;
+  let friends = req.body.friends;
+  if(!userId || !friends) {
     res.status(400).end();
     return
   }
-  db.User.updateOne({_id: userId}, {$push:{"friends": guestId}})
+  if (typeof friends === 'string') {
+    friends = [friends];
+  }
+
+  db.User.updateOne({_id: userId}, { $addToSet: { "friends": { $each: friends } } })
     .then(result => {
       res.status(201).send(result.acknowledged);
     })
