@@ -4,15 +4,25 @@ const db = require('../db/db');
 
 
 exports.getUser = function (req, res) {
-  const userId = req.params.user_id;
-  if (!userId) {
+  // FYI: had an issue with the plus sign in the phone number. Might need to escape it before sending.
+  // https://www.werockyourweb.com/url-escape-characters/#:~:text=%2B-,%252B,-%2C
+  const userId = req.query.user_id;
+  const phoneNum = req.query.phone_num;
+  if (!userId && !phoneNum) {
     res.status(400).end();
     return;
   }
+  console.log(userId, phoneNum);
+  if (userId) {
+    db.User.findById(userId)
+      .then(doc => res.status(200).send(doc))
+      .catch(err => res.status(500).send(err.toString()));
+  } else {
 
-  db.User.findById(userId)
-    .then(doc => res.status(200).send(doc))
-    .catch(err => res.status(500).send(err.toString()));
+    db.User.findOne({ phone_num: phoneNum })
+      .then(doc => res.status(200).send(doc))
+      .catch(err => res.status(500).send(err.toString()));
+  }
 };
 
 exports.addUser = (req, res) => {
