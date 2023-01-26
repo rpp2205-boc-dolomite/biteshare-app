@@ -19,6 +19,8 @@ exports.getFriends = function (req, res) {
 }
 
 exports.addFriends = function (req, res) {
+  // takes a user_id or array of user_id's
+  // returns an array of the results
   const userId = req.query.user_id;
   let friends = req.body.friends;
   if(!userId || !friends) {
