@@ -3,6 +3,7 @@ import React from 'react';
 import App from './components/App.jsx';
 import Navbar from './components/Navbar.jsx';
 import AddFriends from './components/createMeal/AddFriends.jsx';
+import RestaurantSearch from './components/createMeal/Restaurant/RestaurantSearch.jsx';
 
 import {
   createBrowserRouter,
@@ -14,7 +15,8 @@ const router = createBrowserRouter([
   {path:"/addfriends", element:<AddFriends />},
   // {path:"/signup", element:<SignUp />},
   //{path:"/login", element:<LogIn />},
-  {path:"/dashboard", element:<Navbar />}
+  {path:"/dashboard", element:<Navbar />},
+  {path:"/searchRest", element:<RestaurantSearch />}
 ])
 
 createRoot(document.getElementById('app')).render(
