@@ -6,6 +6,7 @@ import Meal from './components/Meal.jsx';
 
 import Navbar from './components/Navbar.jsx';
 import AddFriends from './components/createMeal/AddFriends.jsx';
+import MealDetails from './components/MealDetails.jsx';
 import Review from './components/Review.jsx';
 import SignUp from './components/SignUp.jsx';
 import Login from './components/Login.jsx';
@@ -20,6 +21,7 @@ import {
 const router = createBrowserRouter([
   {path:"/", element:<App/>},
   {path:"/addfriends", element:<AddFriends />},
+  {path:"/mealdetails", element:<MealDetails />},
   {path:"/signup", element:<SignUp />},
   {path:"/login", element:<Login />},
   {path:"/meals", element:<Meals />},
