@@ -26,7 +26,7 @@ const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
   const addToList = (e) =>{
     console.log('select');
     let friend = value.split(': ');
-    let cur = {name:friend[0], phone:friend[1]}
+    let cur = {name:friend[0], phone_num:friend[1]}
     let isExists = false;
     friends.forEach(friend => {
       if (JSON.stringify(friend) === JSON.stringify(cur)) {
@@ -38,21 +38,19 @@ const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
     })
     if (!isExists) {
       console.log('new added')
-      setFriends(friends.concat([{name:friend[0], phone:friend[1]}]));
+      setFriends(friends.concat([{name:friend[0], phone_num:friend[1]}]));
       setValue(null);
     }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setValue(dialogValue.name+': ' + dialogValue.phone);
+    let temp = dialogValue.name+': ' + dialogValue.phone
+    setValue(temp);
     const newUser = {name: dialogValue.name, phone_num:dialogValue.phone, is_guest:true}
-    let user_id = "63d15a5003999f4c14efb982";
+    let user_id = "63d40a54c9e5268f8d8861e3";
 
     if (add) {
-
-      // triggerAlert({status:true, severity:'success', msg:'Add to friends list!'})
-      // handleClose();
       return axios.post('/api/users', newUser)
         .then((result) => {
           console.log('adduser res', result.data);
@@ -60,10 +58,9 @@ const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
         })
         .then(res => {
           if (res) {
-            //setExistList(existList.push(value))
+            setExistList(existList.concat([temp]));
             triggerAlert({status:true, severity:'success', msg:'Add friends successfully!'})
             handleClose();
-
           } else {
             handleClose();
             triggerAlert({status:true, severity:'error', msg:'Add friends failed!'})
@@ -97,7 +94,6 @@ const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
     }
   }
 
-  console.log('list', existList)
   return (
     <>
       <Box component="span" sx={{ display:'block', fontSize: 'larger'}}>
@@ -113,7 +109,6 @@ const SearchFriends = ({friends, setFriends, existList, setExistList}) => {
             options={existList}
             freeSolo={true}
             getOptionLabel={(option) => {
-              console.log('op', option);
               if (typeof option === 'string') {
                 return option;
               }
