@@ -12,6 +12,7 @@ exports.getUser = function (req, res) {
     res.status(400).end();
     return;
   }
+
   console.log(userId, phoneNum);
   if (userId) {
     db.User.findById(userId)
@@ -40,6 +41,19 @@ exports.addUser = (req, res) => {
       console.error(err);
       res.status(500).send(err.toString());
     });
+  // console.log('new user', req.body)
+  // const docs = req.body;
+  // if (!docs || !(docs instanceof Object)) {
+  //   res.status(400).end();
+  //   return;
+  // }
+  // let newUser = new db.User(req.body);
+  // newUser.save()
+  //   .then((result)=>{
+  //     console.log('res',result);
+  //     res.status(201).send(result.id);
+  //   })
+  //   .catch(err => console.error(err))
 };
 
 exports.updateUser = function (req, res) {
