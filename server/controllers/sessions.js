@@ -18,7 +18,7 @@ exports.getSessions = function(req, res) {
   })
 }
 
-exports.postSessions = function(req, res) => {
+exports.postSessions = function(req, res) {
   //in req.body is the info
   // user addUser controller to add new users
   // returns an insertedIds array which I will use to be the keys

@@ -35,7 +35,9 @@ export default function Review(props) {
       </Box>
       <Grid container rowSpacing={20} direction="column" alignItems="center" justifyContent="center">
        <Grid item>
-          <Button component={Link} to="/meals" variant="contained" size="large" sx={{...btnStyle, backgroundColor: "black"}}>Confirm</Button>
+         <Link to={{pathname: "/meals", state: {value: 'it worked!'}}}>
+          <Button variant="contained" size="large" sx={{...btnStyle, backgroundColor: "black"}}>Confirm</Button>
+         </Link>
           <Button component={Link} to="/create" variant="contained" size="large" sx={{...btnStyle, backgroundColor:'black'}}>Edit</Button>
         </Grid>
        </Grid>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Navbar from './Navbar.jsx';
 import {Button, Box, Typography, Stack, List, ListItem, ListItemButton} from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 
 var array = [{restName: 'Chilis', host: 'Jack Daniels', amount: 15.35},
@@ -34,8 +34,8 @@ export default function Meals(props) {
                 m: 1
               }}
 
-              onClick = {(e) => {
-                alert(state.some);
+              onClick={(e) => {
+                alert(state.state.value);
               }}
             >
                   <Typography variant="h6">
