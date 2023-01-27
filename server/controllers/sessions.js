@@ -71,9 +71,16 @@ exports.postSessions = function(req, res) => {
           tip: req.body[index].tip,
           is_paid: true
         }, acc), {});
-      db.Session.insert({
+
+        return db.Session.insert({
         detail: details,
         ...req.body.info
-      })
+      });
+    })
+    .then((newResults) => {
+      res.status(200).send(newResults);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
     })
 }
