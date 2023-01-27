@@ -52,6 +52,9 @@ const Session = model('Session', SessionSchema);
 User.createCollection();
 Session.createCollection();
 
+//Create phone number index
+User.createIndex({ phone_num: 1}, { unique: true });
+
 //////////////////////////////////////////////////
 
 const disconnect = function () {
