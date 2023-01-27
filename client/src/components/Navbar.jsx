@@ -20,7 +20,7 @@ function Navbar (props) {
           <Toolbar>
             <Typography component="div" sx={{ flexGrow: 1}}>
               <Button size="large" variant="text" component={Link} to="/meals" color="inherit">Meals</Button>
-              <Button color="inherit">Friends</Button>
+              <Button size="large" variant="text" component={Link} to="/friends" color="inherit">Friends</Button>
             </Typography>
             <Button component={Link} to="/" color="inherit">Logout</Button>
           </Toolbar>
