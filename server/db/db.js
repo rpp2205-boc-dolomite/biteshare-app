@@ -14,7 +14,7 @@ const sessionStatics = require('./statics/session');
 // Define the schemas
 const UserSchema = new Schema({
   name: { type: String, required: true },
-  phone_num: { type: String, required: true, match: /^\+1[0-9]{10}$/g }, // this regex matches strings starting with a plus sign and 1, followed by 10 digits
+  phone_num: { type: String, required: true, match: /^\+1[0-9]{10}$/g , index: true, unique: true}, // this regex matches strings starting with a plus sign and 1, followed by 10 digits
   password: String,
   is_guest: Boolean,
   friends: [ { type: ObjectId, ref: 'User' } ]
