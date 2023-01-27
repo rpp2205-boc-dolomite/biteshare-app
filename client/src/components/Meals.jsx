@@ -11,6 +11,7 @@ var array = [{restName: 'Chilis', host: 'Jack Daniels', amount: 15.35},
 export default function Meals(props) {
   // const meals = props.sessions.length;
   const meals = array.length;
+  const { state } = useLocation();
     return (
       <Box sx={{ width: '100%'}}>
         <Navbar></Navbar>
@@ -31,6 +32,10 @@ export default function Meals(props) {
                 fontSize: '0.875rem',
                 fontWeight: '700',
                 m: 1
+              }}
+
+              onClick = {(e) => {
+                alert(state.some);
               }}
             >
                   <Typography variant="h6">

@@ -23,7 +23,9 @@ const router = createBrowserRouter([
   {path:"/signup", element:<SignUp />},
   {path:"/login", element:<Login />},
   {path:"/meals", element:<Meals />},
-  {path:"/meal", element:<Meal />}
+  {path:"/meal", element:<Meal />},
+  {path: "/review", element: <Review />},
+  //{path: "/mealdetail", element: }
 ])
 
 createRoot(document.getElementById('app')).render(
