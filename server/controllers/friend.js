@@ -18,20 +18,22 @@ exports.getFriends = function (req, res) {
     });
 }
 
-exports.addFriends = function (req, res) {
+exports.addFriend = function (req, res) {
   // takes a user_id or array of user_id's
   // returns an array of the results
   const userId = req.query.user_id;
-  let friends = req.body.friends;
+  let friends = req.body.guest_id;
+  console.log('add friends',userId, friends);
   if(!userId || !friends) {
     res.status(400).end();
     return
   }
-  if (typeof friends === 'string') {
-    friends = [friends];
-  }
+  // i defined in client side we can only add one friend one time so we don't need the condition
+  // if (typeof friends === 'string') {
+  //   friends = [friends];
+  // }
 
-  db.User.updateOne({_id: userId}, { $addToSet: { "friends": { $each: friends } } })
+  db.User.updateOne({_id: userId}, { $addToSet: { "friends": friends} })
     .then(result => {
       res.status(201).send(result.acknowledged);
     })
