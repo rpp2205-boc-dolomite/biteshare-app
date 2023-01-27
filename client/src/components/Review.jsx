@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button, Typography, Grid, Stack} from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Navbar from './Navbar.jsx';
 import ReviewPageList from './ReviewPageList.jsx';
 
@@ -15,8 +15,11 @@ export default function Review(props) {
   }
 
   const postSessions = () => {
-
+    
   }
+
+  const location  = useLocation();
+  const { data } = location.state;
 
   return(
     <Box>
@@ -35,7 +38,7 @@ export default function Review(props) {
       </Box>
       <Grid container rowSpacing={20} direction="column" alignItems="center" justifyContent="center">
        <Grid item>
-         <Link to={{pathname: "/meals", state: {value: 'it worked!'}}}>
+         <Link to={{pathname: "/meals"}} state={{value: 'it worked!'}} style={{ textDecoration: 'none' }}>
           <Button variant="contained" size="large" sx={{...btnStyle, backgroundColor: "black"}}>Confirm</Button>
          </Link>
           <Button component={Link} to="/create" variant="contained" size="large" sx={{...btnStyle, backgroundColor:'black'}}>Edit</Button>
