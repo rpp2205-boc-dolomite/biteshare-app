@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {Box, List, Typography, Divider} from '@mui/material';
-import Navbar from './Navbar.jsx';
-import FriendEntry from './createMeal/FriendEntry.jsx';
-import Loading from './Loading.jsx';
+import Navbar from '../Navbar.jsx';
+import FriendEntry from './FriendEntry.jsx';
+import Loading from '../Loading.jsx';
 
 export default function FriendsPage (props) {
   const [friends, setFriends] = useState(null);
@@ -45,6 +45,7 @@ export default function FriendsPage (props) {
         )}
       </Box>
       <Divider><Typography>Add friends</Typography></Divider>
+
       </Box>
 
     </>
