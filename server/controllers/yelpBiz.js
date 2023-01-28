@@ -13,8 +13,6 @@ let getBiz = (local) => {
     }
   })
   return getBizzy;
-  // .then(res => console.log('success!'))
-  // .catch(err => console.log(err));
 }
 
 module.exports = { getBiz };
