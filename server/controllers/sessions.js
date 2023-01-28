@@ -27,7 +27,7 @@ exports.postSessions = function(req, res) {
     // for details field
   //
 
-var session = {host: '63d4a4a13ca796188c5bd365', detail: {'63d4aa954a874db26a5436c7': { name: "yuchen", tip: 1.75, bill: 10.21, is_paid: true}, '63d4b13b1d6b6ecc80c04dd5': {name: "Yui", tip: 1.75, bill: 10.21, is_paid: false}}, rest_name : 'Blue Sky', sub_total: 28.21, tip_total: 2.11, receipt: 'www.google.com'}
+var session = {host: '63d5690765b903d98477c097', detail: {'63d56a0483bd4d48f67c9981': { name: "yuchen", tip: 1.75, bill: 10.21, is_paid: true}, '63d56921fb74d33c0a908e2b': {name: "Yui", tip: 1.75, bill: 10.21, is_paid: false}}, rest_name : 'Blue Sky', sub_total: 28.21, tip_total: 2.11, receipt: 'www.google.com'}
 
 //var participants = [{
 //    name: 'Jack Dorsey',
