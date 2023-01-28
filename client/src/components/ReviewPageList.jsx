@@ -6,7 +6,7 @@ export default function ReviewPageList (props) {
   var host = {name: 'Jack Daniels', amount: 32.23};
   return(
     <Box sx={{ml: 4}}>
-      {sample.map((element, index) => {
+      {props.friendsList.map((element, index) => {
         return(
             <Grid container spacing={2}>
               <Grid container item xs={6} direction="column">
