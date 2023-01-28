@@ -98,6 +98,8 @@ export default function MealDetails(props) {
     return anyNulls ? false : newSession;
   };
 
+
+
   // const CustomInput = <OutlinedInput
   //   startAdornment={<InputAdornment position="start"><AttachMoneyIcon /></InputAdornment>}
   //   fullWidth
@@ -168,12 +170,12 @@ export default function MealDetails(props) {
 
     <CustomSplit hidden={splitMethod === 'even'} {...{ setFriendData, mealTotal, evenMealAmt, ...passedInData }} />
 
-    <Link
-
-      disabled={false}
-      to={{ pathname: "/review" }}
-      state={session}
-    >Save and Review</Link>
+    <Button
+      // disabled={false}
+      // to={{ pathname: "/review" }}
+      // state={session}
+      onClick={handleSubmit}
+    >Save and Review</Button>
     {/* <Link to={{ pathname: "/review" }} state={this}>
       <Button>Save</Button>
     </Link> */}

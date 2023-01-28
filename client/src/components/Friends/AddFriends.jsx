@@ -6,7 +6,9 @@ import FriendEntry from './FriendEntry.jsx';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import Navbar from '../Navbar.jsx';
 import Loading from '../Loading.jsx';
+
 import { useLocation } from 'react-router-dom'
+
 const fakeFriendsList2 = [
   "Anna: 111123123", "Bob: 312456789", "Davie Wang: 44556677"
 ]
@@ -16,8 +18,11 @@ const AddFriends = (props) => {
   const [existList, setExistList] = useState(null)
   const [friends, setFriends] = useState([]);
   console.log('friends', friends);
-  // const location = useLocation()
-  // const { from } = location.state
+
+
+  const { state } = useLocation();
+
+
   //call the data to get the users exist friends list
   const getFriends = () => {
     //for test use the defatul id
