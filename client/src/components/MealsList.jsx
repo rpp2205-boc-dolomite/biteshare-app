@@ -12,7 +12,7 @@ var array = [{restName: 'Chilis', host: 'Jack Daniels', amount: 15.35},
 export default function MealsList() {
   // after getSessions is added, uncomment the folloiwng and change array to data on line 26
   const location  = useLocation();
-  //const { data } = location.state;
+  const { data } = location.state;
   const [meals, setMeals] = useState([])
 
 
