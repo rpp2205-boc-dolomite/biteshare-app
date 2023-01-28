@@ -19,12 +19,12 @@ const ReceiptUpload = ({ setReceipt }) =>
     options={options}           // Optional.
     onComplete={files => {      // Optional.
       if (files.length !== 0) {
-        setReceipt(files[0]);
+        setReceipt(files[0].fileUrl);
       }
     }}>
     {({ onClick }) =>
       <Button onClick={onClick}>
-        Upload a file...
+        Upload receipt...
       </Button>
     }
   </UploadButton>
