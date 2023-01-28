@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar.jsx';
 import {Button, Box, Typography, Stack, List, ListItem, ListItemButton} from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -14,12 +14,16 @@ export default function MealsList() {
   // after getSessions is added, uncomment the folloiwng and change array to data on line 26
   const location  = useLocation();
   const { data } = location.state;
+  const [meals, setMeals] = useState([])
 
   useEffect(() => {
     axios.get(`/api/users?phone_num=${location.state.phone_num}`)
     .then((response) => {
-      console.log(data);
-      //return axios.get(`/api/sessions?user_id=response.data`)
+      console.log('here');
+      return axios.get(`/api/sessions?user_id=${response.data.id}`)
+    })
+    .then((sessions) => {
+      setMeals([...sessions])
     })
     .catch((err) => {
       console.log(err);
@@ -27,14 +31,13 @@ export default function MealsList() {
 
  }, [location]);
 
-  const meals = array.length; //data.length
     return (
       <Box sx={{ width: '100%'}}>
         <Navbar></Navbar>
-        {meals === 0 ? 'No new meals' : array.map(element => {
+        {meals.length === 0 ? 'No new meals' : array.map(element => {
           return(
             <Link to="/meal" style={{ textDecoration: 'none' }}
-                  // state={element}
+                   state={element}
             >
               <Box
                 sx={{
