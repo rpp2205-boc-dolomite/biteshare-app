@@ -24,7 +24,8 @@ export default class SignIn extends React.Component {
     super(props)
     this.state = {
       user: false,
-      error: false
+      error: false,
+      phone_num: ''
     }
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -74,11 +75,11 @@ export default class SignIn extends React.Component {
     })
   };
   render() {
-    let { user, error } = this.state;
+    let { user, error, phone_num } = this.state;
     return (
       <ThemeProvider theme={theme}>
         {user && (
-          <Navigate to='/meals' replace={true} />
+          <Navigate to='/meals' replace={true} state={{'phone_num': phone_num}}/>
         )
         }
           <Typography component='h1' variant="h4" align='center' gutterBottom sx={{mt:"10%"}}>
