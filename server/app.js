@@ -43,9 +43,10 @@ app.post('/api/users', userControllers.addUser);
 
 //---- yelp businesses ---//
 app.get('/biz', (req, res) => {
-  getBiz(req.body.location)
-    .then ((data) => {
-      res.send(data.businesses).status(201);
+  getBiz(req.query.location)
+    .then ((results) => {
+      res.status(200);
+      res.send(results.data.businesses);
     })
     .catch ((err) => {
       console.log(err);
