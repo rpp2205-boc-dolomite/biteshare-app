@@ -1,5 +1,4 @@
 const db = require('../db/db');
-
 // https://stackoverflow.com/questions/43092071/how-should-i-store-salts-and-passwords-in-mongodb
 
 

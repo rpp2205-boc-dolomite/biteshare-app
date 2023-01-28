@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from './Copyright.jsx';
+import axios from 'axios';
 
 
 const theme = createTheme();
@@ -25,7 +26,32 @@ export default function SignIn() {
       phone: data.get('tel'),
       password: data.get('password'),
     });
+    var phone_num = data.get('tel')
+    var password = data.get('password')
     //auth to check the pasword, if correct redirct to path dashboard otherwise display a error to user
+    axios.post(`/api/login/`, {
+      'phone_num': phone_num,
+      'password': password
+    })
+    .then((data) => {
+      //log user in
+      console.log(data)
+    })
+    .catch((err) => {
+      if (err.response.status === 401) {
+        if (err.response.data === 'password') {
+          //response for wrong password
+          console.log('WRONG PASSWORD')
+        } else if (err.response.data === 'username') {
+          //response for wrong username
+          console.log('WRONG USERNAME')
+        }
+      } else {
+        console.log(err);
+        console.log(err.response.status)
+      }
+      
+    })
   };
 
   return (
