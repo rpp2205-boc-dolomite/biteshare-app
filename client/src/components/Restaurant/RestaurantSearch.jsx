@@ -13,11 +13,12 @@ const RestaurantSearch = ({}) => {
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
     console.log(event.target.outerText);
+    setRestName(event.target.outerText);
+    console.log(restName);
   };
 
   const handleLocation = (e) => {
     setLocation(e.target.value);
-    console.log(local);
   }
 
   const handleRestName = (e) => {
@@ -32,7 +33,6 @@ const RestaurantSearch = ({}) => {
     axios.get(`/biz?location=${local}`)
       .then ((results) => {
         setBusinesses(results.data);
-        console.log(results.data)
       })
       .catch ((err) => {
         console.log(err);
