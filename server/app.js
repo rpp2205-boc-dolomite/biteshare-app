@@ -43,6 +43,7 @@ app.get('/api/users', userControllers.getUser);
 app.post('/api/users', userControllers.addUser);
 
 //---sessions ---//
+app.get('/api/sessions', sessionControlers.getSessions)
 app.post('/api/sessions', sessionControlers.postSessions)
 
 //---- login and signup ----//
