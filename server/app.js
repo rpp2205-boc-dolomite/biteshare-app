@@ -9,7 +9,12 @@ const cors = require('cors');
 
 const userControllers = require('./controllers/user'); // This line will be changed. It is here to trigger the DB to load.
 const friendsControllers = require('./controllers/friend');
+<<<<<<< HEAD
 const sessionControlers = require('./controllers/sessions');
+=======
+const authControllers = require('./controllers/auth.js');
+const { getBiz } = require('./controllers/yelpBiz.js');
+>>>>>>> main
 
 app.use(helmet());
 if (process.env.NODE_ENV === 'development') {
@@ -42,6 +47,21 @@ app.post('/api/users', userControllers.addUser);
 
 //---sessions ---//
 app.post('/api/sessions', sessionControlers.postSessions)
+
+//---- login and signup ----//
+app.post('/api/login/', authControllers.verifyLogin)
+
+//---- yelp businesses ---//
+app.get('/biz', (req, res) => {
+  getBiz(req.query.location)
+    .then ((results) => {
+      res.status(200);
+      res.send(results.data.businesses);
+    })
+    .catch ((err) => {
+      console.log(err);
+    });
+});
 
 
 app.get('*', (req, res) => {
