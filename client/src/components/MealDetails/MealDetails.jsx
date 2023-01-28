@@ -1,5 +1,6 @@
 import * as React from 'react';
 import CustomSplit from './CustomSplit.jsx';
+import ReceiptUpload from './ReceiptUpload.jsx';
 import {
   FormControl,
   FormLabel,
@@ -29,15 +30,11 @@ import {
 
 const restName = "Red Robin";
 
-
-
 const passedInData = {
   host: { user_id: '', name: "Ellen", phone_num: "" },
   friends: [{ name: "Clark W. Griswold", phone_num: "+12223334444" }, { name: "Cousin Eddie", phone_num: "+12123234343" }],
   resInfo: { name: "Red Robin", address: "" },
-
 };
-// const textFieldVariant = "outlined";
 
 const setFriendData = function (index, change) {
   if (index === -1) {
@@ -47,7 +44,6 @@ const setFriendData = function (index, change) {
   }
 };
 
-
 export default function MealDetails(props) {
 
   const [guests, setGuests] = React.useState(passedInData.friends.length + 1);
@@ -55,26 +51,58 @@ export default function MealDetails(props) {
   const [mealTotal, setMealTotal] = React.useState(0);
   const [evenMealAmt, setEvenMealAmt] = React.useState(0);
   const [tipPercent, setTipPercent] = React.useState(0.2);
+  const [receipt, setReceipt] = React.useState('');
+  const [hostMealAndTip, setHostMealAndTip] = React.useState(['0.00', '0.00']);
+  const [session, setSession] = React.useState({});
 
   const handleMealTotalChange = function (value) {
-    // console.log('Value', value);
     setMealTotal(value);
     setEvenMealAmt(value / guests);
   };
 
   const handleTipPercentChange = function (value) {
     if (value !== "-1") {
-
       setTipPercent(Math.abs(value));
     }
   };
 
-  const CustomInput = <OutlinedInput
-    startAdornment={<InputAdornment position="start"><AttachMoneyIcon /></InputAdornment>}
-    label="Bill Amount (excluding tip)"
-    required
-    fullWidth
-  />
+  const handleSubmit = function () {
+    const session = createAndValidateSession();
+
+    if (session) {
+      // Submit
+    } else {
+      // Don't submit
+    }
+  };
+
+  const createAndValidateSession = function () {
+    const newSession = {
+      host: {
+        ...passedInData.host,
+        meal_amount: hostMealAndTip[0],
+        tip_amount: hostMealAndTip[1],
+      },
+      friends: passedInData.friends,
+      rest_name: resInfo.name,
+      sub_total: mealTotal,
+      tip_total: mealTotal * tipPercent,
+      receipt: receipt,
+      active: true,
+    };
+
+    setSession(newSession);
+
+    const anyNulls = Object.keys(newSession).reduce((accumulator, currentValue) => { if (!currentValue || !accumulator) { return false } }, true);
+
+    return anyNulls ? false : newSession;
+  };
+
+  // const CustomInput = <OutlinedInput
+  //   startAdornment={<InputAdornment position="start"><AttachMoneyIcon /></InputAdornment>}
+  //   fullWidth
+  //   size="small"
+  // />
 
   return (<>
     <FormLabel>Restaurant:</FormLabel>
@@ -97,6 +125,7 @@ export default function MealDetails(props) {
       onChange={e => handleMealTotalChange(Math.abs(e.target.value))}
       required
       fullWidth
+      size="small"
     />
 
     <FormLabel id="choose-tip-group-label">Tip percentage: {(Math.abs(tipPercent * 100)).toFixed(1)}%</FormLabel>
@@ -120,8 +149,10 @@ export default function MealDetails(props) {
       evenMealAmt: {evenMealAmt.toFixed(2)} */}
     </Stack>
 
-    <Divider>Split Method</Divider>
+    <Divider>Receipt upload</Divider>
+    <ReceiptUpload />
 
+    <Divider>Split Method</Divider>
     <ToggleButtonGroup
       color="primary"
       size="small"
@@ -129,14 +160,20 @@ export default function MealDetails(props) {
       exclusive
       onChange={() => splitMethod === 'even' ? setSplitMethod('custom') : setSplitMethod('even')}
       aria-label="Platform"
-      sx={{alignSelf:'center'}}
+      sx={{ alignSelf: 'center' }}
     >
       <ToggleButton value="even">Evenly</ToggleButton>
       <ToggleButton value="custom">Custom</ToggleButton>
     </ToggleButtonGroup>
 
-    <CustomSplit hidden={splitMethod === 'even'} {...{setFriendData, mealTotal, evenMealAmt, ...passedInData}} />
+    <CustomSplit hidden={splitMethod === 'even'} {...{ setFriendData, mealTotal, evenMealAmt, ...passedInData }} />
 
+    <Link
+
+      disabled={false}
+      to={{ pathname: "/review" }}
+      state={session}
+    >Save and Review</Link>
     {/* <Link to={{ pathname: "/review" }} state={this}>
       <Button>Save</Button>
     </Link> */}
