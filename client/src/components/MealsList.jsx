@@ -19,7 +19,7 @@ export default function MealsList() {
   useEffect(() => {
     axios.get(`/api/users?phone_num=${localStorage.getItem('phone')}`)
     .then((response) => {
-      localStorage.setItem('name', response.data.name);
+      localStorage.setItem('user', { id: response.data.id, name: response.data.name});
       return axios.get(`/api/sessions?user_id=${response.data.id}`)
     })
     .then((sessions) => {
