@@ -20,7 +20,7 @@ exports.getUser = function (req, res) {
   } else {
 
     db.User.findOne({ phone_num: phoneNum })
-      .then(doc => res.status(200).send(doc))
+      .then(doc => {console.log(doc); res.status(200).send(doc)})
       .catch(err => res.status(500).send(err.toString()));
   }
 };

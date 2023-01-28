@@ -15,9 +15,17 @@ export default function MealsList() {
   const location  = useLocation();
   const { data } = location.state;
 
-  useEffect = (() => {
-    console.log(data.phone_num)
-  }, [data.phone_num]);
+  useEffect(() => {
+    axios.get(`/api/users?phone_num=${location.state.phone_num}`)
+    .then((response) => {
+      console.log(data);
+      //return axios.get(`/api/sessions?user_id=response.data`)
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
+ }, [location]);
 
   const meals = array.length; //data.length
     return (

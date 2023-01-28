@@ -46,7 +46,8 @@ export default class SignIn extends React.Component {
       //redirect to dashboard
       console.log('BACK IN SUCCESS', data)
       this.setState({
-        user: true
+        user: true,
+        phone_num: phone_num
       })
     })
     .catch((err) => {
@@ -71,7 +72,7 @@ export default class SignIn extends React.Component {
         console.log(err);
         console.log(err.response.status)
       }
-      
+
     })
   };
   render() {
@@ -86,7 +87,7 @@ export default class SignIn extends React.Component {
               Bite Share
           </Typography>
           <hr/>
-        
+
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
@@ -97,7 +98,7 @@ export default class SignIn extends React.Component {
               alignItems: 'center',
             }}
           >
-            
+
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
