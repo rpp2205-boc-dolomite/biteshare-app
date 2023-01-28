@@ -1,5 +1,6 @@
 import * as React from 'react';
 import CustomSplit from './CustomSplit.jsx';
+import ReceiptUpload from './ReceiptUpload.jsx';
 import {
   FormControl,
   FormLabel,
@@ -71,9 +72,8 @@ export default function MealDetails(props) {
 
   const CustomInput = <OutlinedInput
     startAdornment={<InputAdornment position="start"><AttachMoneyIcon /></InputAdornment>}
-    label="Bill Amount (excluding tip)"
-    required
     fullWidth
+    size="small"
   />
 
   return (<>
@@ -97,6 +97,7 @@ export default function MealDetails(props) {
       onChange={e => handleMealTotalChange(Math.abs(e.target.value))}
       required
       fullWidth
+      size="small"
     />
 
     <FormLabel id="choose-tip-group-label">Tip percentage: {(Math.abs(tipPercent * 100)).toFixed(1)}%</FormLabel>
@@ -120,8 +121,10 @@ export default function MealDetails(props) {
       evenMealAmt: {evenMealAmt.toFixed(2)} */}
     </Stack>
 
-    <Divider>Split Method</Divider>
+    <Divider>Receipt upload</Divider>
+    <ReceiptUpload />
 
+    <Divider>Split Method</Divider>
     <ToggleButtonGroup
       color="primary"
       size="small"
