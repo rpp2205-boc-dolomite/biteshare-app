@@ -10,6 +10,8 @@ const fakeFriendsList2 = [
   "Anna: 111123123", "Bob: 312456789", "Davie Wang: 44556677"
 ]
 const AddFriends = (props) => {
+  const user = localStorage.getItem('phone');
+  console.log('local: ', user);
   const [existList, setExistList] = useState(null)
   const [friends, setFriends] = useState([]);
   console.log('friends', friends);

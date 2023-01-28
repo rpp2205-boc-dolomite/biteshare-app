@@ -13,27 +13,34 @@ import MealsList from "./MealsList";
 import RestaurantSearch from "./Restaurant/RestaurantSearch";
 import MealDetails from "../MealDetails/MealDetails/=";
 import AddFriends from "./Friends/AddFriends";
-
+import Review from './Review.jsx';
 
 const steps = ["Selecting Restaurant", "Add freinds", "Meal details", "Review your Meal"];
 const { formId, formField } = checkoutFormModel;
 
 const UserContext = createContext();
-// export default function CheckoutPage() {
-//   const [activeStep, setActiveStep] = useState(0);
-//   const isLastStep = activeStep === steps.length - 1;
-//   function _renderStepContent(step) {
-//     switch (step) {
-//       case 0:
-//         return <AddressForm formField={formField} />;
-//       case 1:
-//         return <PaymentForm formField={formField} />;
-//       case 2:
-//         return <ReviewOrder />;
-//       default:
-//         return <div>Not Found</div>;
-//     }
-//   }
+export default function Steps() {
+  const [activeStep, setActiveStep] = useState(0);
+  const isLastStep = activeStep === steps.length - 1;
+  const [inputs, setInputs] = useState({
+    host: {user_id:'', name: '', phone_num:''},
+    friends:[],
+    resInfo,{name:'', address:''}
+  })
+  function _renderStepContent(step) {
+    switch (step) {
+      case 0:
+        return <RestaurantSearch />;
+      case 1:
+        return <AddFriends />;
+      case 2:
+        return <MealDetails />;
+      case 3:
+        return <Review />;
+      default:
+        return <div>Not Found</div>;
+    }
+  }
 //   function _sleep(ms) {
 //     return new Promise((resolve) => setTimeout(resolve, ms));
 //   }
@@ -41,20 +48,18 @@ const UserContext = createContext();
 //   async function _submitForm(values, actions) {
 //     await _sleep(1000);
 //     alert(JSON.stringify(values, null, 2));
-//     actions.setSubmitting(false);
 
 //     setActiveStep(activeStep + 1);
 //   }
 
-//   function _handleSubmit(values, actions) {
-//     if (isLastStep) {
-//       _submitForm(values, actions);
-//     } else {
-//       setActiveStep(activeStep + 1);
-//       actions.setTouched({});
-//       actions.setSubmitting(false);
-//     }
-//   }
+  // function _handleSubmit(values, actions) {
+  //   if (isLastStep) {
+  //     _submitForm(values);
+  //   } else {
+  //     setActiveStep(activeStep + 1);
+
+  //   }
+  // }
 
 //   function _handleBack() {
 //     setActiveStep(activeStep - 1);
@@ -116,4 +121,4 @@ const UserContext = createContext();
 //       </React.Fragment>
 //     </React.Fragment>
 //   );
-// }
+}
