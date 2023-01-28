@@ -9,7 +9,7 @@ exports.getSessions = function(req, res) {
     return;
   }
 
-  db.Session.find({ host: '63d4a4a13ca796188c5bd365' })
+  db.Session.findOne({ host: userId })
   .then(result => {
     console.log(result);
     res.status(200).send(result);

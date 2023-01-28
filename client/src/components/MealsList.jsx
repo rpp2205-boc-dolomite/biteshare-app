@@ -13,13 +13,13 @@ var array = [{restName: 'Chilis', host: 'Jack Daniels', amount: 15.35},
 export default function MealsList() {
   // after getSessions is added, uncomment the folloiwng and change array to data on line 26
   const location  = useLocation();
-  const { data } = location.state;
+  //const { data } = location.state;
   const [meals, setMeals] = useState([])
 
   useEffect(() => {
-    axios.get(`/api/users?phone_num=${location.state.phone_num}`)
+    axios.get(`/api/users?phone_num=${localStorage.getItem('phone')}`)
     .then((response) => {
-      console.log('here');
+      localStorage.setItem('name', response.data.name);
       return axios.get(`/api/sessions?user_id=${response.data.id}`)
     })
     .then((sessions) => {
@@ -69,7 +69,7 @@ export default function MealsList() {
           )
         })}
         <Box display="flex" sx={{justifyContent: 'center'}}>
-          <Link to="/create" state={{ data }}>
+          <Link to="/searchRest" >
             <Button size='large' variant="contained" sx={{backgroundColor:'black', m: 2}}>Create a new Meal Session</Button>
           </Link>
         </Box>

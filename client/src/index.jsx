@@ -28,7 +28,6 @@ const router = createBrowserRouter([
   {path:"/meals", element:<MealsList />},
   {path:"/meal", element:<Meal />},
   {path: "/review", element: <Review />},
-  //{path: "/mealdetail", element: }
   {path:'/friends', element:<FriendsPage />},
   {path:"/searchRest", element:<RestaurantSearch />}
 ])
