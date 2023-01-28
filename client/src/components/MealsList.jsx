@@ -5,7 +5,6 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-
 var array = [{restName: 'Chilis', host: 'Jack Daniels', amount: 15.35},
 {restName: 'Applebees', host: 'Jane Doe', amount: 23.43}, {restName: 'Bluebird Pizza', host: 'Adam Sandler', amount: 471.3}];
 
@@ -16,10 +15,12 @@ export default function MealsList() {
   //const { data } = location.state;
   const [meals, setMeals] = useState([])
 
+
+  console.log({data});
   useEffect(() => {
     axios.get(`/api/users?phone_num=${localStorage.getItem('phone')}`)
     .then((response) => {
-      localStorage.setItem('name', response.data.name);
+      localStorage.setItem('user', JSON.stringify({id: response.data.id, name: response.data.name}));
       return axios.get(`/api/sessions?user_id=${response.data.id}`)
     })
     .then((sessions) => {
