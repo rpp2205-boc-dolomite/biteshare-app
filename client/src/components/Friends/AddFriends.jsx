@@ -20,9 +20,9 @@ const AddFriends = (props) => {
   console.log('friends', friends);
 
 
-  const { state } = useLocation();
-  const restInfo = state.restInfo;
-  console.log('resInfo', restInfo);
+  // const { state } = useLocation();
+  // const restInfo = state.restInfo;
+  // console.log('resInfo', restInfo);
 
   //call the data to get the users exist friends list
   const getFriends = () => {
@@ -48,12 +48,6 @@ const AddFriends = (props) => {
     setFriends(friends.slice(0, i).concat(friends.slice(i+1)))
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    //pass res_nest and friends to next component
-    console.log('continue to create page will pass the friens list to next component', friends);
-  }
-
 
   return (
     <>
@@ -77,7 +71,7 @@ const AddFriends = (props) => {
           <Button
             component={Link}
             to='/mealdetails'
-           state={{restInfo, friends}}
+          //  state={{restInfo, friends}}
            variant="contained"
            size="large"
            sx={{width:'60%', backgroundColor:'orange', '&:hover': {backgroundColor:'orange'}}}>
