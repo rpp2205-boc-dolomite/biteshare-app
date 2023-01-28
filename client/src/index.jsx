@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 import App from './components/App.jsx';
-import Meals from './components/Meals.jsx';
+import MealsList from './components/MealsList.jsx';
 import Meal from './components/Meal.jsx';
 
 import Navbar from './components/Navbar.jsx';
@@ -11,6 +11,7 @@ import Review from './components/Review.jsx';
 import SignUp from './components/SignUp.jsx';
 import Login from './components/Login.jsx';
 import FriendsPage from './components/FriendsPage.jsx';
+import RestaurantSearch from './components/Restaurant/RestaurantSearch.jsx';
 
 
 import {
@@ -24,9 +25,12 @@ const router = createBrowserRouter([
   {path:"/mealdetails", element:<MealDetails />},
   {path:"/signup", element:<SignUp />},
   {path:"/login", element:<Login />},
-  {path:"/meals", element:<Meals />},
+  {path:"/meals", element:<MealsList />},
   {path:"/meal", element:<Meal />},
-  {path:'/friends', element:<FriendsPage />}
+  {path: "/review", element: <Review />},
+  //{path: "/mealdetail", element: }
+  {path:'/friends', element:<FriendsPage />},
+  {path:"/searchRest", element:<RestaurantSearch />}
 ])
 
 createRoot(document.getElementById('app')).render(
