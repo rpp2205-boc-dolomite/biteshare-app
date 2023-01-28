@@ -19,7 +19,6 @@ import {
   Stack,
   ToggleButton,
   ToggleButtonGroup,
-  Link,
   Input,
   InputLabel,
   Paper
@@ -27,6 +26,7 @@ import {
 import {
   AttachMoney as AttachMoneyIcon,
 } from '@mui/icons-material';
+import { Link, useLocation, Navigate } from 'react-router-dom';
 
 const restName = "Red Robin";
 
@@ -54,6 +54,7 @@ export default function MealDetails(props) {
   const [receipt, setReceipt] = React.useState('');
   const [hostMealAndTip, setHostMealAndTip] = React.useState(['0.00', '0.00']);
   const [session, setSession] = React.useState({});
+  const [redirect, setRedirect] = React.useState(false);
 
   const handleMealTotalChange = function (value) {
     setMealTotal(value);
@@ -70,9 +71,11 @@ export default function MealDetails(props) {
     const session = createAndValidateSession();
 
     if (session) {
-      // Submit
+      console.log('Session is valid! Navigating to review page');
+      setRedirect(true);
     } else {
       // Don't submit
+      console.log('could not validate session');
     }
   };
 
@@ -84,7 +87,7 @@ export default function MealDetails(props) {
         tip_amount: hostMealAndTip[1],
       },
       friends: passedInData.friends,
-      rest_name: resInfo.name,
+      rest_name: passedInData.resInfo.name,
       sub_total: mealTotal,
       tip_total: mealTotal * tipPercent,
       receipt: receipt,
@@ -98,24 +101,13 @@ export default function MealDetails(props) {
     return anyNulls ? false : newSession;
   };
 
-
-
-  // const CustomInput = <OutlinedInput
-  //   startAdornment={<InputAdornment position="start"><AttachMoneyIcon /></InputAdornment>}
-  //   fullWidth
-  //   size="small"
-  // />
+  if (redirect) {
+    return <Navigate to="/review" state={session} />
+  }
 
   return (<>
     <FormLabel>Restaurant:</FormLabel>
     <Typography>{restName}</Typography>
-    {/*
-    Total: (text input)
-    Tip:
-    Number of friends:
-    Upload Receipt:
-    Split Method: (Evenly) (Custom)
-    */}
 
     <OutlinedInput
       id="bill-amount-text-field"
@@ -147,12 +139,10 @@ export default function MealDetails(props) {
     <Stack direction="row" gap={1}>
       <FormLabel>People in your party:</FormLabel>
       <Chip label={guests} />
-      {/* mealTotal: {mealTotal.toFixed(2)}
-      evenMealAmt: {evenMealAmt.toFixed(2)} */}
     </Stack>
 
     <Divider>Receipt upload</Divider>
-    <ReceiptUpload />
+    <ReceiptUpload setReceipt={setReceipt} />
 
     <Divider>Split Method</Divider>
     <ToggleButtonGroup
@@ -171,14 +161,9 @@ export default function MealDetails(props) {
     <CustomSplit hidden={splitMethod === 'even'} {...{ setFriendData, mealTotal, evenMealAmt, ...passedInData }} />
 
     <Button
-      // disabled={false}
-      // to={{ pathname: "/review" }}
-      // state={session}
       onClick={handleSubmit}
     >Save and Review</Button>
-    {/* <Link to={{ pathname: "/review" }} state={this}>
-      <Button>Save</Button>
-    </Link> */}
+
 
   </>);
 };
