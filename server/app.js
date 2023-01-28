@@ -9,6 +9,7 @@ const cors = require('cors');
 
 const userControllers = require('./controllers/user'); // This line will be changed. It is here to trigger the DB to load.
 const friendsControllers = require('./controllers/friend');
+const authControllers = require('./controllers/auth.js')
 
 app.use(helmet());
 if (process.env.NODE_ENV === 'development') {
@@ -39,6 +40,8 @@ app.post('/api/friends', friendsControllers.addFriend);
 app.get('/api/users', userControllers.getUser);
 app.post('/api/users', userControllers.addUser);
 
+//---- login and signup ----//
+app.post('/api/login/', authControllers.verifyLogin)
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
