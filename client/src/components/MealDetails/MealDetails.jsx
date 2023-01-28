@@ -143,6 +143,15 @@ export default function MealDetails(props) {
 
     <Divider>Receipt upload</Divider>
     <ReceiptUpload setReceipt={setReceipt} />
+    {console.log('RECEIPT', receipt)}
+    <Box
+      sx={{
+        height: '120px',
+        width: '120px',
+        hidden: false,
+        border: "1px dashed"
+      }}
+    ><img crossOrigin="anonymous" src={receipt} style={{maxWidth: "100%", maxHeight: "100%"}} /></Box>
 
     <Divider>Split Method</Divider>
     <ToggleButtonGroup
