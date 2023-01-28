@@ -53,14 +53,14 @@ const SearchFriends = ({id, friends, setFriends, existList, setExistList}) => {
     if (add) {
       return axios.post('/api/users', newUser)
         .then((result) => {
-          console.log('adduser res', result.data.id);
-          return axios.post(`/api/friends/?user_id=${id}`,{guest_id: result.data.id} )
+          console.log('adduser res', result.data[0].id);
+          return axios.post(`/api/friends/?user_id=${id}`,{guest_id: result.data[0].id} )
         })
         .then(res => {
           if (res) {
             setExistList(existList.concat([temp]));
-            return axios.post('/api/addfriends', newUser)
-
+            triggerAlert({status:true, severity:'success', msg:'Add friends Success!'})
+            handleClose();
           } else {
             handleClose();
             triggerAlert({status:true, severity:'error', msg:'Add friends failed!'})

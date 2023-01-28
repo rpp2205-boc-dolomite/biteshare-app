@@ -10,12 +10,11 @@ exports.getSessions = function(req, res) {
   }
 
   db.Session.find(
-    { $or: [{ host: userId }, { [`detail.${userId}`] : { $exists : true } }] },
-    function(err, result) {
+    { [`detail.${userId}`] : { $exists : true } },
+    function (err, result) {
       if (err) {
         res.send(err);
       } else {
-        //console.log('result in session: ', result)
         res.send(result);
       }
     }
