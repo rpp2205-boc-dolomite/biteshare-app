@@ -10,11 +10,13 @@ exports.createHash = function(password) {
 };
 
 exports.verifyLogin = function(req, res) {
-    const phoneNumber = parsePhoneNumber(req.body.phone_num, 'US');
-    if (!phoneNumber) {
+    const parsed = parsePhoneNumber(req.body.phone_num, 'US');
+    if (!parsed) {
+        console.log(req.body);
         res.status(500).send("Connot parse phone number");
         return;
     }
+    const phoneNumber = parsed.number;
     db.User.findOne({phone_num: phoneNumber})
     .then((user) => {
         console.log('user from DB', user)
