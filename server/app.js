@@ -13,7 +13,14 @@ const sessionControlers = require('./controllers/sessions');
 const authControllers = require('./controllers/auth.js');
 const { getBiz } = require('./controllers/yelpBiz.js');
 
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    useDefaults: true,
+    directives: {
+      connectSrc: ["https://api.upload.io", "https://upload-prod-files.s3-accelerate.dualstack.amazonaws.com"]
+    }
+  }
+}));
 if (process.env.NODE_ENV === 'development') {
   // require morgan if in development mode
   // setting morgan to dev: https://www.npmjs.com/package/morgan#dev
