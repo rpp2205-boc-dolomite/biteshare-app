@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {TextField, Box, Link, Container, List, ListItem, ListItemText, IconButton, Button} from '@mui/material';
+import {TextField, Box, Container, List, ListItem, ListItemText, IconButton, Button} from '@mui/material';
 import SearchFriends from './SearchFriends.jsx';
 import FriendEntry from './FriendEntry.jsx';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import Navbar from '../Navbar.jsx';
 import Loading from '../Loading.jsx';
-
+import { Navigate, Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom'
 
 const fakeFriendsList2 = [
@@ -21,7 +21,8 @@ const AddFriends = (props) => {
 
 
   const { state } = useLocation();
-
+  const restInfo = state.restInfo;
+  console.log('resInfo', restInfo);
 
   //call the data to get the users exist friends list
   const getFriends = () => {
@@ -31,7 +32,7 @@ const AddFriends = (props) => {
       .then((result) => {
         console.log('client friends res:', result.data);
         //convert the result data to matche the fackfriendsList2 data
-        let list = result.data.friends.size===0 ? [] : result.data.friends;
+        let list = !result.data.friends.length ? [] : result.data.friends;
         let userFriends = list.map((friend) => {
           return friend.name + ': ' + friend.phone_num
         })
@@ -58,7 +59,7 @@ const AddFriends = (props) => {
     <>
       <Navbar />
       <Container maxWidth="95%" sx={{p:1, m:1,  width:"92%", justifyContent:"center"}}>
-        {!existList ? <Loading /> :<SearchFriends friends={friends} setFriends={setFriends} existList={existList} setExistList={setExistList}/>}
+        {!existList ? <Loading /> :<SearchFriends id={user.id} friends={friends} setFriends={setFriends} existList={existList} setExistList={setExistList}/>}
         <hr/>
         <Box component="span" sx={{dispaly:'block', fontSize:'larger'}}>
           Friends List
@@ -73,9 +74,16 @@ const AddFriends = (props) => {
           }
         </Box>
         <Box sx={{justifyContent:"center",textAlign:'center', pt:"20%", m:1}}>
-          <Link to='/mealdetails'>
-            <Button variant="contained" size="large" sx={{width:'60%', backgroundColor:'orange', '&:hover': {backgroundColor:'orange'}}}>Continue</Button>
-          </Link>
+          <Button
+            component={Link}
+            to='/mealdetails'
+           state={{restInfo, friends}}
+           variant="contained"
+           size="large"
+           sx={{width:'60%', backgroundColor:'orange', '&:hover': {backgroundColor:'orange'}}}>
+            Continue
+          </Button>
+
         </Box>
 
       </Container>
