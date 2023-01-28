@@ -18,7 +18,7 @@ app.use(helmet({
     useDefaults: true,
     directives: {
       connectSrc: ["'self'", "https:"], //["https://api.upload.io", "https://upload-prod-files.s3-accelerate.dualstack.amazonaws.com"],
-      imgSrc: ["'self'", "data:", "blob:"]
+      imgSrc: ["'self'", "data:", "blob:", "https:"]
     }
   }
 }));

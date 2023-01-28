@@ -14,7 +14,8 @@ export default function CustomSplit({ hidden, setFriendData, host, friends, meal
           meal={friend.meal_amount}
           tip={friend.tip_amount}
           setMeal={amt => setFriendData(index, { meal_amount: amt })}
-          setTip={amt => setFriendData(index, { tip_amount: amt })} />
+          setTip={amt => setFriendData(index, { tip_amount: amt })}
+          key={index} />
       )}
     </Box>
     <Box>
