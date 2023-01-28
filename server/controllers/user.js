@@ -1,6 +1,25 @@
 const db = require('../db/db');
 // https://stackoverflow.com/questions/43092071/how-should-i-store-salts-and-passwords-in-mongodb
 const auth = require('./auth.js')
+const parsePhoneNumber = require('libphonenumber-js');
+
+const parsePhoneNumbers = function (docs) {
+  const parseDoc = (doc) => {
+    const phone = parsePhoneNumber(doc.phone_num, 'US');
+
+    if (phone) {
+      doc.phone_num = phone.number;
+    }
+  };
+
+  if (Array.isArray(docs)) {
+    for (const doc of docs) {
+      parseDoc(doc);
+    }
+  } else {
+    parseDoc(docs);
+  }
+};
 
 exports.getUser = function (req, res) {
   // FYI: had an issue with the plus sign in the phone number. Might need to escape it before sending.
@@ -18,6 +37,7 @@ exports.getUser = function (req, res) {
       .then(doc => res.status(200).send(doc))
       .catch(err => res.status(500).send(err.toString()));
   } else {
+
     db.User.findOne({ phone_num: phoneNum })
       .then(doc => {console.log(doc); res.status(200).send(doc)})
       .catch(err => res.status(500).send(err.toString()));
@@ -26,6 +46,7 @@ exports.getUser = function (req, res) {
 
 exports.addUser = (req, res) => {
   const docs = req.body;
+  parsePhoneNumbers(docs);
   req.body.password = auth.createHash(req.body.password)
   console.log(docs)
   if (!docs) {
