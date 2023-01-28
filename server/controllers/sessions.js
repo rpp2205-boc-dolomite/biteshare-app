@@ -3,13 +3,15 @@ const user = require('./user');
 
 exports.getSessions = function(req, res) {
   const userId = req.query.user_id;
-  if (userId) {
+  console.log(userId);
+  if (!userId) {
     res.status(400).send('No user id found');
     return;
   }
 
-  db.Session.find({ _id: userId })
+  db.Session.findOne({ host: userId })
   .then(result => {
+    console.log(result);
     res.status(200).send(result);
   })
   .catch(err => {
@@ -18,27 +20,14 @@ exports.getSessions = function(req, res) {
   })
 }
 
-exports.postSessions = function(req, res) => {
+exports.postSessions = function(req, res) {
   //in req.body is the info
   // user addUser controller to add new users
   // returns an insertedIds array which I will use to be the keys
     // for details field
   //
 
-//   {
-//     [user_id]: {
-//        name: "Jack Dorsey",
-//        tip: 1.75,
-//        bill: 10.21,
-//        is_paid: true
-//     },
-//     [user_id]: {
-//        name: "Bugs Bunny",
-//        tip: 1.75,
-//        bill: 10.21,
-//        is_paid: false
-//     }
-//  }
+var session = {host: '63d4a4a13ca796188c5bd365', detail: {'63d4aa954a874db26a5436c7': { name: "yuchen", tip: 1.75, bill: 10.21, is_paid: true}, '63d4b13b1d6b6ecc80c04dd5': {name: "Yui", tip: 1.75, bill: 10.21, is_paid: false}}, rest_name : 'Blue Sky', sub_total: 28.21, tip_total: 2.11, receipt: 'www.google.com'}
 
 //var participants = [{
 //    name: 'Jack Dorsey',
@@ -71,10 +60,17 @@ exports.postSessions = function(req, res) => {
           tip: req.body[index].tip,
           is_paid: true
         }, acc), {});
-      db.Session.insert({
+
+        return db.Session.insert({
         detail: details,
         ...req.body.info
-      })
+      });
+    })
+    .then((newResults) => {
+      res.status(200).send(newResults);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
     })
 }
 
