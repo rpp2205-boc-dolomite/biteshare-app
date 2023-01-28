@@ -54,7 +54,7 @@ export default function Review(props) {
             <Typography sx={{ml: 5}}>Tip rate: 20%</Typography>
           </Box>
           <Typography variant="body1" sx={{m: 2}}>Friends: </Typography>
-          <ReviewPageList friendsList={data.setFriendData}></ReviewPageList>
+          <ReviewPageList></ReviewPageList>
         </Box>
         <Grid container rowSpacing={20} direction="column" alignItems="center" justifyContent="center">
         <Grid item>
