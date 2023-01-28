@@ -69,7 +69,9 @@ export default function MealsList() {
           )
         })}
         <Box display="flex" sx={{justifyContent: 'center'}}>
-          <Button component={Link} to="/create" size='large' variant="contained" sx={{backgroundColor:'black', m: 2}}>Create a new Meal Session</Button>
+          <Link to="/create" state={{ data }}>
+            <Button size='large' variant="contained" sx={{backgroundColor:'black', m: 2}}>Create a new Meal Session</Button>
+          </Link>
         </Box>
       </Box>
     );
