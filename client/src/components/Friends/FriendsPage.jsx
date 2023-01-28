@@ -34,6 +34,7 @@ export default function FriendsPage (props) {
     return axios.get('/users', {phone_num: input})
       .then(result => {
         console.log('search phone_num', result);
+
       })
 
   }

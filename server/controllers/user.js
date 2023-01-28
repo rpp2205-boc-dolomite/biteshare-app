@@ -37,7 +37,6 @@ exports.getUser = function (req, res) {
       .then(doc => res.status(200).send(doc))
       .catch(err => res.status(500).send(err.toString()));
   } else {
-
     db.User.findOne({ phone_num: phoneNum })
       .then(doc => {console.log(doc); res.status(200).send(doc)})
       .catch(err => res.status(500).send(err.toString()));
@@ -46,8 +45,12 @@ exports.getUser = function (req, res) {
 
 exports.addUser = (req, res) => {
   const docs = req.body;
-  parsePhoneNumbers(docs);
-  req.body.password = auth.createHash(req.body.password)
+
+  if (req.body.password) {
+    req.body.password = auth.createHash(req.body.password)
+  }
+
+
   console.log(docs)
   if (!docs) {
     res.status(400).end();
@@ -62,19 +65,6 @@ exports.addUser = (req, res) => {
       console.error(err);
       res.status(500).send(err.toString());
     });
-  // console.log('new user', req.body)
-  // const docs = req.body;
-  // if (!docs || !(docs instanceof Object)) {
-  //   res.status(400).end();
-  //   return;
-  // }
-  // let newUser = new db.User(req.body);
-  // newUser.save()
-  //   .then((result)=>{
-  //     console.log('res',result);
-  //     res.status(201).send(result.id);
-  //   })
-  //   .catch(err => console.error(err))
 };
 
 exports.updateUser = function (req, res) {

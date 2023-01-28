@@ -2,32 +2,30 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Navbar from '../Navbar.jsx';
 import {Button, Box, Typography, TextField, List, ListItem, ListItemButton, Divider} from '@mui/material';
+import { Navigate, Link } from 'react-router-dom';
 
 const RestaurantSearch = ({}) => {
   const [local, setLocation] = useState('');
-  const [restName, setRestName] = useState('');
-  const [restAddress, setRestAddress] = useState('')
+  // const [restName, setRestName] = useState('');
+  // const [restAddress, setRestAddress] = useState('')
   const [businesses, setBusinesses] = useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [restInfo, setRestInfo] = useState( {name: '', address: ''} );
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
-    console.log(event.target.outerText);
-    setRestName(event.target.outerText);
-    console.log(restName);
+    let bus = (event.target.outerText);
+    const numIndex = bus.search(/\d/);
+    setRestInfo({
+      name: bus.substr(0, numIndex - 1),
+      address: bus.substr(numIndex)
+    });
+    console.log(restInfo);
   };
 
   const handleLocation = (e) => {
     setLocation(e.target.value);
   }
-
-  const handleRestName = (e) => {
-    setRestName(e.target.value);
-  }
-
-  // const handleRestAddress = (e) => {
-  //   setRestAddress(e);
-  // }
 
   const searchLocal = (local) => {
     axios.get(`/biz?location=${local}`)
@@ -47,6 +45,7 @@ const RestaurantSearch = ({}) => {
       flex-direction="column"
       alignItems="center"
       justifyContent="center"
+      padding="50px"
     >
       <TextField fullWidth label="Type in your location" onChange={handleLocation} />
       <Button onClick={() => {searchLocal(local)}}>Show me restaurants near me!</Button>
@@ -69,6 +68,18 @@ const RestaurantSearch = ({}) => {
       )
     })}
       </List>
+    </Box>
+    <Box
+      justifyContent="centered"
+    >
+
+      <Button
+        disabled={!restInfo.name}
+        component={Link}
+        to="/AddFriends"
+        state={{ restInfo }}
+        variant="contained"
+      >Continue</Button>
     </Box>
   </Box>
   )
