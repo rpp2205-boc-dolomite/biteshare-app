@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 import App from './components/App.jsx';
-import Meals from './components/Meals.jsx';
+import MealsList from './components/MealsList.jsx';
 import Meal from './components/Meal.jsx';
 
 import Navbar from './components/Navbar.jsx';
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
   {path:"/addfriends", element:<AddFriends />},
   {path:"/signup", element:<SignUp />},
   {path:"/login", element:<Login />},
-  {path:"/meals", element:<Meals />},
+  {path:"/meals", element:<MealsList />},
   {path:"/meal", element:<Meal />},
   {path: "/review", element: <Review />},
   //{path: "/mealdetail", element: }
