@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from './Navbar.jsx';
 import {Button, Box, Typography, Stack, List, ListItem, ListItemButton} from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -12,8 +12,12 @@ var array = [{restName: 'Chilis', host: 'Jack Daniels', amount: 15.35},
 
 export default function MealsList() {
   // after getSessions is added, uncomment the folloiwng and change array to data on line 26
-  // const location  = useLocation();
-  // const { data } = location.state;
+  const location  = useLocation();
+  const { data } = location.state;
+
+  useEffect = (() => {
+    console.log(data.phone_num)
+  }, [data.phone_num]);
 
   const meals = array.length; //data.length
     return (
