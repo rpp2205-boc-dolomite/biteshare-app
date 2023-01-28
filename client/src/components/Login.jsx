@@ -44,10 +44,10 @@ export default class SignIn extends React.Component {
     })
     .then((data) => {
       //redirect to dashboard
-      console.log('BACK IN SUCCESS', data)
+      console.log('BACK IN SUCCESS', data);
+      localStorage.setItem('phone', phone_num);
       this.setState({
-        user: true,
-        phone_num: phone_num
+        user: true
       })
     })
     .catch((err) => {
@@ -80,7 +80,7 @@ export default class SignIn extends React.Component {
     return (
       <ThemeProvider theme={theme}>
         {user && (
-          <Navigate to='/meals' replace={true} state={{'phone_num': phone_num}}/>
+          <Navigate to='/meals' replace={true}/>
         )
         }
           <Typography component='h1' variant="h4" align='center' gutterBottom sx={{mt:"10%"}}>
