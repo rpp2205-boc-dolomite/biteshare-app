@@ -27,6 +27,7 @@ exports.getUser = function (req, res) {
   const userId = req.query.user_id;
   const phoneNum = '+' + req.query.phone_num.slice(1);
   if (!userId && !phoneNum) {
+
     res.status(400).end();
     return;
   }
@@ -47,9 +48,10 @@ exports.addUser = (req, res) => {
   const docs = req.body;
 
   if (req.body.password) {
+
     req.body.password = auth.createHash(req.body.password)
   }
-
+  parsePhoneNumbers(docs);
 
   console.log(docs)
   if (!docs) {
