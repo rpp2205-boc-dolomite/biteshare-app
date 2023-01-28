@@ -2,22 +2,24 @@ const db = require('../db/db');
 const user = require('./user');
 
 exports.getSessions = function(req, res) {
-  const userId = req.query.user_id;
-  console.log(userId);
+  const userId = req.query.user_id; 
+  console.log('userId in session: ', userId);
   if (!userId) {
     res.status(400).send('No user id found');
     return;
   }
 
-  db.Session.findOne({ host: userId })
-  .then(result => {
-    console.log(result);
-    res.status(200).send(result);
-  })
-  .catch(err => {
-    console.log('error', err);
-    res.status(500).send(`Failed to get sessions for ${userId}`);
-  })
+  db.Session.find(
+    { $or: [{ host: userId }, { [`detail.${userId}`] : { $exists : true } }] },
+    function(err, result) {
+      if (err) {
+        res.send(err);
+      } else {
+        // console.log('result in session: ', result)
+        res.send(result);
+      }
+    }
+  );
 }
 
 exports.postSessions = function(req, res) {
