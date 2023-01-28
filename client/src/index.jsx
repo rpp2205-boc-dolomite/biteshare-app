@@ -5,12 +5,12 @@ import MealsList from './components/MealsList.jsx';
 import Meal from './components/Meal.jsx';
 
 import Navbar from './components/Navbar.jsx';
-import AddFriends from './components/createMeal/AddFriends.jsx';
+import AddFriends from './components/Friends/AddFriends.jsx';
 import MealDetails from './components/MealDetails/MealDetails.jsx';
 import Review from './components/Review.jsx';
 import SignUp from './components/SignUp.jsx';
 import Login from './components/Login.jsx';
-import FriendsPage from './components/FriendsPage.jsx';
+import FriendsPage from './components/Friends/FriendsPage.jsx';
 import RestaurantSearch from './components/Restaurant/RestaurantSearch.jsx';
 
 
