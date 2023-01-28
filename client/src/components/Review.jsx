@@ -14,6 +14,10 @@ export default function Review(props) {
     '&:hover': {backgroundColor:'lightgrey'}
   }
 
+  const postSessions = () => {
+
+  }
+
   return(
     <Box>
       <Navbar></Navbar>

@@ -3,47 +3,57 @@ const db = require('../db/db');
 
 
 exports.getUser = function (req, res) {
+  // FYI: had an issue with the plus sign in the phone number. Might need to escape it before sending.
+  // https://www.werockyourweb.com/url-escape-characters/#:~:text=%2B-,%252B,-%2C
   const userId = req.query.user_id;
-  console.log(typeof req.query.user_id, userId);
-  if (!userId) {
-    db.User.find({})
-    .exec((err, document) => {
-    if (err) {
-      res.status(500).send(err.toString());
-    } else {
-      res.status(200).send(document);
-    }
-  });
-    // res.status(400).end();
-    // return;
+  const phoneNum = req.query.phone_num;
+  if (!userId && !phoneNum) {
+    res.status(400).end();
+    return;
+  }
+
+  console.log(userId, phoneNum);
+  if (userId) {
+    db.User.findById(userId)
+      .then(doc => res.status(200).send(doc))
+      .catch(err => res.status(500).send(err.toString()));
   } else {
-    db.User.findOne({ _id: userId })
-    .exec((err, document) => {
-      if (err) {
-        res.status(500).send(err.toString());
-      } else {
-        res.status(200).send(document);
-      }
-    });
+
+    db.User.findOne({ phone_num: phoneNum })
+      .then(doc => res.status(200).send(doc))
+      .catch(err => res.status(500).send(err.toString()));
   }
 };
 
 exports.addUser = (req, res) => {
-  console.log('new user', req.body)
   const docs = req.body;
-  if (!docs || !(docs instanceof Object)) {
+  if (!docs) {
     res.status(400).end();
     return;
   }
-  let newUser = new db.User(req.body);
-  newUser.save()
-    .then((result)=>{
-      console.log('res',result);
-      res.status(201).send(result.id);
-    })
-    .catch(err => console.error(err))
-}
 
+  db.User.insertMany(docs)
+    .then((results) => {
+      res.status(201).send(results);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send(err.toString());
+    });
+  // console.log('new user', req.body)
+  // const docs = req.body;
+  // if (!docs || !(docs instanceof Object)) {
+  //   res.status(400).end();
+  //   return;
+  // }
+  // let newUser = new db.User(req.body);
+  // newUser.save()
+  //   .then((result)=>{
+  //     console.log('res',result);
+  //     res.status(201).send(result.id);
+  //   })
+  //   .catch(err => console.error(err))
+};
 
 exports.updateUser = function (req, res) {
   const userId = req.params.user_id;
@@ -64,5 +74,4 @@ exports.updateUser = function (req, res) {
     .catch(err => {
       res.status(500).send(err.toString());
     });
-}
-
+};
