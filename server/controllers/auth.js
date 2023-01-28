@@ -1,5 +1,6 @@
 const db = require('../db/db.js');
 const bcrypt = require('bcrypt');
+const parsePhoneNumber = require('libphonenumber-js');
 
 exports.createHash = function(password) {
     var salt = bcrypt.genSaltSync(8)
@@ -9,7 +10,14 @@ exports.createHash = function(password) {
 };
 
 exports.verifyLogin = function(req, res) {
-    db.User.findOne({phone_num: req.body.phone_num})
+    const parsed = parsePhoneNumber(req.body.phone_num, 'US');
+    if (!parsed) {
+        console.log(req.body);
+        res.status(500).send("Connot parse phone number");
+        return;
+    }
+    const phoneNumber = parsed.number;
+    db.User.findOne({phone_num: phoneNumber})
     .then((user) => {
         console.log('user from DB', user)
         if (user !== null) {
