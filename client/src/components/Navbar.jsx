@@ -22,7 +22,7 @@ function Navbar (props) {
               <Button size="large" variant="text" component={Link} to="/meals" color="inherit">Meals</Button>
               <Button size="large" variant="text" component={Link} to="/friends" color="inherit">Friends</Button>
             </Typography>
-            <Button component={Link} to="/" color="inherit">Logout</Button>
+            <Button component={Link} to="/" color="inherit" onClick={() => {localStorage.clear()}}>Logout</Button>
           </Toolbar>
         </AppBar>
       </Box>
