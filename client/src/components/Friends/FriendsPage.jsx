@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {Box, List, Typography, Divider} from '@mui/material';
+import {Box, List, Typography, Divider, TextField, IconButton} from '@mui/material';
 import Navbar from '../Navbar.jsx';
 import FriendEntry from './FriendEntry.jsx';
 import Loading from '../Loading.jsx';
-
+import SearchFriendsBar from './SearchFriendsBar.jsx';
 export default function FriendsPage (props) {
   const [friends, setFriends] = useState(null);
+  const [input, setInput] = useState('');
   const getFriends = () => {
     let id = '63d40a54c9e5268f8d8861e3'
     return axios.get(`/api/friends?user_id=${id}`)
@@ -27,8 +28,15 @@ export default function FriendsPage (props) {
       .then(() => {
         setFriends(friends.slice(0, i).concat(friends.slice(i+1)))
       })
-
   };
+  const handleSearch = (e) => {
+    e.preventDefault();
+    return axios.get('/users', {phone_num: input})
+      .then(result => {
+        console.log('search phone_num', result);
+      })
+
+  }
   return (
     <>
       <Navbar />
@@ -45,6 +53,10 @@ export default function FriendsPage (props) {
         )}
       </Box>
       <Divider><Typography>Add friends</Typography></Divider>
+      <Box component="div" sx={{pt:2, display: "grid", justifyItems: "center", justifyContent: "center"}}>
+        <SearchFriendsBar input={input} setInput={setInput} clicked={handleSearch}/>
+      </Box>
+
 
       </Box>
 
