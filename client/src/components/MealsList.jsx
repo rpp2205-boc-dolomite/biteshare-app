@@ -17,7 +17,7 @@ export default function MealsList() {
   const [meals, setMeals] = useState([])
 
 
-  console.log({data});
+  //console.log({data});
   useEffect(() => {
     axios.get(`/api/users?phone_num=${localStorage.getItem('phone')}`)
     .then((response) => {

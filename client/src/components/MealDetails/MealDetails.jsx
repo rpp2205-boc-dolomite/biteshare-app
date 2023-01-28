@@ -27,7 +27,7 @@ import {
 import {
   AttachMoney as AttachMoneyIcon,
 } from '@mui/icons-material';
-
+import { useLocation } from 'react-router-dom'
 const restName = "Red Robin";
 
 const passedInData = {
@@ -55,6 +55,8 @@ export default function MealDetails(props) {
   const [hostMealAndTip, setHostMealAndTip] = React.useState(['0.00', '0.00']);
   const [session, setSession] = React.useState({});
 
+  const { state } = useLocation();
+  console.log('mealdetail', {state});
   const handleMealTotalChange = function (value) {
     setMealTotal(value);
     setEvenMealAmt(value / guests);
