@@ -1,29 +1,32 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {TextField, Box, Container, List, ListItem, ListItemText, IconButton, Button} from '@mui/material';
+import {TextField, Box, Link, Container, List, ListItem, ListItemText, IconButton, Button} from '@mui/material';
 import SearchFriends from './SearchFriends.jsx';
 import FriendEntry from './FriendEntry.jsx';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import Navbar from '../Navbar.jsx';
 import Loading from '../Loading.jsx';
 
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom'
 
 const fakeFriendsList2 = [
   "Anna: 111123123", "Bob: 312456789", "Davie Wang: 44556677"
 ]
 const AddFriends = (props) => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  console.log('local: ', user);
   const [existList, setExistList] = useState(null)
   const [friends, setFriends] = useState([]);
   console.log('friends', friends);
+
 
   const { state } = useLocation();
 
 
   //call the data to get the users exist friends list
-  const getFriends = (id) => {
+  const getFriends = () => {
     //for test use the defatul id
-    let user_id=id || "63d40a54c9e5268f8d8861e3";
+    let user_id=user.id;
     return axios.get(`/api/friends/?user_id=${user_id}`)
       .then((result) => {
         console.log('client friends res:', result.data);
@@ -70,7 +73,9 @@ const AddFriends = (props) => {
           }
         </Box>
         <Box sx={{justifyContent:"center",textAlign:'center', pt:"20%", m:1}}>
-           <Button onClick={(e) => handleSubmit(e)} variant="contained" size="large" sx={{width:'60%', backgroundColor:'orange', '&:hover': {backgroundColor:'orange'}}}>Continue</Button>
+          <Link to='/mealdetails'>
+            <Button variant="contained" size="large" sx={{width:'60%', backgroundColor:'orange', '&:hover': {backgroundColor:'orange'}}}>Continue</Button>
+          </Link>
         </Box>
 
       </Container>
