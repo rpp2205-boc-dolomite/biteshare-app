@@ -2,7 +2,7 @@ const db = require('../db/db');
 const user = require('./user');
 
 exports.getSessions = function(req, res) {
-  const userId = req.query.user_id; 
+  const userId = req.query.user_id;
   console.log('userId in session: ', userId);
   if (!userId) {
     res.status(400).send('No user id found');
@@ -15,7 +15,7 @@ exports.getSessions = function(req, res) {
       if (err) {
         res.send(err);
       } else {
-        // console.log('result in session: ', result)
+        //console.log('result in session: ', result)
         res.send(result);
       }
     }
@@ -77,7 +77,7 @@ var session = {host: '63d5690765b903d98477c097', detail: {'63d56a0483bd4d48f67c9
 }
 
 exports.updatePaymentStatus = function(req, res)  {
-  // what if same user has created multiple sessions 
+  // what if same user has created multiple sessions
 
   // [
   //   {
@@ -112,6 +112,6 @@ exports.updatePaymentStatus = function(req, res)  {
     return;
   }
 
-  
+
 
 }
