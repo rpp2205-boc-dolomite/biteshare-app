@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "./Navbar.jsx";
+import axios from 'axios';
 import {
   Button,
   Box,
@@ -43,6 +44,12 @@ const dummyData = {
 };
 
 const Meal = (props) => {
+  const updatePaymentStatus = () => {
+    // if a user clicks "pay" button, it updates "is_paid" column in Sessions table
+    // body: session id, PUT request
+    axios.put('/session', props.host_id)
+  }
+
   return (
     <Box>
       <Navbar />
@@ -98,7 +105,7 @@ const Meal = (props) => {
           })}
         </List>
         <Divider />
-        <Button variant="contained" sx={{ mt: 2 }}>
+        <Button variant="contained" sx={{ mt: 2 }} onClick={updatePaymentStatus}>
           Pay
         </Button>
       </Box>

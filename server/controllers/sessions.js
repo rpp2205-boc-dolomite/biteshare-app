@@ -77,3 +77,43 @@ exports.postSessions = function(req, res) => {
       })
     })
 }
+
+exports.updatePaymentStatus = function(req, res)  {
+  // what if same user has created multiple sessions 
+
+  // [
+  //   {
+  //     id: 'randomly generated number',
+  //     detail: {
+  //       [user_id]: {
+  //          name: "Jack Dorsey",
+  //          tip: 1.75,
+  //          bill: 10.21,
+  //          is_paid: true
+  //       },
+  //       [user_id]: {
+  //          name: "Bugs Bunny",
+  //          tip: 1.75,
+  //          bill: 10.21,
+  //          is_paid: false
+  //       }
+  //    },
+  //    rest_name: 'Mos burger',
+  //    sub_total: 20.00,
+  //    tip_total: 16.00,
+  //    receipt: 'receipt.com',
+  //    active: false
+  //   }
+  // ]
+
+  const hostId = req.body.session_id; // currently selected meal session
+  const userId = req.body.user_id; // currently selected user
+
+  if (!hostId || !userId) {
+    res.status(500).send('No user id or session id specified');
+    return;
+  }
+
+  
+
+}
