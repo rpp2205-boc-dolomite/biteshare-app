@@ -30,7 +30,7 @@ exports.verifyLogin = function(req, res) {
                     if (result === false) {
                         res.status(401).send('password')
                     } else {
-                        res.status(200).send({phone_num: phoneNumber})
+                        res.status(200).send(phoneNumber)
                     }
                 }
             })
