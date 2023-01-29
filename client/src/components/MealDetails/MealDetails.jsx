@@ -1,4 +1,5 @@
 import * as React from 'react';
+import axios from 'axios';
 import CustomSplit from './CustomSplit.jsx';
 import ReceiptUpload from './ReceiptUpload.jsx';
 import {
@@ -37,18 +38,27 @@ import { Link, useLocation, Navigate } from 'react-router-dom';
 //   restInfo: { name: "Red Robin", address: "" },
 // };
 
-const setFriendData = function (index, change) {
-  if (index === -1) {
-    Object.assign(state.host, change);
-  } else {
-    Object.assign(state.friends[index], change);
-  }
+
+const getHostData = (host, setHost) => {
+  const phone_num = localStorage.getItem('phone');
+  const name = localStorage.getItem('name');
+  axios.get('/api/users', {}, { params: { phone_num } })
+    .then(host => {
+      console.log('got host data', host);
+      setHost(host);
+    })
+    .catch(err => {
+      setHost({ name, phone_num });
+    });
 };
 
 export default function MealDetails(props) {
+  const [host, setHost] = React.useState();
+  if (!host) { getHostData(host, setHost) }
   const { state } = useLocation();
+  console.log('mealdetail', state, host);
 
-  if (!state.friends || !state.host || !state.restInfo) { console.warn('MealDetails is missing some data')}
+  if (!state || !state.friends || !state.restInfo) { console.warn('MealDetails is missing some data') }
   const [guests, setGuests] = React.useState(state.friends.length + 1);
   const [splitMethod, setSplitMethod] = React.useState('even');
   const [mealTotal, setMealTotal] = React.useState(0);
@@ -59,10 +69,17 @@ export default function MealDetails(props) {
   const [session, setSession] = React.useState({});
   const [redirect, setRedirect] = React.useState(false);
 
-  console.log('mealdetail', state);
   const handleMealTotalChange = function (value) {
     setMealTotal(value);
     setEvenMealAmt(value / guests);
+  };
+
+  const setFriendData = function (index, change) {
+    if (index === -1) {
+      Object.assign(state.host, change);
+    } else {
+      Object.assign(state.friends[index], change);
+    }
   };
 
   const handleTipPercentChange = function (value) {
@@ -156,7 +173,7 @@ export default function MealDetails(props) {
         hidden: false,
         border: "1px dashed"
       }}
-    ><img crossOrigin="anonymous" src={receipt} style={{maxWidth: "100%", maxHeight: "100%"}} /></Box>
+    ><img crossOrigin="anonymous" src={receipt} style={{ maxWidth: "100%", maxHeight: "100%" }} /></Box>
 
     <Divider>Split Method</Divider>
     <ToggleButtonGroup

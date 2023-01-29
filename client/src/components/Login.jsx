@@ -42,10 +42,10 @@ export default class SignIn extends React.Component {
       'phone_num': phone_num,
       'password': password
     })
-    .then((data) => {
+    .then(parsedPhoneNum => {
       //redirect to dashboard
-      console.log('BACK IN SUCCESS', data);
-      localStorage.setItem('phone', phone_num);
+      console.log('BACK IN SUCCESS', parsedPhoneNum);
+      localStorage.setItem('phone', parsedPhoneNum);
       this.setState({
         user: true
       })
