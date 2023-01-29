@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 
 export default function CustomSplit({ hidden, setFriendData, host, friends, mealTotal, evenMealAmt, tipPercent }) {
+  if (hidden || !host || !friends) { return null; }
 
   return (<>
     <Box hidden={hidden} fullWidth sx={{ p: 1, border: '1px dashed grey' }}>
