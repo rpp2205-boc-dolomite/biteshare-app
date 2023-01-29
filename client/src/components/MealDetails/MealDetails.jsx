@@ -1,5 +1,4 @@
 import * as React from 'react';
-import axios from 'axios';
 import CustomSplit from './CustomSplit.jsx';
 import ReceiptUpload from './ReceiptUpload.jsx';
 import {
@@ -27,36 +26,15 @@ import {
 import {
   AttachMoney as AttachMoneyIcon,
 } from '@mui/icons-material';
-
 import { Link, useLocation, Navigate } from 'react-router-dom';
+import getHostData from '../../helpers/getHostData';
 
-// const restName = "Red Robin";
-
-// const state = {
-//   host: { user_id: '', name: "Ellen", phone_num: "" },
-//   friends: [{ name: "Clark W. Griswold", phone_num: "+12223334444" }, { name: "Cousin Eddie", phone_num: "+12123234343" }],
-//   restInfo: { name: "Red Robin", address: "" },
-// };
-
-
-const getHostData = (host, setHost) => {
-  const phone_num = localStorage.getItem('phone');
-  const name = localStorage.getItem('name');
-  axios.get('/api/users', {}, { params: { phone_num } })
-    .then(host => {
-      console.log('got host data', host);
-      setHost(host);
-    })
-    .catch(err => {
-      setHost({ name, phone_num });
-    });
-};
 
 export default function MealDetails(props) {
   const [host, setHost] = React.useState();
-  if (!host) { getHostData(host, setHost) }
+  if (!host) { getHostData(setHost) }
   const { state } = useLocation();
-  console.log('mealdetail', state, host);
+  console.log('MealDetail', state, host);
 
   if (!state || !state.friends || !state.restInfo) { console.warn('MealDetails is missing some data') }
   const [guests, setGuests] = React.useState(state.friends.length + 1);
