@@ -47,29 +47,72 @@ const SearchFriends = ({id, friends, setFriends, existList, setExistList}) => {
     e.preventDefault();
     let temp = dialogValue.name+': ' + dialogValue.phone
     setValue(temp);
-    const newUser = {name: dialogValue.name, phone_num:dialogValue.phone, is_guest:true}
-    let user_id = "63d40a54c9e5268f8d8861e3";
+    let newUser = {name: dialogValue.name, phone_num:dialogValue.phone, is_guest:true}
 
     if (add) {
-      return axios.post('/api/users', newUser)
-        .then((result) => {
-          console.log('adduser res', result.data[0].id);
-          return axios.post(`/api/friends/?user_id=${id}`,{guest_id: result.data[0].id} )
-        })
-        .then(res => {
-          if (res) {
-            setExistList(existList.concat([temp]));
-            triggerAlert({status:true, severity:'success', msg:'Add friends Success!'})
-            handleClose();
-          } else {
-            handleClose();
-            triggerAlert({status:true, severity:'error', msg:'Add friends failed!'})
-          }
-        })
+      //check the friend has account or not
+      axios.get(`/api/users?phone_num=${newUser.phone_num}`)
+      .then(result => {
+        //if the new friend's phone num exist use the database name and add to friends
+        if (result.data) {
+          console.log('new friend exists', result.data, newUser.name);
+          newUser.name = result.data.name;
+          setDialogValue({...dialogValue, name: result.data.name});
+          // if (result.data.name !== newUser.name) {
+          //   console.log('different name', result.data.name, newUser.name)
+          //   //alert('Will convert name to '+result.data.name);
+          //   newUser.name = result.data.name;
+          //   setDialogValue({...dialogValue, name: result.data.name})
+          //   triggerAlert({status:true, severity:'info', msg:'Will convert name to exist name'});
+
+          // }
+          return axios.post(`/api/friends/?user_id=${id}`,{guest_id: result.data.id} )
+        } else {
+          return axios.post('/api/users', newUser)
+        }
+      })
+      .then((res) => {
+        console.log('new',typeof res.data, res.data)
+        if (typeof res.data === 'object') {
+          return axios.post(`/api/friends/?user_id=${id}`,{guest_id: res.data.id} )
+        }
+      })
+      .then(() => {
+        setExistList(existList.concat([temp]));
+        triggerAlert({status:true, severity:'success', msg:'Add friends Success!'})
+        handleClose()
+      })
     } else {
-      return axios.post('/api/users', newUser)
-        .then(handleClose)
+      axios.get(`/api/users?phone_num=${newUser.phone_num}`)
+      .then(result => {
+        //if the new friend's phone num exist use the database name and add to friends
+        if (!result.data) {
+          return axios.post('/api/users', newUser)
+        }
+      })
+      handleClose()
     }
+
+    // if (add) {
+    //   return axios.post('/api/users', newUser)
+    //     .then((result) => {
+    //       console.log('adduser res', result.data[0].id);
+    //       return axios.post(`/api/friends/?user_id=${id}`,{guest_id: result.data[0].id} )
+    //     })
+    //     .then(res => {
+    //       if (res) {
+    //         setExistList(existList.concat([temp]));
+    //         triggerAlert({status:true, severity:'success', msg:'Add friends Success!'})
+    //         handleClose();
+    //       } else {
+    //         handleClose();
+    //         triggerAlert({status:true, severity:'error', msg:'Add friends failed!'})
+    //       }
+    //     })
+    // } else {
+    //   return axios.post('/api/users', newUser)
+    //     .then(handleClose)
+    // }
   }
 
   const handleChange = (e, newValue) => {
