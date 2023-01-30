@@ -106,8 +106,10 @@ export default function MealDetails(props) {
   }
 
   return (<>
-    <FormLabel>Restaurant:</FormLabel>
-    <Typography>{state && state.restInfo && state.restInfo.name}</Typography>
+    <span>
+      <FormLabel>Restaurant: </FormLabel>
+      <Chip color="primary" variant="outlined" label={state && state.restInfo && state.restInfo.name} sx={{fontWeight:'bold'}} />
+    </span>
 
     <OutlinedInput
       id="bill-amount-text-field"
@@ -136,9 +138,11 @@ export default function MealDetails(props) {
       <FormControlLabel value="-1" control={<Radio />} label="Other" />
     </RadioGroup>
 
-    <Stack direction="row" gap={1}>
-      <FormLabel>People in your party:</FormLabel>
-      <Chip label={guests} />
+    <Stack direction="column" gap={1} justifyContent="center">
+      <span>
+        <FormLabel>People in your party: </FormLabel>
+        <Chip color="primary" variant="outlined" label={guests} sx={{fontWeight:'bold'}} />
+      </span>
     </Stack>
 
     <Divider>Receipt upload</Divider>
