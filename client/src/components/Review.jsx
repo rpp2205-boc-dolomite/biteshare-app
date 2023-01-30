@@ -18,8 +18,8 @@ export default function Review(props) {
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
   //uncomment when Matt finishes his page and update page to display the info
-  // const location  = useLocation();
-  // const { data } = location.state;
+  const { state }  = useLocation();
+  console.log({state});
 
   const postSessions = (e) => {
     e.preventDefault();
@@ -45,7 +45,7 @@ export default function Review(props) {
       <Navbar></Navbar>
         <Box>
         <Box sx={{m: 5}}>
-          <Typography variant="body1" sx={{m: 2}}>Restaurant Name: Maecenas</Typography>
+          <Typography variant="body1" sx={{m: 2}}>Restaurant Name: {state.restInfo}</Typography>
           <Typography variant="body1" sx={{m: 2}}>Total: $100</Typography>
           <Button variant="contained" size="small" sx={{ml:3, '&:hover': {backgroundColor:'lightgrey'}, backgroundColor: 'black'}}>View Receipt</Button>
           <Typography variant="body1" sx={{m: 2}}>Number of friends: 5</Typography>
@@ -60,7 +60,7 @@ export default function Review(props) {
         <Grid item>
           {/* Change onClick function in button to postSessions(e) after Matt finishes his part */}
             <Button variant="contained" size="large" sx={{...btnStyle, backgroundColor: "black"}} onClick={(e) => { setRedirect(true); }}>Confirm</Button>
-            <Button component={Link} to="/create" variant="contained" size="large" sx={{...btnStyle, backgroundColor:'black'}}>Edit</Button>
+            <Button component={Link} to="/mealdetails" variant="contained" size="large" sx={{...btnStyle, backgroundColor:'black'}}>Edit</Button>
           </Grid>
         </Grid>
         </Box>
