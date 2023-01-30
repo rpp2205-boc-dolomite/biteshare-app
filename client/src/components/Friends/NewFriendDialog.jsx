@@ -1,18 +1,13 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {TextField, Button, Alert} from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
+import {TextField, Button, Alert, Drawer, Typography} from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import {FormGroup, FormControl, FormControlLabel, InputLabel, OutlinedInput, FormHelperText} from '@mui/material';
 import Switch from '@mui/material/Switch';
 const initAlert = {status:false, severity:'warn', msg:'This phone number already in your friends list!'};
 const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handleSubmit, add, setAdd, existList}) => {
-  const [alert, setAlert] = useState(initAlert)
+  const [alert, setAlert] = useState(initAlert);
+  const [error, setError] = useState(false);
   const toggleLabel = (e) => {
     if (e.target.checked) {
       setAdd(true)
@@ -20,8 +15,14 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
       setAdd(false);
     }
   }
+  let errOrNot = false;
   const submit = (e) => {
     e.preventDefault();
+    let validPhone = dialogValue.phone.match(/^\+1[0-9]{10}$/g);
+    if (!validPhone) {
+      setError(true)
+      return;
+    }
     let isExistPhone = false;
     existList.forEach(person => {
       let phone = person.split(': ')[1]
@@ -65,20 +66,23 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
   return (
 
 
-    <Dialog open={open} onClose={handleClose}>
+    <Drawer anchor="bottom" open={open} onClose={handleClose} sx={{
+      "& .MuiPaper-root": {
+        height: '60%',
+        alignItems:'center'
+      }}}>
     {alert.status &&
       <Alert severity={alert.severity} onClose={() => setAlert(initAlert)}>{alert.msg}</Alert>
     }
-      <form onSubmit={submit}>
-        <DialogTitle>Add a new friend to share your bill</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            New Friend? Please, add it!
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
+      <form onSubmit={submit} style={{width:'100%', display:'flex', alignItems:'center',flexDirection: 'column'}}>
+        <Typography variant="h5" sx={{p:1, mt:2}}>A New Friend? Just add to your bill!</Typography>
+        <Typography variant="subtitle1"  sx={{p:1}}>Invite a new friend to share your bill</Typography>
+        <FormControl sx={{ m: 1, width: '60%'}} variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">Name</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type='text'
+            label="Name"
             value={dialogValue.name}
             onChange={(event) =>
               setDialogValue({
@@ -86,14 +90,23 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
                 name: event.target.value,
               })
             }
-            inputProps={{fontSize:'50px'}}
-            label="name"
-            type="text"
-            variant="standard"
           />
-          <TextField
-            margin="dense"
-            id="name"
+        </FormControl>
+        <FormControl sx={{ m: 1, width: '60%'}} variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">Phone Number</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type='text'
+            label="Phone"
+            value={dialogValue.name}
+            onChange={(event) =>
+              setDialogValue({
+                ...dialogValue,
+                name: event.target.value,
+              })
+            }
+            error={error}
+            //helperText={error ? "Invalid phone number" : ''}
             value={dialogValue.phone}
             onChange={(event) =>
               setDialogValue({
@@ -102,19 +115,22 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
               })
             }
             label="phone"
-            type="tel"
-            variant="standard"
           />
-          <FormGroup>
-            <FormControlLabel control={<Switch defaultChecked onChange={toggleLabel}/>} label={add ? 'Add to my friends list' : 'Do not add to my friends list'} />
-          </FormGroup>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Add</Button>
-        </DialogActions>
+          <FormHelperText>{error ? "Invalid phone number" : ''}</FormHelperText>
+        </FormControl>
+
+        <br />
+        <FormGroup>
+          <FormControlLabel control={<Switch defaultChecked onChange={toggleLabel}/>} label={add ? 'Add to my friends list' : 'Do not add to my friends list'} />
+        </FormGroup>
+        <FormGroup sx={{display:'block',
+          mt:'2%',
+         '& .MuiButton-root':{m:1, minWidth:'120px'}}}>
+          <Button variant="contained" size="large" onClick={handleClose}>Cancel</Button>
+          <Button variant="contained" size="large" sx={{bgcolor:'orange'}}type="submit">Add</Button>
+        </FormGroup>
       </form>
-    </Dialog>
+    </Drawer>
 
   )
 }

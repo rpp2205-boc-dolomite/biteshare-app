@@ -20,9 +20,9 @@ const AddFriends = (props) => {
   console.log('friends', friends);
 
 
-  // const { state } = useLocation();
-  // const restInfo = state.restInfo;
-  // console.log('resInfo', restInfo);
+  const { state } = useLocation();
+  const restInfo = state.restInfo;
+  console.log('resInfo', restInfo);
 
   //call the data to get the users exist friends list
   const getFriends = () => {
@@ -69,9 +69,9 @@ const AddFriends = (props) => {
         </Box>
         <Box sx={{justifyContent:"center",textAlign:'center', pt:"20%", m:1}}>
           <Button
-            component={Link}
-            to='/mealdetails'
-          //  state={{restInfo, friends}}
+           component={Link}
+           to='/mealdetails'
+           state={{restInfo, friends}}
            variant="contained"
            size="large"
            sx={{width:'60%', backgroundColor:'orange', '&:hover': {backgroundColor:'orange'}}}>
