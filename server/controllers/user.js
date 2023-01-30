@@ -25,7 +25,7 @@ exports.getUser = function (req, res) {
   // FYI: had an issue with the plus sign in the phone number. Might need to escape it before sending.
   // https://www.werockyourweb.com/url-escape-characters/#:~:text=%2B-,%252B,-%2C
   const userId = req.query.user_id;
-  const parsed = parsePhoneNumber(req.query.phone_num, 'US');
+  const parsed = req.query.phone_num && parsePhoneNumber(req.query.phone_num, 'US');
   const phoneNum = parsed && parsed.number;
   if (!userId && !phoneNum) {
 
