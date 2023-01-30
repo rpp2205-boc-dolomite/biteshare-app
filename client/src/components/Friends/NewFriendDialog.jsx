@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {TextField, Button, Alert} from '@mui/material';
+import {TextField, Button, Alert, Drawer} from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -12,7 +12,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 const initAlert = {status:false, severity:'warn', msg:'This phone number already in your friends list!'};
 const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handleSubmit, add, setAdd, existList}) => {
-  const [alert, setAlert] = useState(initAlert)
+  const [alert, setAlert] = useState(initAlert);
+  const [error, setError] = useState(false);
   const toggleLabel = (e) => {
     if (e.target.checked) {
       setAdd(true)
@@ -20,8 +21,15 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
       setAdd(false);
     }
   }
+  let errOrNot = false;
   const submit = (e) => {
     e.preventDefault();
+    let validPhone = dialogValue.phone.match(/^\+1[0-9]{10}$/g);
+    if (!validPhone) {
+      setError(true)
+      setAlert({status: true, severity:"warning", msg: 'Please provide valid phone number!'})
+      return;
+    }
     let isExistPhone = false;
     existList.forEach(person => {
       let phone = person.split(': ')[1]
@@ -94,6 +102,8 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
           <TextField
             margin="dense"
             id="name"
+            error={error}
+            helperText={error ? "Incalid phone number" : ''}
             value={dialogValue.phone}
             onChange={(event) =>
               setDialogValue({

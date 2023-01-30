@@ -65,60 +65,60 @@ export default function Steps() {
 //     setActiveStep(activeStep - 1);
 //   }
 
-//   return (
-//     <React.Fragment>
-//       <Typography component="h1" variant="h4" align="center">
-//         Checkout
-//       </Typography>
-//       <Stepper activeStep={activeStep} className={classes.stepper}>
-//         {steps.map((label) => (
-//           <Step key={label}>
-//             <StepLabel>{label}</StepLabel>
-//           </Step>
-//         ))}
-//       </Stepper>
-//       <React.Fragment>
-//         {activeStep === steps.length ? (
-//           <CheckoutSuccess />
-//         ) : (
-//           <Formik
-//             initialValues={formInitialValues}
-//             validationSchema={currentValidationSchema}
-//             onSubmit={_handleSubmit}
-//           >
-//             {({ isSubmitting }) => (
-//               <Form id={formId}>
-//                 {_renderStepContent(activeStep)}
+  return (
+    <React.Fragment>
+      <Typography component="h1" variant="h4" align="center">
+        Checkout
+      </Typography>
+      <Stepper activeStep={activeStep} className={classes.stepper}>
+        {steps.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+      <React.Fragment>
+        {activeStep === steps.length ? (
+          <CheckoutSuccess />
+        ) : (
+          <Formik
+            initialValues={formInitialValues}
+            validationSchema={currentValidationSchema}
+            onSubmit={_handleSubmit}
+          >
+            {({ isSubmitting }) => (
+              <Form id={formId}>
+                {_renderStepContent(activeStep)}
 
-//                 <div className={classes.buttons}>
-//                   {activeStep !== 0 && (
-//                     <Button onClick={_handleBack} className={classes.button}>
-//                       Back
-//                     </Button>
-//                   )}
-//                   <div className={classes.wrapper}>
-//                     <Button
-//                       disabled={isSubmitting}
-//                       type="submit"
-//                       variant="contained"
-//                       color="primary"
-//                       className={classes.button}
-//                     >
-//                       {isLastStep ? "Place order" : "Next"}
-//                     </Button>
-//                     {isSubmitting && (
-//                       <CircularProgress
-//                         size={24}
-//                         className={classes.buttonProgress}
-//                       />
-//                     )}
-//                   </div>
-//                 </div>
-//               </Form>
-//             )}
-//           </Formik>
-//         )}
-//       </React.Fragment>
-//     </React.Fragment>
-//   );
+                <div className={classes.buttons}>
+                  {activeStep !== 0 && (
+                    <Button onClick={_handleBack} className={classes.button}>
+                      Back
+                    </Button>
+                  )}
+                  <div className={classes.wrapper}>
+                    <Button
+                      disabled={isSubmitting}
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                    >
+                      {isLastStep ? "Place order" : "Next"}
+                    </Button>
+                    {isSubmitting && (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />
+                    )}
+                  </div>
+                </div>
+              </Form>
+            )}
+          </Formik>
+        )}
+      </React.Fragment>
+    </React.Fragment>
+  );
 }
