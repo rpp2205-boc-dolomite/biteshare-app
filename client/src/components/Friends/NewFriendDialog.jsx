@@ -21,9 +21,7 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
     }
   }
   const submit = (e) => {
-
     e.preventDefault();
-
     let isExistPhone = false;
     existList.forEach(person => {
       let phone = person.split(': ')[1]
@@ -34,57 +32,35 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
         return;
       }
     })
+
     if(!isExistPhone) {
-      handleSubmit();
+      axios.get(`/api/users?phone_num=${dialogValue.phone}`)
+        .then(result => {
+          if(result.data && result.data.name !== dialogValue.name) {
+            console.log('exist frined', result.data, dialogValue.name);
+            setDialogValue({...dialogValue, name:result.data.name});
+            setAlert({status: true, severity:"info", msg: `Friends name will be replace to ${result.data.name}`})
+            setTimeout(() => {
+              setAlert(initAlert);
+              console.log('value passed: ', result.data)
+              handleSubmit(result.data.id, result.data.name);
+            },2000)
+            return null;
+          } else if (!result.data) {
+            //add the new friend to user collection
+            let newUser = {name: dialogValue.name, phone_num: dialogValue.phone, is_guest: true}
+            return axios.post('/api/users', newUser)
+          }
+        })
+        .then((res) => {
+          if (res) {
+            console.log('res:', res.data);
+            let params = typeof res === 'object' ? res.data.id : res.data[0].id
+            handleSubmit(params)
+          }
+        })
+
     }
-    // if (!isExistPhone) {
-    //   setValue(temp);
-    //   let newUser = {name: dialogValue.name, phone_num:dialogValue.phone, is_guest:true}
-
-    //   if (add) {
-    //     //check the friend has account or not
-    //     axios.get(`/api/users?phone_num=${newUser.phone_num}`)
-    //     .then(result => {
-    //       //if the new friend's phone num exist use the database name and add to friends
-    //       if (result.data) {
-    //         console.log('new friend exists', result.data, newUser.name);
-    //         newUser.name = result.data.name;
-    //         setDialogValue({...dialogValue, name: result.data.name});
-    //         // if (result.data.name !== newUser.name) {
-    //         //   console.log('different name', result.data.name, newUser.name)
-    //         //   //alert('Will convert name to '+result.data.name);
-    //         //   newUser.name = result.data.name;
-    //         //   setDialogValue({...dialogValue, name: result.data.name})
-    //         //   triggerAlert({status:true, severity:'info', msg:'Will convert name to exist name'});
-
-    //         // }
-    //         return axios.post(`/api/friends/?user_id=${id}`,{guest_id: result.data.id} )
-    //       } else {
-    //         return axios.post('/api/users', newUser)
-    //       }
-    //     })
-    //     .then((res) => {
-    //       console.log('new',typeof res.data, res.data)
-    //       if (typeof res.data === 'object') {
-    //         return axios.post(`/api/friends/?user_id=${id}`,{guest_id: res.data.id} )
-    //       }
-    //     })
-    //     .then(() => {
-    //       setExistList(existList.concat([temp]));
-    //       triggerAlert({status:true, severity:'success', msg:'Add friends Success!'})
-    //       handleClose()
-    //     })
-    //   } else {
-    //     axios.get(`/api/users?phone_num=${newUser.phone_num}`)
-    //     .then(result => {
-    //       //if the new friend's phone num exist use the database name and add to friends
-    //       if (!result.data) {
-    //         return axios.post('/api/users', newUser)
-    //       }
-    //     })
-    //     handleClose()
-    //   }
-    // }
   }
   return (
 
