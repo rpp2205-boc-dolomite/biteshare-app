@@ -24,7 +24,6 @@ const SearchFriends = ({id, friends, setFriends, existList, setExistList}) => {
   }
 
   const addToList = (e) =>{
-    console.log('select');
     let friend = value.split(': ');
     let cur = {name:friend[0], phone_num:friend[1]}
     let isExists = false;
@@ -44,7 +43,7 @@ const SearchFriends = ({id, friends, setFriends, existList, setExistList}) => {
   }
 
   const handleSubmit = (guest_id, name) => {
-    console.log('submit id', guest_id, name, dialogValue);
+    //console.log('submit id', guest_id, name, dialogValue);
     if (name) {
       setDialogValue({...dialogValue, name: name})
     }

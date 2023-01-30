@@ -37,7 +37,7 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
       axios.get(`/api/users?phone_num=${dialogValue.phone}`)
         .then(result => {
           if(result.data && result.data.name !== dialogValue.name) {
-            console.log('exist frined', result.data, dialogValue.name);
+            //console.log('exist frined', result.data, dialogValue.name);
             setDialogValue({...dialogValue, name:result.data.name});
             setAlert({status: true, severity:"info", msg: `Friends name will be replace to ${result.data.name}`})
             setTimeout(() => {
@@ -54,8 +54,8 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
         })
         .then((res) => {
           if (res) {
-            console.log('res:', res.data);
-            let params = typeof res === 'object' ? res.data.id : res.data[0].id
+            let params = Array.isArray(res.data) ? res.data[0].id : res.data.id;
+            //console.log('params:', params);
             handleSubmit(params)
           }
         })
