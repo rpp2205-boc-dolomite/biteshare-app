@@ -15,7 +15,7 @@ import {
 
 export default function CustomSplitFriend({ name, meal, tip, setMeal, setTip }) {
 
-
+  const error = React.useState()
 
   return (
     <Stack direction="row" spacing={2}>
@@ -23,7 +23,7 @@ export default function CustomSplitFriend({ name, meal, tip, setMeal, setTip }) 
       <TextField
         label="Bill Amount"
         startAdornment={<InputAdornment position="start" component="div"><div><AttachMoneyIcon /></div></InputAdornment>}
-        error={e => Number.isNaN(Number(e.target.value))}
+        error={e => Number.isNaN(Number(meal))}
         defaultValue={meal}
         onChange={e => setMeal(e.target.value)}
         required
@@ -33,7 +33,7 @@ export default function CustomSplitFriend({ name, meal, tip, setMeal, setTip }) 
       <TextField
         label="Tip Amount"
         startAdornment={<InputAdornment position="start" component="div"><div><AttachMoneyIcon /></div></InputAdornment>}
-        error={e => Number.isNaN(Number(e.target.value))}
+        error={e => Number.isNaN(Number(tip))}
         defaultValue={tip}
         onChange={e => setTip(e.target.value)}
         required
