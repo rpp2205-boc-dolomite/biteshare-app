@@ -83,4 +83,4 @@ const disconnect = function () {
 
 //////////////////////////////////////////////////
 
-module.exports = { User, Session, disconnect, reactionsTemplate };
+module.exports = { User, Session, disconnect, ObjectId, reactionsTemplate };
