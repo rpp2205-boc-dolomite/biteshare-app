@@ -9,7 +9,6 @@ import Loading from '../Loading.jsx';
 // // const myMeals = useMemo(() => meals, [])
 
 
-
 export default function MealsList() {
   // after getSessions is added, uncomment the folloiwng and change array to data on line 26
 

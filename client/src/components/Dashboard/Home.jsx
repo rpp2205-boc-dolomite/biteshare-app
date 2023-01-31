@@ -46,8 +46,6 @@ export default function Home() {
                   <Typography variant="subtitle1">
                       {element.detail[hostId].name} shared a meal with {total} others at {element.rest_name}
                   </Typography>
-                  <FavoriteBorderIcon />
-                  <ChatBubbleOutlineIcon />
               </Box>
             </Link>
           )
