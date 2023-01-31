@@ -81,6 +81,24 @@ export default function MealDetails(props) {
     }
   };
 
+  const handleSplitMethodChange = function () {
+    if (splitMethod === 'even' && mealTotal && evenMealAmt) {
+      const evenTipAmount = (mealTotal * tipPercent) / guests;
+      setHost({
+        ...host,
+        meal_amount: evenMealAmt,
+        tip_amount: evenTipAmount
+      });
+
+      state.friends.map(item => Object.assign(item, {
+        meal_amount: evenMealAmt,
+        tip_amount: evenTipAmount
+      }));
+    }
+
+    setSplitMethod(splitMethod === 'even' ? 'custom' : 'even');
+  };
+
   const createAndValidateSession = function () {
     const newSession = {
       host: {
@@ -185,7 +203,7 @@ export default function MealDetails(props) {
         size="small"
         value={splitMethod}
         exclusive
-        onChange={() => splitMethod === 'even' ? setSplitMethod('custom') : setSplitMethod('even')}
+        onChange={handleSplitMethodChange}
         aria-label="Platform"
       >
         <ToggleButton value="even">Evenly</ToggleButton>
@@ -193,7 +211,7 @@ export default function MealDetails(props) {
       </ToggleButtonGroup>
     </Stack>
 
-    <CustomSplit hidden={splitMethod === 'even'} {...{ setFriendData, mealTotal, evenMealAmt, host, ...state }} />
+    <CustomSplit hidden={splitMethod === 'even'} {...{ setFriendData, mealTotal, evenMealAmt, host, tipPercent, ...state }} />
 
     <Divider sx={{my: 2}} />
 
