@@ -29,6 +29,7 @@ import {
 } from '@mui/icons-material';
 import { Link, useLocation, Navigate } from 'react-router-dom';
 import getHostData from '../../helpers/getHostData';
+import getCurrencyString from '../../helpers/formatCurrency.js';
 
 
 export default function MealDetails(props) {
@@ -118,43 +119,48 @@ export default function MealDetails(props) {
       </Box>
     </Stack>
 
-    <Divider sx={{my: 2}}></Divider>
+    <Divider sx={{my: 2}} />
 
-    <Box sx={{ m: 0.5, p: 0.5, border: 1, borderColor: 'primary.main', borderStyle: 'dashed', borderRadius: 2 }}>
+    <Stack sx={{ m: 0.5, p: 0.5, border: 1, borderColor: 'primary.main', borderStyle: 'dashed', borderRadius: 2, justifyContent: 'center', alignItems: 'center' }}>
       <Box sx={{ p: 2 }}>
         <TextField
           id="bill-amount-text-field"
-          label="Bill Amount (excluding tip)"
-          startAdornment={<InputAdornment position="start"><AttachMoneyIcon /></InputAdornment>}
+          label="Bill Amount"
+          startAdornment={<InputAdornment position="start" component="div"><div><AttachMoneyIcon /></div></InputAdornment>}
           error={Number.isNaN(evenMealAmt)}
-          placeholder="Enter the bill amount before tip..."
+          placeholder="NOT including tip..."
           // defaultValue={""}
           onChange={e => handleMealTotalChange(Math.abs(e.target.value))}
           required
-          fullWidth
+          width={400}
           size="small"
         />
       </Box>
+      <Divider width="60%" />
+      <Stack sx={{ p: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <span>
+          <span><FormLabel id="choose-tip-group-label">Tip percentage: </FormLabel>{`${(tipPercent * 100).toString()}% (${getCurrencyString(mealTotal * tipPercent)})`}</span>
+          <RadioGroup
+            defaultValue="0.20"
+            name="choose-tip-group"
+            size="small"
+            row
+            margin="none"
+            padding={0}
+            onChange={e => handleTipPercentChange(e.target.value)}
+          >
+            <FormControlLabel value="0.18" control={<Radio />} label="18%" />
+            <FormControlLabel value="0.20" control={<Radio />} label="20%" />
+            <FormControlLabel value="0.22" control={<Radio />} label="22%" />
+            <FormControlLabel value="-1" control={<Radio />} label="Other:" />
+            <TextField size="small" sx={{width:100}}></TextField>
+          </RadioGroup>
+        </span>
+      </Stack>
+    </Stack>
 
-      <Box sx={{ p: 1 }}>
-        <FormLabel id="choose-tip-group-label">Tip percentage: {(Math.abs(tipPercent * 100)).toFixed(1)}%</FormLabel>
-        <RadioGroup
-          defaultValue="0.20"
-          name="choose-tip-group"
-          row
-          margin="none"
-          onChange={e => handleTipPercentChange(e.target.value)}
-        >
-          <FormControlLabel value="0.18" control={<Radio />} label="18%" />
-          <FormControlLabel value="0.20" control={<Radio />} label="20%" />
-          <FormControlLabel value="0.22" control={<Radio />} label="22%" />
-          <FormControlLabel value="-1" control={<Radio />} label="Other" />
-        </RadioGroup>
-      </Box>
-    </Box>
 
-
-    <Divider textAlign="left" sx={{my: 1}}>Receipt upload</Divider>
+    <Divider sx={{my: 2}} />
     <Stack direction="column" sx={{justifyContent:'center', alignItems:'center'}}>
       <ReceiptUpload setReceipt={setReceipt} />
       <Box
@@ -171,8 +177,9 @@ export default function MealDetails(props) {
       ><img crossOrigin="anonymous" src={receipt} style={{ maxWidth: "100%", maxHeight: "100%" }} /></Box>
     </Stack>
 
-    <Divider textAlign="left" sx={{my: 1}}>Split Method</Divider>
-    <Stack direction="column" sx={{justifyContent:'center', alignItems:'center'}}>
+    <Divider sx={{my: 2}} />
+    <Stack direction="row" sx={{justifyContent:'center', alignItems:'center'}}>
+      <FormLabel id="split-method-label" sx={{mr: 1}}>Split method: </FormLabel>
       <ToggleButtonGroup
         color="primary"
         size="small"
@@ -180,16 +187,33 @@ export default function MealDetails(props) {
         exclusive
         onChange={() => splitMethod === 'even' ? setSplitMethod('custom') : setSplitMethod('even')}
         aria-label="Platform"
-        sx={{ alignSelf: 'center' }}
       >
         <ToggleButton value="even">Evenly</ToggleButton>
         <ToggleButton value="custom">Custom</ToggleButton>
       </ToggleButtonGroup>
     </Stack>
 
-    <CustomSplit hidden={splitMethod === 'even'} {...{ setFriendData, mealTotal, evenMealAmt, ...state }} />
+    <CustomSplit hidden={splitMethod === 'even'} {...{ setFriendData, mealTotal, evenMealAmt, host, ...state }} />
 
-    <Divider textAlign="left" sx={{my: 1}}>Finish</Divider>
+    <Divider sx={{my: 2}} />
+
+    <Stack direction="row" justifyContent="center">
+      <Stack direction="column" sx={{mr: 2}}>
+        <span><FormLabel>Sub total: </FormLabel>{getCurrencyString(mealTotal)}</span>
+        <span><FormLabel>Tip total: </FormLabel>{getCurrencyString(mealTotal * tipPercent)}</span>
+        <span><FormLabel>Grand total: </FormLabel>{getCurrencyString(mealTotal * (1 + tipPercent))}</span>
+      </Stack>
+      <Divider orientation="vertical" sx={{height: 80}} />
+      <Stack direction="column" sx={{ml: 2}}>
+        <span><FormLabel>Meal due per person: </FormLabel>{getCurrencyString((mealTotal) / guests)}</span>
+        <span><FormLabel>Tip due per person: </FormLabel>{getCurrencyString((mealTotal * tipPercent) / guests)}</span>
+        <span><FormLabel>Total due per person: </FormLabel>{getCurrencyString((mealTotal * (1 + tipPercent)) / guests)}</span>
+      </Stack>
+    </Stack>
+
+
+
+    <Divider sx={{my: 2}} />
     <Stack sx={{alignItems:'center'}}>
       <Button variant="outlined" onClick={handleSubmit}>Save and Review</Button>
     </Stack>
