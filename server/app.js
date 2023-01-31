@@ -13,6 +13,7 @@ const sessionControlers = require('./controllers/sessions');
 const authControllers = require('./controllers/auth.js');
 const homeController = require('./controllers/home.js');
 const { getBiz } = require('./controllers/yelpBiz.js');
+const { addReactionToSession, addCommentToSession, testInit } = require('./controllers/social');
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -69,6 +70,10 @@ app.get('/biz', (req, res) => {
       console.log(err);
     });
 });
+
+//---- social ----//
+app.post('/api/social/comment/:session_id', addCommentToSession);
+app.post('/api/social/reaction/:session_id', addReactionToSession);
 
 //---- user feed ---//
 app.get('/api/feed', homeController.getFeed);
