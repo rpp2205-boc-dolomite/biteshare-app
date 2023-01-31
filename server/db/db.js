@@ -60,4 +60,4 @@ const disconnect = function () {
 
 //////////////////////////////////////////////////
 
-module.exports = { User, Session, disconnect };
+module.exports = { User, Session, ObjectId, disconnect };

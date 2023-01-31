@@ -11,6 +11,7 @@ const userControllers = require('./controllers/user'); // This line will be chan
 const friendsControllers = require('./controllers/friend');
 const sessionControlers = require('./controllers/sessions');
 const authControllers = require('./controllers/auth.js');
+const homeController = require('./controllers/home.js');
 const { getBiz } = require('./controllers/yelpBiz.js');
 
 app.use(helmet({
@@ -69,6 +70,8 @@ app.get('/biz', (req, res) => {
     });
 });
 
+//---- user feed ---//
+app.get('/api/feed', homeController.getFeed);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));

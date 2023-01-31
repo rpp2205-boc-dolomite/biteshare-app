@@ -4,7 +4,7 @@ import {TextField, Box, Container, List, ListItem, ListItemText, IconButton, But
 import SearchFriends from './SearchFriends.jsx';
 import FriendEntry from './FriendEntry.jsx';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import Navbar from '../Navbar.jsx';
+import Navbar from '../Dashboard/Navbar.jsx';
 import Loading from '../Loading.jsx';
 import { Navigate, Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom'
