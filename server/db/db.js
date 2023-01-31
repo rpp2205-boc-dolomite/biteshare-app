@@ -31,7 +31,19 @@ const SessionSchema = new Schema({
   sub_total: { type: Number, required: true, min: 0 },
   tip_total: { type: Number, required: true, min: 0 },
   receipt: String,
-  active: { type: Boolean, default: true }
+  active: { type: Boolean, default: true },
+  reactions: {
+    keys: { type: String, enum: ['👍❤️🔥🦷'], default: '👍❤️🔥🦷' },
+    '👍': [ ObjectId ],
+    '❤️': [ ObjectId ],
+    '🔥': [ ObjectId ],
+    '🦷': [ ObjectId ],
+  },
+  comments: [ {
+    user_id: ObjectId,
+    text: String,
+    date: {type: Date, default: Date.now},
+  } ]
 }, {
   versionKey: false,
   toJSON: { virtuals: true }, // So `res.json()` and other `JSON.stringify()` functions include virtuals
