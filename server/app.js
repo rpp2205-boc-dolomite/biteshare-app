@@ -60,7 +60,7 @@ app.post('/api/login/', authControllers.verifyLogin)
 
 //---- yelp businesses ---//
 app.get('/biz', (req, res) => {
-  getBiz(req.query.location)
+  getBiz(req.query.location, req.query.radius)
     .then ((results) => {
       res.status(200);
       res.send(results.data.businesses);

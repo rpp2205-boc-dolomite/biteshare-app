@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Navbar from '../Dashboard/Navbar.jsx';
-import {Button, Box, Typography, TextField, List, ListItem, ListItemButton, Select} from '@mui/material';
+import {Button, Box, Typography, TextField, List, ListItem, ListItemButton, Slider} from '@mui/material';
 import { Navigate, Link } from 'react-router-dom';
 
 const RestaurantSearch = ({}) => {
   const [local, setLocation] = useState('');
-  // const [restName, setRestName] = useState('');
-  // const [restAddress, setRestAddress] = useState('')
+  const [radius, setRadius] = useState(3215);
   const [businesses, setBusinesses] = useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
   const [restInfo, setRestInfo] = useState( {name: '', address: ''} );
@@ -28,8 +27,12 @@ const RestaurantSearch = ({}) => {
     setLocation(e.target.value);
   }
 
-  const searchLocal = (local) => {
-    axios.get(`/biz?location=${local}`)
+  const handleRadius = (e) => {
+    setRadius(e.target.value);
+  }
+
+  const searchLocal = (local, radius) => {
+    axios.get(`/biz?location=${local}&radius=${radius}`)
       .then ((results) => {
         setBusinesses(results.data);
       })
@@ -37,6 +40,29 @@ const RestaurantSearch = ({}) => {
         console.log(err);
       })
   }
+
+  const marks = [
+    {
+      value: 3215,
+      label: '2 Miles',
+    },
+    {
+      value: 8047,
+      label: '5 Miles',
+    },
+    {
+      value: 16093,
+      label: '10 Miles',
+    },
+    {
+      value: 24140,
+      label: '15 Miles',
+    },
+    {
+      value: 32187,
+      label: '20 Miles'
+    }
+  ];
 
 
   return (
@@ -47,21 +73,45 @@ const RestaurantSearch = ({}) => {
       alignItems="center"
       justifyContent="center"
       padding="50px"
-    >
+      >
       <TextField fullWidth label="Type in your location" onChange={handleLocation} />
-      <Typography align="center" padding="10px">
-        <Button onClick={() => {searchLocal(local)}} variant="contained">Show restaurants near me!</Button>
+      <Typography padding="20px">
+        <Slider
+          aria-label="Restricted values"
+          defaultValue={3215}
+          step={null}
+          max={32187}
+          marks={marks}
+          onChange={handleRadius}
+          padding="10px"
+        />
       </Typography>
-
+      <Typography align="center" padding="10px">
+        <Button onClick={() => {searchLocal(local, radius)}} variant="contained">Show restaurants near me!</Button>
+      </Typography>
+      <Typography align="center">
+        <Button
+          disabled={!restInfo.name}
+          component={Link}
+          to="/AddFriends"
+          state={{ restInfo }}
+          variant="contained"
+        >Continue</Button>
+    </Typography>
       <List>
       {businesses.map((bus, index) => {
         return (
-          <ListItem key={index}>
+          <ListItem key={index} align-items="center">
             <ListItemButton
               selected={selectedIndex === index}
               onClick={(event) => handleListItemClick(event, index)}
             >
-            <Typography variant="h6" align="center">
+            <Typography
+            variant="h6"
+            align="center"
+            // fontVariant="all-small-caps"
+            // place-content="center"
+            >
             {bus.name} {bus.location.display_address[0]} {bus.location.display_address[1]}
             </Typography>
             </ListItemButton>
@@ -70,18 +120,7 @@ const RestaurantSearch = ({}) => {
       })}
       </List>
     </Box>
-    <Typography
-      align="center"
-    >
 
-      <Button
-        disabled={!restInfo.name}
-        component={Link}
-        to="/AddFriends"
-        state={{ restInfo }}
-        variant="contained"
-      >Continue</Button>
-    </Typography>
   </Box>
   )
 }
