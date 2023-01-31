@@ -46,7 +46,7 @@ app.use(express.urlencoded({ extended: false }));
 //---  user's friends list ---//
 app.get('/api/friends', friendsControllers.getFriends);
 app.post('/api/friends', friendsControllers.addFriend);
-
+app.put('/api/friends', friendsControllers.deleteFriend);
 //---- user info ---//
 app.get('/api/users', userControllers.getUser);
 app.post('/api/users', userControllers.addUser);
