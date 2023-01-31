@@ -8,9 +8,10 @@ exports.getSessions = function(req, res) {
     res.status(400).send('No user id found');
     return;
   }
-
+  
   db.Session.find(
-    { [`detail.${userId}`] : { $exists : true } },
+    // { [`detail.${userId}`] : { $exists : true }, [`detail.${userId}.is_paid`] : { $eq: false } },
+    { $and: [ { [`detail.${userId}`] : { $exists : true } }, { [`detail.${userId}.is_paid`] : { $eq: false } } ] },
     function (err, result) {
       if (err) {
         res.send(err);
