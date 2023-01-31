@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Navbar from '../Navbar.jsx';
+import Navbar from '../Dashboard/Navbar.jsx';
 import {Button, Box, Typography, TextField, List, ListItem, ListItemButton, Select} from '@mui/material';
 import { Navigate, Link } from 'react-router-dom';
 
