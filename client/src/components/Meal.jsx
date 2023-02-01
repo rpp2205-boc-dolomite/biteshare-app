@@ -32,7 +32,8 @@ const Meal = () => {
         if (res.status === 200) {
           navigate("/completePayment");
         }
-      });
+      })
+      .catch(err => console.log(err));
   };
 
   return (
