@@ -84,10 +84,10 @@ exports.updatePaymentStatus = function(req, res)  {
   } else {
     db.Session.findOneAndUpdate({[`detail.${userId}`] : { $exists : true }}, {$set:{[`detail.${userId}.is_paid`]: true}})
     .then(data => {
-      res.status(200).send('Successfully updated the user\'s payment status');
+      res.status(200).send('Successfully updated payment status for the user');
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).send('Failed to update payment status for the user');
     })
   }
 }

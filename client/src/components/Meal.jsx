@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "./Navbar.jsx";
-import axios from 'axios';
+import axios from "axios";
 import {
   Button,
   Box,
@@ -10,106 +10,103 @@ import {
   ListItemText,
   Divider,
 } from "@mui/material";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Loading from "./Loading.jsx";
 
-const dummyData = {
-  host: "John",
-  restaurant: "McDonald's",
-  total: 20.0,
-  tip: 6.0,
-  receipt: "",
-  active: true,
-  friends: [
-    {
-      id: 1,
-      name: "Jack",
-      total: 10.0,
-      tip: 2.0,
-      isPaid: false,
-    },
-    {
-      id: 2,
-      name: "Sam",
-      total: 5.0,
-      tip: 1.0,
-      isPaid: true,
-    },
-    {
-      id: 3,
-      name: "Tim",
-      total: 5.0,
-      tip: 3.0,
-      isPaid: true,
-    },
-  ],
-};
 
 const Meal = (props) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const data = location.state;
+  const userObj = localStorage.getItem('user');
+  const parsedUserObj = JSON.parse(userObj);
+
   const updatePaymentStatus = () => {
-    // if a user clicks "pay" button, it updates "is_paid" column in Sessions table
-    // body: session id, PUT request
-    axios.put('/session', props.host_id)
-  }
+    axios.post("/api/sessions/status", {
+      userId: parsedUserObj.id
+    })
+    .then(res => {
+      console.log(res);
+      if (res.status === 200) {
+        navigate('/completePayment');
+      }
+    })
+  };
 
   return (
-    <Box>
-      <Navbar />
-      <Box ml={6}>
-        <Typography variant="subtitle1" mt={6} mb={2}>
-          Restaurant: {dummyData.restaurant}
-        </Typography>
-        <Typography variant="body1" mb={2}>
-          Total: ${dummyData.total.toFixed(2)}
-        </Typography>
-        <Typography variant="body1" mb={2}>
-          Receipt:
-          <Box
-            component="img"
-            sx={{
-              height: 233,
-              width: 350,
-              maxHeight: { xs: 233, md: 167 },
-              maxWidth: { xs: 350, md: 250 },
-            }}
-            alt="receipt"
-            src={dummyData.receipt}
-          ></Box>
-        </Typography>
-        <Typography variant="body1" mb={2}>
-          Number of friends: {dummyData.friends.length}
-        </Typography>
-        <Typography variant="body1" mb={2}>
-          Tips: ${dummyData.tip.toFixed(2)}
-        </Typography>
-        <Typography variant="body1" mb={2}>
-          Tip rate:{" "}
-          {Math.ceil(
-            (dummyData.tip.toFixed(2) / dummyData.total.toFixed(2)) * 100
-          )}
-          %
-        </Typography>
-        <Typography variant="body1">Friends:</Typography>
-        <List
-          dense
-          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-        >
-          {dummyData.friends.map((friend, index) => {
-            const isPaid = friend.isPaid ? "Paid" : "";
-            return (
-              <ListItem key={index} disablePadding>
-                <ListItemText
-                  id={index}
-                  primary={`${friend.name} $${friend.total.toFixed(2)} ${isPaid}`}
-                />
-              </ListItem>
-            );
-          })}
-        </List>
-        <Divider />
-        <Button variant="contained" sx={{ mt: 2 }} onClick={updatePaymentStatus}>
-          Pay
-        </Button>
-      </Box>
-    </Box>
+    <div>
+      {!data ? (
+        <Loading />
+      ) : (
+        <Box>
+          <Navbar />
+          <Box ml={6}>
+            <Typography variant="subtitle1" mt={6} mb={2}>
+              Restaurant: {data.rest_name}
+            </Typography>
+            <Typography variant="body1" mb={2}>
+              Total: ${data.sub_total.toFixed(2)}
+            </Typography>
+            <Typography variant="body1" mb={2}>
+              Receipt:
+              <Box
+                component="img"
+                sx={{
+                  height: 233,
+                  width: 350,
+                  maxHeight: { xs: 233, md: 167 },
+                  maxWidth: { xs: 350, md: 250 },
+                }}
+                alt="receipt"
+                src={data.receipt}
+              ></Box>
+            </Typography>
+            <Typography variant="body1" mb={2}>
+              Number of friends: {Object.entries(data.detail).length}
+            </Typography>
+            <Typography variant="body1" mb={2}>
+              Tips: ${data.tip_total.toFixed(2)}
+            </Typography>
+            <Typography variant="body1" mb={2}>
+              Tip rate:{" "}
+              {Math.ceil(
+                (data.tip_total.toFixed(2) / data.sub_total.toFixed(2)) * 100
+              )}
+              %
+            </Typography>
+            <Typography variant="body1">Friends:</Typography>
+            <List
+              dense
+              sx={{
+                width: "100%",
+                maxWidth: 360,
+                bgcolor: "background.paper",
+              }}
+            >
+              {Object.entries(data.detail).map((friend, index) => {
+                const isPaid = friend[1].is_paid ? "Paid" : "";
+                return (
+                  <ListItem key={index} disablePadding>
+                    <ListItemText
+                      id={index}
+                      primary={`${friend[1].name} $${friend[1].bill.toFixed(2)} ${isPaid}`}
+                    />
+                  </ListItem>
+                );
+              })}
+            </List>
+            <Divider />
+            <Button
+              variant="contained"
+              sx={{ mt: 2 }}
+              onClick={updatePaymentStatus}
+            >
+              Pay
+            </Button>
+          </Box>
+        </Box>
+      )}
+    </div>
   );
 };
 

@@ -12,6 +12,7 @@ import SignUp from './components/SignUp.jsx';
 import Login from './components/Login.jsx';
 import FriendsPage from './components/Friends/FriendsPage.jsx';
 import RestaurantSearch from './components/Restaurant/RestaurantSearch.jsx';
+import CompletePayment from './components/CompletePayment.jsx'
 
 
 import {
@@ -29,7 +30,8 @@ const router = createBrowserRouter([
   {path:"/meal", element:<Meal />},
   {path: "/review", element: <Review />},
   {path:'/friends', element:<FriendsPage />},
-  {path:"/searchRest", element:<RestaurantSearch />}
+  {path:"/searchRest", element:<RestaurantSearch />},
+  {path:"/completePayment", element: <CompletePayment />}
 ])
 
 createRoot(document.getElementById('app')).render(
