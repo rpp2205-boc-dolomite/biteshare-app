@@ -5,32 +5,35 @@ import {
   Button,
   Box,
   Typography,
-  List,
-  ListItem,
-  ListItemText,
   Divider,
+  FormLabel,
+  TableContainer,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
 } from "@mui/material";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "./Loading.jsx";
 
-
-const Meal = (props) => {
+const Meal = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const data = location.state;
-  const userObj = localStorage.getItem('user');
+  const userObj = localStorage.getItem("user");
   const parsedUserObj = JSON.parse(userObj);
 
   const updatePaymentStatus = () => {
-    axios.post("/api/sessions/status", {
-      userId: parsedUserObj.id
-    })
-    .then(res => {
-      console.log(res);
-      if (res.status === 200) {
-        navigate('/completePayment');
-      }
-    })
+    axios
+      .post("/api/sessions/status", {
+        userId: parsedUserObj.id,
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          navigate("/completePayment");
+        }
+      });
   };
 
   return (
@@ -40,15 +43,53 @@ const Meal = (props) => {
       ) : (
         <Box>
           <Navbar />
-          <Box ml={6}>
-            <Typography variant="subtitle1" mt={6} mb={2}>
-              Restaurant: {data.rest_name}
+          <Box ml={6} mt={5}>
+            <FormLabel>Restaurant:</FormLabel>
+            <Typography variant="subtitle1">{data.rest_name}</Typography>
+            <Divider sx={{ borderBottomWidth: 1 }}/>
+            <FormLabel>Total:</FormLabel>
+            <Typography variant="body1">
+              ${data.sub_total.toFixed(2)}
             </Typography>
-            <Typography variant="body1" mb={2}>
-              Total: ${data.sub_total.toFixed(2)}
+            <Divider sx={{ borderBottomWidth: 1 }}/>
+            <FormLabel>Tips:</FormLabel>
+            <Typography variant="body1">
+              ${data.tip_total.toFixed(2)}
             </Typography>
-            <Typography variant="body1" mb={2}>
-              Receipt:
+            <Divider sx={{ borderBottomWidth: 1 }}/>
+            <FormLabel>Tip rate:</FormLabel>
+            <Typography variant="body1">
+              {Math.ceil(
+                (data.tip_total.toFixed(2) / data.sub_total.toFixed(2)) * 100
+              )}
+              %
+            </Typography>
+            <Divider sx={{ borderBottomWidth: 1 }}/>
+            <FormLabel>Number of friends:</FormLabel>
+            <Typography variant="body1">
+              {Object.entries(data.detail).length} people
+            </Typography>
+            <Divider sx={{ borderBottomWidth: 1 }}/>
+            <FormLabel>Friends:</FormLabel>
+            <TableContainer>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableBody>
+                  {Object.entries(data.detail).map((friend, index) => {
+                    const isPaid = friend[1].is_paid ? "Paid" : "Not paid";
+                    return (
+                      <TableRow key={index}>
+                        <TableCell>{`${friend[1].name}`}</TableCell>
+                        <TableCell>{`$${friend[1].bill.toFixed(2)}`}</TableCell>
+                        <TableCell>{isPaid}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Divider sx={{ borderBottomWidth: 1 }}/>
+            <FormLabel>Receipt:</FormLabel>
+            <Typography variant="body1">
               <Box
                 component="img"
                 sx={{
@@ -61,41 +102,7 @@ const Meal = (props) => {
                 src={data.receipt}
               ></Box>
             </Typography>
-            <Typography variant="body1" mb={2}>
-              Number of friends: {Object.entries(data.detail).length}
-            </Typography>
-            <Typography variant="body1" mb={2}>
-              Tips: ${data.tip_total.toFixed(2)}
-            </Typography>
-            <Typography variant="body1" mb={2}>
-              Tip rate:{" "}
-              {Math.ceil(
-                (data.tip_total.toFixed(2) / data.sub_total.toFixed(2)) * 100
-              )}
-              %
-            </Typography>
-            <Typography variant="body1">Friends:</Typography>
-            <List
-              dense
-              sx={{
-                width: "100%",
-                maxWidth: 360,
-                bgcolor: "background.paper",
-              }}
-            >
-              {Object.entries(data.detail).map((friend, index) => {
-                const isPaid = friend[1].is_paid ? "Paid" : "";
-                return (
-                  <ListItem key={index} disablePadding>
-                    <ListItemText
-                      id={index}
-                      primary={`${friend[1].name} $${friend[1].bill.toFixed(2)} ${isPaid}`}
-                    />
-                  </ListItem>
-                );
-              })}
-            </List>
-            <Divider />
+            <Divider sx={{ borderBottomWidth: 3 }}/>
             <Button
               variant="contained"
               sx={{ mt: 2 }}
