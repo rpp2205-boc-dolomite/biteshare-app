@@ -30,7 +30,7 @@ import {
 import { Link, useLocation, Navigate } from 'react-router-dom';
 import getHostData from '../../helpers/getHostData';
 import getCurrencyString from '../../helpers/formatCurrency.js';
-import userObj from './userObject.js';
+// import userObj from './userObject.js';
 
 export default function MealDetails(props) {
   const [host, setHost] = React.useState();
