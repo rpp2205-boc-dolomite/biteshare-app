@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Formik, Form } from "formik";
 
-import MealsList from "./MealsList";
+import MealsList from "./Dashboard/MealsList.jsx";
 import RestaurantSearch from "./Restaurant/RestaurantSearch";
 import MealDetails from "../MealDetails/MealDetails/=";
 import AddFriends from "./Friends/AddFriends";

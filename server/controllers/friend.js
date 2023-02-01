@@ -39,3 +39,15 @@ exports.addFriend = function (req, res) {
     })
     .catch(err => console.error(err));
 }
+
+exports.deleteFriend = function (req, res) {
+  const userId = req.body.user_id;
+  const friendId = req.body.friend.id;
+  console.log('user in delete', userId, friendId);
+  db.User.updateOne({_id: userId},{$pull: {'friends': friendId}})
+    .then(result => {
+      console.log(result);
+      res.status(203).send(result)
+    })
+    .catch(err=>res.status(404).send(err));
+}

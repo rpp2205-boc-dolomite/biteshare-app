@@ -14,7 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from './Copyright.jsx';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom';
 
 
 const theme = createTheme();

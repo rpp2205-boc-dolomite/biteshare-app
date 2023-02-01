@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "./Navbar.jsx";
+import Navbar from "./Dashboard/Navbar.jsx";
 import axios from 'axios';
 import {
   Button,

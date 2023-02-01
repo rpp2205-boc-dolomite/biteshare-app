@@ -4,13 +4,15 @@ const user = require('./user');
 exports.getSessions = function(req, res) {
   const userId = req.query.user_id;
   console.log('userId in session: ', userId);
+  console.log('userId length: ', userId.length);
   if (!userId) {
     res.status(400).send('No user id found');
     return;
   }
-
+  
   db.Session.find(
-    { [`detail.${userId}`] : { $exists : true } },
+    // { [`detail.${userId}`] : { $exists : true }, [`detail.${userId}.is_paid`] : { $eq: false } },
+    { $and: [ { [`detail.${userId}`] : { $exists : true } }, { [`detail.${userId}.is_paid`] : { $eq: false } } ] },
     function (err, result) {
       if (err) {
         res.send(err);
@@ -30,8 +32,9 @@ exports.postSessions = function(req, res) {
 
   //var comment = {[user_id]: {comment: 'I wanna go here', date: timestamp}}
 
-var session = {host: '63d5690765b903d98477c097', detail: {'63d56a0483bd4d48f67c9981': { name: "yuchen", tip: 1.75, bill: 10.21, is_paid: true}, '63d56921fb74d33c0a908e2b': {name: "Yui", tip: 1.75, bill: 10.21, is_paid: false}}, rest_name : 'Blue Sky', sub_total: 28.21, tip_total: 2.11, receipt: 'www.google.com'}
+var session = {host: '63d5690765b903d98477c097', detail: {'63d5690765b903d98477c097': {name: 'stacey', tip: 2.42, bill: 12.32, is_paid: false}, '63d56a0483bd4d48f67c9981': { name: "yuchen", tip: 1.75, bill: 10.21, is_paid: false}, '63d56921fb74d33c0a908e2b': {name: "Yui", tip: 1.75, bill: 10.21, is_paid: false}}, rest_name : 'Blue Sky', sub_total: 28.21, tip_total: 2.11, receipt: 'www.google.com'}
 
+var session = {host: '63d56a0483bd4d48f67c9981', detail: {'63d56a0483bd4d48f67c9981': {name: 'yuchen', tip: 1.47, bill: 21.41, is_paid: false}, '63d56921fb74d33c0a908e2b': {name: "Yui", tip: 1.75, bill: 10.21, is_paid: false}, '63d5690765b903d98477c097': {name: 'stacey', tip: 2.42, bill: 12.32, is_paid: false}}, rest_name : 'Red Sky', sub_total: 28.21, tip_total: 2.11, receipt: 'www.google.com'}
 //var participants = [{
 //    name: 'Jack Dorsey',
 //    tip: 1.75,
