@@ -1,6 +1,6 @@
 import React from "react";
-import Navbar from "./Navbar.jsx";
-import axios from "axios";
+import Navbar from "./Dashboard/Navbar.jsx";
+import axios from 'axios';
 import {
   Button,
   Box,

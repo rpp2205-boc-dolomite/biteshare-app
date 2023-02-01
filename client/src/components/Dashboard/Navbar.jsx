@@ -19,6 +19,7 @@ function Navbar (props) {
         <AppBar position="static" color="default">
           <Toolbar>
             <Typography component="div" sx={{ flexGrow: 1}}>
+              <Button size="large" variant="text" component={Link} to="/home" color="inherit">Home</Button>
               <Button size="large" variant="text" component={Link} to="/meals" color="inherit">Meals</Button>
               <Button size="large" variant="text" component={Link} to="/friends" color="inherit">Friends</Button>
             </Typography>
