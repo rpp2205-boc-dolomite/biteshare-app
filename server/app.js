@@ -52,7 +52,8 @@ app.post('/api/users', userControllers.addUser);
 
 //---sessions ---//
 app.get('/api/sessions', sessionControlers.getSessions)
-app.post('/api/sessions', sessionControlers.postSessions)
+app.post('/api/sessions', sessionControlers.postSessions);
+app.post('/api/sessions/status', sessionControlers.updatePaymentStatus)
 
 //---- login and signup ----//
 app.post('/api/login/', authControllers.verifyLogin)
