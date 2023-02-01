@@ -30,7 +30,7 @@ import {
 import { Link, useLocation, Navigate } from 'react-router-dom';
 import getHostData from '../../helpers/getHostData';
 import getCurrencyString from '../../helpers/formatCurrency.js';
-
+import userObj from './userObject.js';
 
 export default function MealDetails(props) {
   const [host, setHost] = React.useState();
@@ -39,6 +39,7 @@ export default function MealDetails(props) {
   console.log('MealDetail', state, host);
 
   if (!state || !state.friends || !state.restInfo) { console.warn('MealDetails is missing some data') }
+  // else { // build data for CustomSplit }
   const [guests, setGuests] = React.useState(state.friends.length + 1);
   const [splitMethod, setSplitMethod] = React.useState('even');
   const [mealTotal, setMealTotal] = React.useState(0);
@@ -137,7 +138,7 @@ export default function MealDetails(props) {
       </Box>
     </Stack>
 
-    <Divider sx={{my: 2}} />
+    {/* <Divider sx={{my: 2}} /> */}
 
     <Stack sx={{ m: 0.5, p: 0.5, border: 1, borderColor: 'primary.main', borderStyle: 'dashed', borderRadius: 2, justifyContent: 'center', alignItems: 'center' }}>
       <Box sx={{ p: 2 }}>
@@ -178,7 +179,7 @@ export default function MealDetails(props) {
     </Stack>
 
 
-    <Divider sx={{my: 2}} />
+    {/* <Divider sx={{my: 2}} /> */}
     <Stack direction="column" sx={{justifyContent:'center', alignItems:'center'}}>
       <ReceiptUpload setReceipt={setReceipt} />
       <Box
