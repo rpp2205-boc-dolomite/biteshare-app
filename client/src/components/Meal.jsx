@@ -29,7 +29,6 @@ const Meal = () => {
         userId: parsedUserObj.id,
       })
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           navigate("/completePayment");
         }
@@ -75,7 +74,7 @@ const Meal = () => {
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableBody>
                   {Object.entries(data.detail).map((friend, index) => {
-                    const isPaid = friend[1].is_paid ? "Paid" : "Not paid";
+                    const isPaid = friend[1].is_paid ? "Paid" : "Unpaid";
                     return (
                       <TableRow key={index}>
                         <TableCell>{`${friend[1].name}`}</TableCell>
@@ -87,7 +86,6 @@ const Meal = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Divider sx={{ borderBottomWidth: 1 }}/>
             <FormLabel>Receipt:</FormLabel>
             <Typography variant="body1">
               <Box
