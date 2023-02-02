@@ -16,18 +16,38 @@ import AddFriends from "./Friends/AddFriends.jsx";
 import Review from './Review/Review.jsx';
 import Navbar from './Dashboard/Navbar.jsx';
 const steps = ["Selecting Restaurant", "Add freinds", "Meal details", "Review your Meal"];
-//const { formId, formField } = checkoutFormModel;
 
-const UserContext = createContext();
+const btnStyle = {
+  marginTop:3,
+  marginLeft:1,
+}
 export default function Steps() {
   const [activeStep, setActiveStep] = useState(0);
   const isLastStep = activeStep === steps.length - 1;
+
   const [inputs, setInputs] = useState({
-    host: {user_id:'', name: '', phone_num:''},
+    host: {
+      user_id:'',
+      name: '',
+      phone_num:'',
+      meal_amount: 0,
+      tip_amount: 0
+    },
     friends:[],
-    restInfo:{name:'', address:''}
+    restInfo:{name:'', address:''},
+    sub_total: 0,
+    tip_total: 0,
+    receipt: "",
+    active: true,
   })
   const [isSubmitting, setSubmit] = useState(false);
+
+  if (!inputs.host.user_id) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const phone = localStorage.getItem('phone');
+    console.log('step local: ', user, phone);
+    setInputs({...inputs, host: {...inputs.host, user_id: user.id, name: user.name, phone_num:phone}})
+  }
   function _renderStepContent(step) {
     switch (step) {
       case 0:
@@ -42,30 +62,26 @@ export default function Steps() {
         return <div>Not Found</div>;
     }
   }
-//   function _sleep(ms) {
-//     return new Promise((resolve) => setTimeout(resolve, ms));
-//   }
 
-//   async function _submitForm(values, actions) {
-//     await _sleep(1000);
-//     alert(JSON.stringify(values, null, 2));
-
-//     setActiveStep(activeStep + 1);
-//   }
-
-  // function _handleSubmit(values, actions) {
-  //   if (isLastStep) {
-  //     _submitForm(values);
-  //   } else {
-  //     setActiveStep(activeStep + 1);
-
-  //   }
-  // }
+  function _handleSubmit() {
+    console.log('it is last page we need render to dashboard');
+    //send request to server to store the new meal session
+    //redirect to the dashboard
+    setActiveStep(activeStep + 1);
+  }
 
   function _handleBack() {
     setActiveStep(activeStep - 1);
   }
   console.log('step page info: ', inputs);
+
+  function _handleNext() {
+   if (activeStep === 2) {
+      // Matt's page validataion functions
+      console.log('it is 2nd step');
+    }
+    setActiveStep(activeStep + 1);
+  }
 
   return (
     <>
@@ -78,73 +94,30 @@ export default function Steps() {
         ))}
       </Stepper>
 
-        {activeStep === steps.length ? (
-          <MealsList />
-        ) : (
-        <>
+        <div>
           {_renderStepContent(activeStep)}
 
-         <div>
-          {activeStep !== 0 && (
-           <Button onClick={_handleBack} >
-            Back
-          </Button>
-         )}
-        <div>
-          <Button
-            disabled={isSubmitting}
-            type="submit"
-            variant="contained"
-            color="primary"
-            onClick={() => setActiveStep(activeStep + 1)}
-          >
-            {isLastStep ? "Confirm" : "Next"}
-          </Button>
-          {isSubmitting && (
-            <CircularProgress
-              size={24}
-            />
-          )}
+          <div style={{display:'flex', justifyContent:'space-around'}}>
+            {activeStep !== 0 && (
+              <Button onClick={_handleBack} variant="contained"
+              color="primary"  sx={btnStyle}>
+                Back
+              </Button>
+            )}
+            <div style={{margin:1, position:'relative'}}>
+              {isLastStep ?
+              <Button variant="contained" color="primary" onClick={_handleSubmit} sx={btnStyle}>
+                Confirm
+              </Button>
+              :
+              <Button variant="contained" color="primary" onClick={_handleNext} sx={btnStyle}>
+                Next
+              </Button>
+              }
+            </div>
+          </div>
         </div>
-      </div>
-        </>)
-          // <Formi
-          //   initialValues={formInitialValues}
-          //   validationSchema={currentValidationSchema}
-          //   onSubmit={_handleSubmit}
-          // >
-          //   {({ isSubmitting }) => (
-          //     <Form id={formId}>
-          //       {_renderStepContent(activeStep)}
 
-          //       <div className={classes.buttons}>
-          //         {activeStep !== 0 && (
-          //           <Button onClick={_handleBack} className={classes.button}>
-          //             Back
-          //           </Button>
-          //         )}
-          //         <div className={classes.wrapper}>
-          //           <Button
-          //             disabled={isSubmitting}
-          //             type="submit"
-          //             variant="contained"
-          //             color="primary"
-          //             className={classes.button}
-          //           >
-          //             {isLastStep ? "Place order" : "Next"}
-          //           </Button>
-          //           {isSubmitting && (
-          //             <CircularProgress
-          //               size={24}
-          //               className={classes.buttonProgress}
-          //             />
-          //           )}
-          //         </div>
-          //       </div>
-          //     </Form>
-          //   )}
-          // </Formik>)
-        }
     </>
   );
 }

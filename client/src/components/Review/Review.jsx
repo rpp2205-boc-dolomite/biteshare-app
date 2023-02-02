@@ -18,9 +18,9 @@ export default function Review(props) {
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
   //uncomment when Matt finishes his page and update page to display the info
-  const { state }  = useLocation();
-  console.log({state});
-
+  // const { state }  = useLocation();
+  // console.log({state});
+  console.log('props in reviews from step: ', props.inputs);
   const postSessions = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -42,13 +42,13 @@ export default function Review(props) {
 
   return(
     <Box>
-      <Navbar></Navbar>
+      {/* <Navbar></Navbar> */}
         <Box>
         <Box sx={{m: 5}}>
-          <Typography variant="body1" sx={{m: 2}}>Restaurant Name: {state.restInfo}</Typography>
+          <Typography variant="body1" sx={{m: 2}}>Restaurant Name: {props.inputs.restInfo.name}</Typography>
           <Typography variant="body1" sx={{m: 2}}>Total: $100</Typography>
           <Button variant="contained" size="small" sx={{ml:3, '&:hover': {backgroundColor:'lightgrey'}, backgroundColor: 'black'}}>View Receipt</Button>
-          <Typography variant="body1" sx={{m: 2}}>Number of friends: 5</Typography>
+          <Typography variant="body1" sx={{m: 2}}>Number of friends: {props.inputs.friends.length}</Typography>
           <Box display="flex" sx={{m: 2}}>
             <Typography variant="body1" >Total: $20.00</Typography>
             <Typography sx={{ml: 5}}>Tip rate: 20%</Typography>
@@ -57,11 +57,12 @@ export default function Review(props) {
           <ReviewPageList></ReviewPageList>
         </Box>
         <Grid container rowSpacing={20} direction="column" alignItems="center" justifyContent="center">
-        <Grid item>
-          {/* Change onClick function in button to postSessions(e) after Matt finishes his part */}
+        {/* if we using step component we don't need these 2 button anymore */}
+        {/* <Grid item>
+          Change onClick function in button to postSessions(e) after Matt finishes his part
             <Button variant="contained" size="large" sx={{...btnStyle, backgroundColor: "black"}} onClick={(e) => { setRedirect(true); }}>Confirm</Button>
             <Button component={Link} to="/mealdetails" variant="contained" size="large" sx={{...btnStyle, backgroundColor:'black'}}>Edit</Button>
-          </Grid>
+          </Grid> */}
         </Grid>
         </Box>
     </Box>
