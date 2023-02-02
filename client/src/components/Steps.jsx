@@ -16,16 +16,15 @@ import AddFriends from "./Friends/AddFriends.jsx";
 import Review from './Review/Review.jsx';
 import Navbar from './Dashboard/Navbar.jsx';
 const steps = ["Selecting Restaurant", "Add freinds", "Meal details", "Review your Meal"];
-//const { formId, formField } = checkoutFormModel;
+
 const btnStyle = {
   marginTop:3,
   marginLeft:1,
-
 }
-const UserContext = createContext();
 export default function Steps() {
   const [activeStep, setActiveStep] = useState(0);
   const isLastStep = activeStep === steps.length - 1;
+
   const [inputs, setInputs] = useState({
     host: {
       user_id:'',
@@ -39,9 +38,16 @@ export default function Steps() {
     sub_total: 0,
     tip_total: 0,
     receipt: "",
-    active: false,
+    active: true,
   })
   const [isSubmitting, setSubmit] = useState(false);
+
+  if (!inputs.host.user_id) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const phone = localStorage.getItem('phone');
+    console.log('step local: ', user, phone);
+    setInputs({...inputs, host: {...inputs.host, user_id: user.id, name: user.name, phone_num:phone}})
+  }
   function _renderStepContent(step) {
     switch (step) {
       case 0:

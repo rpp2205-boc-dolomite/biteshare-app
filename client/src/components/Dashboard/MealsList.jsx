@@ -74,7 +74,7 @@ export default function MealsList() {
           )
         })}
         <Box display="flex" sx={{justifyContent: 'center'}}>
-          <Link to="/searchRest" >
+          <Link to="/step" >
             <Button size='large' variant="contained" sx={{backgroundColor:'black', m: 2}}>Create a new Meal Session</Button>
           </Link>
         </Box>

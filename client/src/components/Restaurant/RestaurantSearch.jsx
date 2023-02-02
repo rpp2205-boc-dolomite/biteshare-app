@@ -96,6 +96,7 @@ const RestaurantSearch = ({inputs, setInputs}) => {
       <Typography align="center" padding="10px">
         <Button onClick={() => {searchLocal(local, radius)}} variant="contained">Show restaurants near me!</Button>
       </Typography>
+      {/*  if we use Steper we don't need the continue button */}
       {/* <Typography align="center">
         <Button
           disabled={!restInfo.name}

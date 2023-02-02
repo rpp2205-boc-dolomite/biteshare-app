@@ -36,6 +36,7 @@ import withRouter from '../withRouter.jsx';
 class MealDetails extends Component {
   state = {
     host: {
+      user_id:'',
       name: '',
       phone_num: '',
       meal_amount: 0,
@@ -66,10 +67,10 @@ class MealDetails extends Component {
     this.validateSession = this.validateSession.bind(this);
     this.createSession = this.createSession.bind(this);
 
-    Object.assign(this.state.host, props.host)
-    Object.assign(this.state.friends, props.friends);
-    Object.assign(this.state.restInfo, props.restInfo);
-    console.log('MD CONSTRUCTOR', props.router.location.state.friends);
+    // Object.assign(this.state.host, this.props.inputs.host)
+    // Object.assign(this.state.friends, this.props.inputs.friends);
+    // Object.assign(this.state.restInfo, this.props.inputs.restInfo);
+    // console.log('MD CONSTRUCTOR', props.router.location.state.friends);
   }
 
   //#region Statics 🗂️
@@ -131,8 +132,11 @@ class MealDetails extends Component {
     this.setState(state => {
       return {
         ...state,
-        friends: this.props.router.location.state.friends,
-        restInfo: this.props.router.location.state.restInfo
+        // friends: this.props.router.location.state.friends,
+        // restInfo: this.props.router.location.state.restInfo
+        host:{...this.state.host, user_id: this.props.inputs.host.user_id, name: this.props.inputs.host.name},
+        friends: this.props.inputs.friends,
+        restInfo:this.props.inputs.restInfo
       }
     }, () => {
       console.log('STATE', this.state)
