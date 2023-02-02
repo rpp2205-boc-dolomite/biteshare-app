@@ -21,6 +21,7 @@ import {
   ToggleButtonGroup,
   Input,
   InputLabel,
+  TextField,
   Paper
 } from '@mui/material';
 import {
@@ -28,7 +29,8 @@ import {
 } from '@mui/icons-material';
 import { Link, useLocation, Navigate } from 'react-router-dom';
 import getHostData from '../../helpers/getHostData';
-
+import getCurrencyString from '../../helpers/formatCurrency.js';
+// import userObj from './userObject.js';
 
 export default function MealDetails(props) {
   const [host, setHost] = React.useState();
@@ -37,6 +39,7 @@ export default function MealDetails(props) {
   console.log('MealDetail', state, host);
 
   if (!state || !state.friends || !state.restInfo) { console.warn('MealDetails is missing some data') }
+  // else { // build data for CustomSplit }
   const [guests, setGuests] = React.useState(state.friends.length + 1);
   const [splitMethod, setSplitMethod] = React.useState('even');
   const [mealTotal, setMealTotal] = React.useState(0);
@@ -79,6 +82,24 @@ export default function MealDetails(props) {
     }
   };
 
+  const handleSplitMethodChange = function () {
+    if (splitMethod === 'even' && mealTotal && evenMealAmt) {
+      const evenTipAmount = (mealTotal * tipPercent) / guests;
+      setHost({
+        ...host,
+        meal_amount: evenMealAmt,
+        tip_amount: evenTipAmount
+      });
+
+      state.friends.map(item => Object.assign(item, {
+        meal_amount: evenMealAmt,
+        tip_amount: evenTipAmount
+      }));
+    }
+
+    setSplitMethod(splitMethod === 'even' ? 'custom' : 'even');
+  };
+
   const createAndValidateSession = function () {
     const newSession = {
       host: {
@@ -106,72 +127,115 @@ export default function MealDetails(props) {
   }
 
   return (<>
-    <FormLabel>Restaurant:</FormLabel>
-    <Typography>{state && state.restInfo && state.restInfo.name}</Typography>
-
-    <OutlinedInput
-      id="bill-amount-text-field"
-      startAdornment={<InputAdornment position="start"><AttachMoneyIcon /></InputAdornment>}
-      error={Number.isNaN(evenMealAmt)}
-      label="Bill Amount (excluding tip)"
-      // placeholder="Enter the bill amount, excluding tip.."
-      defaultValue={evenMealAmt || "0.00"}
-      onChange={e => handleMealTotalChange(Math.abs(e.target.value))}
-      required
-      fullWidth
-      size="small"
-    />
-
-    <FormLabel id="choose-tip-group-label">Tip percentage: {(Math.abs(tipPercent * 100)).toFixed(1)}%</FormLabel>
-    <RadioGroup
-      defaultValue="0.20"
-      name="choose-tip-group"
-      row
-      margin="none"
-      onChange={e => handleTipPercentChange(e.target.value)}
-    >
-      <FormControlLabel value="0.18" control={<Radio />} label="18%" />
-      <FormControlLabel value="0.20" control={<Radio />} label="20%" />
-      <FormControlLabel value="0.22" control={<Radio />} label="22%" />
-      <FormControlLabel value="-1" control={<Radio />} label="Other" />
-    </RadioGroup>
-
-    <Stack direction="row" gap={1}>
-      <FormLabel>People in your party:</FormLabel>
-      <Chip label={guests} />
+    <Stack direction="column" sx={{ m: 0.5, px: 0.5 }}>
+      <Box sx={{ py: 0.5 }}>
+        <FormLabel>Restaurant: </FormLabel>
+        <Chip color="primary" variant="outlined" label={state && state.restInfo && state.restInfo.name} sx={{ fontWeight: 'bold' }} />
+      </Box>
+      <Box sx={{ py: 0.5 }}>
+        <FormLabel>People in your party: </FormLabel>
+        <Chip color="primary" variant="outlined" label={guests} sx={{ fontWeight: 'bold' }} />
+      </Box>
     </Stack>
 
-    <Divider>Receipt upload</Divider>
-    <ReceiptUpload setReceipt={setReceipt} />
-    {console.log('RECEIPT', receipt)}
-    <Box
-      sx={{
-        height: '120px',
-        width: '120px',
-        hidden: false,
-        border: "1px dashed"
-      }}
-    ><img crossOrigin="anonymous" src={receipt} style={{ maxWidth: "100%", maxHeight: "100%" }} /></Box>
+    {/* <Divider sx={{my: 2}} /> */}
 
-    <Divider>Split Method</Divider>
-    <ToggleButtonGroup
-      color="primary"
-      size="small"
-      value={splitMethod}
-      exclusive
-      onChange={() => splitMethod === 'even' ? setSplitMethod('custom') : setSplitMethod('even')}
-      aria-label="Platform"
-      sx={{ alignSelf: 'center' }}
-    >
-      <ToggleButton value="even">Evenly</ToggleButton>
-      <ToggleButton value="custom">Custom</ToggleButton>
-    </ToggleButtonGroup>
+    <Stack sx={{ m: 0.5, p: 0.5, border: 1, borderColor: 'primary.main', borderStyle: 'dashed', borderRadius: 2, justifyContent: 'center', alignItems: 'center' }}>
+      <Box sx={{ p: 2 }}>
+        <TextField
+          id="bill-amount-text-field"
+          label="Bill Amount"
+          startAdornment={<InputAdornment position="start" component="div"><div><AttachMoneyIcon /></div></InputAdornment>}
+          error={Number.isNaN(evenMealAmt)}
+          placeholder="Not including tip..."
+          // defaultValue={""}
+          onChange={e => handleMealTotalChange(Math.abs(e.target.value))}
+          required
+          width={400}
+          size="small"
+        />
+      </Box>
+      <Divider width="60%" />
+      <Stack sx={{ p: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <span>
+          <span><FormLabel id="choose-tip-group-label">Tip percentage: </FormLabel>{`${(tipPercent * 100).toString()}% (${getCurrencyString(mealTotal * tipPercent)})`}</span>
+          <RadioGroup
+            defaultValue="0.20"
+            name="choose-tip-group"
+            size="small"
+            row
+            margin="none"
+            padding={0}
+            onChange={e => handleTipPercentChange(e.target.value)}
+          >
+            <FormControlLabel value="0.18" control={<Radio />} label="18%" />
+            <FormControlLabel value="0.20" control={<Radio />} label="20%" />
+            <FormControlLabel value="0.22" control={<Radio />} label="22%" />
+            <FormControlLabel value="-1" control={<Radio />} label="Other:" />
+            <TextField size="small" sx={{width:100}}></TextField>
+          </RadioGroup>
+        </span>
+      </Stack>
+    </Stack>
 
-    <CustomSplit hidden={splitMethod === 'even'} {...{ setFriendData, mealTotal, evenMealAmt, ...state }} />
 
-    <Button
-      onClick={handleSubmit}
-    >Save and Review</Button>
+    {/* <Divider sx={{my: 2}} /> */}
+    <Stack direction="column" sx={{justifyContent:'center', alignItems:'center'}}>
+      <ReceiptUpload setReceipt={setReceipt} />
+      <Box
+        sx={{
+          height: '100px',
+          width: '100px',
+          hidden: false,
+          border: 1,
+          borderStyle: 'dashed',
+          borderRadius: 2,
+          borderColor: 'blue',
+          backgroundColor: 'lightgrey'
+        }}
+      ><img crossOrigin="anonymous" src={receipt} style={{ maxWidth: "100%", maxHeight: "100%" }} /></Box>
+    </Stack>
+
+    <Divider sx={{my: 2}} />
+    <Stack direction="row" sx={{justifyContent:'center', alignItems:'center'}}>
+      <FormLabel id="split-method-label" sx={{mr: 1}}>Split method: </FormLabel>
+      <ToggleButtonGroup
+        color="primary"
+        size="small"
+        value={splitMethod}
+        exclusive
+        onChange={handleSplitMethodChange}
+        aria-label="Platform"
+      >
+        <ToggleButton value="even">Evenly</ToggleButton>
+        <ToggleButton value="custom">Custom</ToggleButton>
+      </ToggleButtonGroup>
+    </Stack>
+
+    <CustomSplit hidden={splitMethod === 'even'} {...{ setFriendData, mealTotal, evenMealAmt, host, tipPercent, ...state }} />
+
+    <Divider sx={{my: 2}} />
+
+    <Stack direction="row" justifyContent="center">
+      <Stack direction="column" sx={{mr: 2}}>
+        <span><FormLabel>Sub total: </FormLabel>{getCurrencyString(mealTotal)}</span>
+        <span><FormLabel>Tip total: </FormLabel>{getCurrencyString(mealTotal * tipPercent)}</span>
+        <span><FormLabel>Grand total: </FormLabel>{getCurrencyString(mealTotal * (1 + tipPercent))}</span>
+      </Stack>
+      <Divider orientation="vertical" sx={{height: 80}} />
+      <Stack direction="column" sx={{ml: 2}}>
+        <span><FormLabel>Meal due per person: </FormLabel>{getCurrencyString((mealTotal) / guests)}</span>
+        <span><FormLabel>Tip due per person: </FormLabel>{getCurrencyString((mealTotal * tipPercent) / guests)}</span>
+        <span><FormLabel>Total due per person: </FormLabel>{getCurrencyString((mealTotal * (1 + tipPercent)) / guests)}</span>
+      </Stack>
+    </Stack>
+
+
+
+    <Divider sx={{my: 2}} />
+    <Stack sx={{alignItems:'center'}}>
+      <Button variant="outlined" onClick={handleSubmit}>Save and Review</Button>
+    </Stack>
 
 
   </>);

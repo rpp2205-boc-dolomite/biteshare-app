@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {TextField, Button, Alert, Drawer, Typography} from '@mui/material';
-import { createFilterOptions } from '@mui/material/Autocomplete';
+//import { createFilterOptions } from '@mui/material/Autocomplete';
 import {FormGroup, FormControl, FormControlLabel, InputLabel, OutlinedInput, FormHelperText} from '@mui/material';
 import Switch from '@mui/material/Switch';
 const initAlert = {status:false, severity:'warn', msg:'This phone number already in your friends list!'};
-const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handleSubmit, add, setAdd, existList}) => {
+const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handleSubmit, add, setAdd, existList, page}) => {
   const [alert, setAlert] = useState(initAlert);
   const [error, setError] = useState(false);
+  const [noName, setNoName] = useState(false);
   const toggleLabel = (e) => {
     if (e.target.checked) {
       setAdd(true)
@@ -22,10 +23,19 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
     if (!validPhone) {
       setError(true)
       return;
+    } else if (!dialogValue.name.length) {
+      setNoName(true);
+      return;
     }
     let isExistPhone = false;
     existList.forEach(person => {
-      let phone = person.split(': ')[1]
+      let phone;
+      if (page === 'meal') {
+        phone = person.split(': ')[1];
+      } else {
+        phone = person.phone_num;
+      }
+
       if (phone === dialogValue.phone){
         console.log('number duplicate')
         isExistPhone = true;
@@ -35,6 +45,7 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
     })
 
     if(!isExistPhone) {
+      console.log('phone: ', dialogValue.phone)
       axios.get(`/api/users?phone_num=${dialogValue.phone}`)
         .then(result => {
           if(result.data && result.data.name !== dialogValue.name) {
@@ -45,7 +56,7 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
               setAlert(initAlert);
               console.log('value passed: ', result.data)
               handleSubmit(result.data.id, result.data.name);
-            },2000)
+            }, 2500)
             return null;
           } else if (!result.data) {
             //add the new friend to user collection
@@ -60,29 +71,29 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
             handleSubmit(params)
           }
         })
-
     }
   }
   return (
+    <>
 
-
-    <Drawer anchor="bottom" open={open} onClose={handleClose} sx={{
-      "& .MuiPaper-root": {
-        height: '60%',
-        alignItems:'center'
-      }}}>
-    {alert.status &&
-      <Alert severity={alert.severity} onClose={() => setAlert(initAlert)}>{alert.msg}</Alert>
-    }
+      <Drawer
+      anchor="bottom"
+      open={open}
+      onClose={handleClose}
+      sx={{"& .MuiPaper-root": {height: '60%', alignItems:'center'}}}
+      >
+      {alert.status &&
+        <Alert severity={alert.severity} onClose={() => setAlert(initAlert)} sx={{maxHeight:"8%", width:"95%"}}>{alert.msg}</Alert>
+      }
       <form onSubmit={submit} style={{width:'100%', display:'flex', alignItems:'center',flexDirection: 'column'}}>
         <Typography variant="h5" sx={{p:1, mt:2}}>A New Friend? Just add to your bill!</Typography>
         <Typography variant="subtitle1"  sx={{p:1}}>Invite a new friend to share your bill</Typography>
         <FormControl sx={{ m: 1, width: '60%'}} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">Name</InputLabel>
+          <InputLabel>Name</InputLabel>
           <OutlinedInput
-            id="outlined-adornment-password"
             type='text'
             label="Name"
+            error={noName}
             value={dialogValue.name}
             onChange={(event) =>
               setDialogValue({
@@ -92,6 +103,8 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
             }
           />
         </FormControl>
+        <FormHelperText>{noName ? "Name required" : ''}</FormHelperText>
+
         <FormControl sx={{ m: 1, width: '60%'}} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Phone Number</InputLabel>
           <OutlinedInput
@@ -106,7 +119,6 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
               })
             }
             error={error}
-            //helperText={error ? "Invalid phone number" : ''}
             value={dialogValue.phone}
             onChange={(event) =>
               setDialogValue({
@@ -120,9 +132,11 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
         </FormControl>
 
         <br />
+        {page === "meal" &&
         <FormGroup>
           <FormControlLabel control={<Switch defaultChecked onChange={toggleLabel}/>} label={add ? 'Add to my friends list' : 'Do not add to my friends list'} />
         </FormGroup>
+        }
         <FormGroup sx={{display:'block',
           mt:'2%',
          '& .MuiButton-root':{m:1, minWidth:'120px'}}}>
@@ -131,6 +145,8 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
         </FormGroup>
       </form>
     </Drawer>
+    </>
+
 
   )
 }

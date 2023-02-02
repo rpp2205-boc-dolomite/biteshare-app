@@ -18,8 +18,9 @@ const SearchFriends = ({id, friends, setFriends, existList, setExistList}) => {
   const handleClose = () => {
     setDialogValue({
       name:'',
-      phone:'',
+      phone:'+1',
     })
+    setAdd(true);
     toggleOpen(false);
   }
 
@@ -54,10 +55,10 @@ const SearchFriends = ({id, friends, setFriends, existList, setExistList}) => {
     if (add) {
       axios.post(`/api/friends/?user_id=${id}`,{guest_id: guest_id})
         .then((add) => {
-            setExistList(existList.concat([temp]));
-            triggerAlert({status:true, severity:'success', msg:'Add friends Success!'})
-            handleClose()
-          })
+          setExistList(existList.concat([temp]));
+          triggerAlert({status:true, severity:'success', msg:'Add friends Success!'})
+          handleClose()
+        })
     } else {
       handleClose();
     }
@@ -133,7 +134,7 @@ const SearchFriends = ({id, friends, setFriends, existList, setExistList}) => {
         </IconButton>
         </Grid>
       </Grid>
-      <NewFriendDialog open={open} setDialogValue={setDialogValue} dialogValue={dialogValue} handleClose={handleClose} handleSubmit={handleSubmit} add={add} setAdd={setAdd} existList={existList}/>
+      <NewFriendDialog open={open} setDialogValue={setDialogValue} dialogValue={dialogValue} handleClose={handleClose} handleSubmit={handleSubmit} add={add} setAdd={setAdd} existList={existList} page="meal"/>
     </>
 
 

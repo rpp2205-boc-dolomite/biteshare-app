@@ -9,15 +9,24 @@ const { Schema, model } = mongoose;
 const userStatics = require('./statics/user');
 const sessionStatics = require('./statics/session');
 
+const reactionsTemplate = {
+  emojis: ['thumb', 'like', 'fire', 'tooth'],
+  thumb: [],
+  like: [],
+  fire: [],
+  tooth: []
+};
+Object.freeze(reactionsTemplate);
+
 /////////////////////////////////////////////////////////////////
 
 // Define the schemas
 const UserSchema = new Schema({
   name: { type: String, required: true },
-  phone_num: { type: String, required: true, match: /^\+1[0-9]{10}$/g , index: true, unique: true}, // this regex matches strings starting with a plus sign and 1, followed by 10 digits
+  phone_num: { type: String, required: true, match: /^\+1[0-9]{10}$/g, index: true, unique: true }, // this regex matches strings starting with a plus sign and 1, followed by 10 digits
   password: String,
   is_guest: Boolean,
-  friends: [ { type: ObjectId, ref: 'User' } ]
+  friends: [{ type: ObjectId, ref: 'User' }]
 }, {
   versionKey: false,
   toJSON: { virtuals: true }, // So `res.json()` and other `JSON.stringify()` functions include virtuals
@@ -31,7 +40,21 @@ const SessionSchema = new Schema({
   sub_total: { type: Number, required: true, min: 0 },
   tip_total: { type: Number, required: true, min: 0 },
   receipt: String,
-  active: { type: Boolean, default: true }
+  active: { type: Boolean, default: true },
+  reactions: {
+    type: Object,
+    default: reactionsTemplate,
+    emojis: { type: Array, default: ['thumb', 'like', 'fire', 'tooth'] },
+    thumb: [ObjectId],
+    like: [ObjectId],
+    fire: [ObjectId],
+    tooth: [ObjectId],
+  },
+  comments: [{
+    user_id: ObjectId,
+    text: String,
+    date: { type: Date, default: Date.now },
+  }]
 }, {
   versionKey: false,
   toJSON: { virtuals: true }, // So `res.json()` and other `JSON.stringify()` functions include virtuals
@@ -39,7 +62,7 @@ const SessionSchema = new Schema({
 });
 
 // Define the virtuals
-  //
+//
 
 // Define the static methods
 UserSchema.statics = userStatics;
@@ -60,4 +83,4 @@ const disconnect = function () {
 
 //////////////////////////////////////////////////
 
-module.exports = { User, Session, ObjectId, disconnect };
+module.exports = { User, Session, disconnect, ObjectId, reactionsTemplate };

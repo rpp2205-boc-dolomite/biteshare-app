@@ -13,6 +13,7 @@ const sessionControlers = require('./controllers/sessions');
 const authControllers = require('./controllers/auth.js');
 const homeController = require('./controllers/home.js');
 const { getBiz } = require('./controllers/yelpBiz.js');
+const { addReactionToSession, addCommentToSession, testInit } = require('./controllers/social');
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -46,14 +47,15 @@ app.use(express.urlencoded({ extended: false }));
 //---  user's friends list ---//
 app.get('/api/friends', friendsControllers.getFriends);
 app.post('/api/friends', friendsControllers.addFriend);
-
+app.put('/api/friends', friendsControllers.deleteFriend);
 //---- user info ---//
 app.get('/api/users', userControllers.getUser);
 app.post('/api/users', userControllers.addUser);
 
 //---sessions ---//
 app.get('/api/sessions', sessionControlers.getSessions)
-app.post('/api/sessions', sessionControlers.postSessions)
+app.post('/api/sessions', sessionControlers.postSessions);
+app.post('/api/sessions/status', sessionControlers.updatePaymentStatus)
 
 //---- login and signup ----//
 app.post('/api/login/', authControllers.verifyLogin)
@@ -69,6 +71,10 @@ app.get('/biz', (req, res) => {
       console.log(err);
     });
 });
+
+//---- social ----//
+app.post('/api/social/comment/:session_id', addCommentToSession);
+app.post('/api/social/reaction/:session_id', addReactionToSession);
 
 //---- user feed ---//
 app.get('/api/feed', homeController.getFeed);
