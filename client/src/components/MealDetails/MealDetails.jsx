@@ -27,10 +27,11 @@ import {
 import {
   AttachMoney as AttachMoneyIcon,
 } from '@mui/icons-material';
-import { Link, useLocation, Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import getHostData from '../../helpers/getHostData';
 import getCurrencyString from '../../helpers/formatCurrency.js';
 import userObj from './userObject.js';
+import withRouter from '../withRouter.jsx';
 
 class MealDetails extends Component {
   state = {
@@ -52,65 +53,66 @@ class MealDetails extends Component {
     customSplitData: null,
     session: null,
     redirect: false,
-  }
-
-  static get numGuests() {
-    return this.friends.length + 1;
-  }
-
-  static get evenMealAmount() {
-    return this.state.mealTotal / this.numGuests;
-  }
-
-  static get evenTipAmount() {
-    return this.tipTotal / this.numGuests;
-  }
-
-  static get evenPerGuestTotal() {
-    return this.evenMealAmt + this.evenTipAmount;
-  }
-
-  static get formDataIsValid() {
-    return (
-      (this.state.mealTotal !== NaN && this.state.mealTotal > 0) &&
-      (this.state.tipPercent !== NaN && this.tipPercent >= 0) &&
-      (typeof this.state.receipt === 'string')
-    );
-  }
-
-  static get tipTotal()  {
-    return this.state.mealTotal * this.state.tipPercent;
-  }
-
-  static get billTotal() {
-    return this.state.mealTotal + this.tipTotal;
+    isInitialized: false
   }
 
   constructor(props) {
     super(props);
-    Object.assign(this.state.host, props.host);
+    this.handleSplitMethodChange = this.handleSplitMethodChange.bind(this);
+    this.handleMealTotalChange = this.handleMealTotalChange.bind(this);
+    this.handleTipPercentChange = this.handleTipPercentChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.buildCustomSplitData = this.buildCustomSplitData.bind(this);
+    this.validateSession = this.validateSession.bind(this);
+    this.createSession = this.createSession.bind(this);
+
+    Object.assign(this.state.host, props.host)
     Object.assign(this.state.friends, props.friends);
     Object.assign(this.state.restInfo, props.restInfo);
-    // this.state.host = props.host || {};
-    // this.state.friends = props.friends || [];
-    // this.state.restInfo = props.restInfo || {};
+    console.log('MD CONSTRUCTOR', props.router.location.state.friends);
   }
+
+  //#region Statics 🗂️
+  get numGuests() {
+    return this.state.friends.length + 1;
+  }
+
+  get evenMealAmount() {
+    return this.state.mealTotal / this.numGuests;
+  }
+
+  get evenTipAmount() {
+    return this.tipTotal / this.numGuests;
+  }
+
+  get evenPerGuestTotal() {
+    return this.evenMealAmt + this.evenTipAmount;
+  }
+
+  get formDataIsValid() {
+    return (
+      (this.state.mealTotal !== NaN && this.state.mealTotal > 0) &&
+      (this.state.tipPercent !== NaN && this.state.tipPercent >= 0) &&
+      (typeof this.state.receipt === 'string')
+    );
+  }
+
+  get tipTotal() {
+    return this.state.mealTotal * this.state.tipPercent;
+  }
+
+  get billTotal() {
+    return this.state.mealTotal + this.tipTotal;
+  }
+  //#endregion
 
   handleMealTotalChange(value) {
     this.setState({ mealTotal: Math.abs(value) });
-  };
+  }
 
   handleTipPercentChange(value) {
-    ithis.setState({ tipPercent: Math.abs(value) });
-  };
-
-  setFriendData(index, change) {
-    if (index === -1) {
-      Object.assign(this.state.host, change);
-    } else {
-      Object.assign(this.state.friends[index], change);
-    }
-  };
+    this.setState({ tipPercent: Math.abs(value) });
+  }
 
   handleSubmit() {
     const session = createAndValidateSession();
@@ -123,20 +125,45 @@ class MealDetails extends Component {
       // Don't submit
       console.log('could not validate session');
     }
-  };
+  }
 
-  handleSplitMethodChange() {
+  componentDidMount() {
+    this.setState(state => {
+      return {
+        ...state,
+        friends: this.props.router.location.state.friends,
+        restInfo: this.props.router.location.state.restInfo
+      }
+    }, () => {
+      console.log('STATE', this.state)
+    });
+    console.log('MD DID MOUNT', this.state, this.props);
+    // const location = useLocation();
+    getHostData((function (host) {
+      this.setState({ host: { ...this.host, ...host } }, () => {
+        console.log('HOST DATA STATE', this.state)
+      });
+    }).bind(this));
+  }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (!isInitialized && this.state.host)
+  // }
+
+  handleSplitMethodChange(e) {
+    e.preventDefault();
     if (this.state.splitMethod === 'even') {
       if (this.formDataIsValid()) {
+        console.log('FORM DATA VALID!')
         this.buildCustomSplitData();
         this.setState({ splitMethod: 'custom' });
+      } else {
+        document.getElementById("split-method-toggle-group").value = 'even';
       }
     } else {
       this.setState({ splitMethod: 'even' })
     }
-
-    setSplitMethod(splitMethod === 'even' ? 'custom' : 'even');
-  };
+  }
 
   buildCustomSplitData() {
     const data = [];
@@ -159,6 +186,7 @@ class MealDetails extends Component {
       data.push(makeGuestObj(friend));
     }
 
+    this.setState({ customSplitData: data });
     return data;
   }
 
@@ -169,10 +197,12 @@ class MealDetails extends Component {
     let tipSum = 0;
 
     for (const guest of data) {
-      mealSum += guest.mealAmount;
+      if (Number.isNaN(guest.mealAmount) || Number.isNaN(guest.mealAmount))
+        mealSum += guest.mealAmount;
       tipSum += guest.tipAmount;
     }
 
+    console.log('VALIDATE SESSION', mealSum, this.state.mealTotal);
     return (
       mealSum.toFixed(2) === this.state.mealTotal.toFixed(2)
     );
@@ -203,10 +233,16 @@ class MealDetails extends Component {
     this.setState({ session: newSession });
 
     return newSession;
-  };
+  }
 
 
   render() {
+    if (!this.state.isInitialized && this.state.host.phone_num && this.state.friends.length && this.state.restInfo.name) {
+      this.setState({ isInitialized: true }, () => { console.log('INITIALIZED', this.state) });
+
+      return null;
+    }
+
     if (this.redirect) {
       return <Navigate to="/review" state={this.state.session} />
     }
@@ -231,7 +267,7 @@ class MealDetails extends Component {
             id="bill-amount-text-field"
             label="Bill Amount"
             startAdornment={<InputAdornment position="start" component="div"><div><AttachMoneyIcon /></div></InputAdornment>}
-            error={Number.isNaN(this.stats.mealTotal)}
+            error={Number.isNaN(this.state.mealTotal)}
             placeholder="Not including tip.."
             // defaultValue={""}
             onChange={e => this.handleMealTotalChange(e.target.value)}
@@ -278,13 +314,14 @@ class MealDetails extends Component {
             borderColor: 'blue',
             backgroundColor: 'lightgrey'
           }}
-        ><img crossOrigin="anonymous" src={receipt} style={{ maxWidth: "100%", maxHeight: "100%" }} /></Box>
+        ><img crossOrigin="anonymous" src={this.state.receipt} style={{ maxWidth: "100%", maxHeight: "100%" }} /></Box>
       </Stack>
 
       <Divider sx={{ my: 2 }} />
       <Stack direction="row" sx={{ justifyContent: 'center', alignItems: 'center' }}>
         <FormLabel id="split-method-label" sx={{ mr: 1 }}>Split method: </FormLabel>
         <ToggleButtonGroup
+          id="split-method-toggle-group"
           color="primary"
           size="small"
           value={this.state.splitMethod}
@@ -297,7 +334,7 @@ class MealDetails extends Component {
         </ToggleButtonGroup>
       </Stack>
 
-      <CustomSplit hidden={this.state.splitMethod === 'even'} {...state} />
+      <CustomSplit hidden={this.state.splitMethod === 'even'} data={this.state.customSplitData} />
 
       <Divider sx={{ my: 2 }} />
 
@@ -327,4 +364,5 @@ class MealDetails extends Component {
   }
 }
 
-export default MealDetails;
+// export default MealDetails;
+export default withRouter(MealDetails);
