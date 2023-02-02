@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {TextField, Button, Alert, Drawer, Typography} from '@mui/material';
-//import { createFilterOptions } from '@mui/material/Autocomplete';
 import {FormGroup, FormControl, FormControlLabel, InputLabel, OutlinedInput, FormHelperText} from '@mui/material';
 import Switch from '@mui/material/Switch';
 const initAlert = {status:false, severity:'warn', msg:'This phone number already in your friends list!'};
@@ -74,7 +73,6 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
     }
   }
   return (
-    <>
 
       <Drawer
       anchor="bottom"
@@ -145,8 +143,6 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
         </FormGroup>
       </form>
     </Drawer>
-    </>
-
 
   )
 }
