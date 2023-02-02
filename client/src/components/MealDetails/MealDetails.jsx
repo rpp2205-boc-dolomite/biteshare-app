@@ -30,7 +30,7 @@ import {
 import { Link, Navigate } from 'react-router-dom';
 import getHostData from '../../helpers/getHostData';
 import getCurrencyString from '../../helpers/formatCurrency.js';
-import userObj from './userObject.js';
+import userObj from './userObject.mjs';
 import withRouter from '../withRouter.jsx';
 
 class MealDetails extends Component {
@@ -69,7 +69,7 @@ class MealDetails extends Component {
     Object.assign(this.state.host, props.host)
     Object.assign(this.state.friends, props.friends);
     Object.assign(this.state.restInfo, props.restInfo);
-    console.log('MD CONSTRUCTOR', props.router.location.state.friends);
+    console.log('MD CONSTRUCTOR', this.state);
   }
 
   //#region Statics 🗂️
@@ -171,13 +171,7 @@ class MealDetails extends Component {
     const evenTipAmount = this.evenTipAmount;
 
     const makeGuestObj = (guest) => {
-      const obj = Object.create(userObj);
-
-      obj.name = guest.name;
-      obj.meal = evenMealAmount;
-      obj.tip = evenTipAmount;
-
-      return obj;
+      return new userObj(guest.name, evenMealAmount, evenTipAmount);
     };
 
     data.push(makeGuestObj(this.state.host));
@@ -225,7 +219,7 @@ class MealDetails extends Component {
     const friends = [];
 
     for (let i = 1; i < data.length; i++) {
-      friends.push(data[i].leanCopy());
+      friends.push(data[i].getCopy());
     }
 
     newSession.friends = friends;
