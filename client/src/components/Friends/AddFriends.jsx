@@ -13,8 +13,8 @@ const fakeFriendsList2 = [
   "Anna: 111123123", "Bob: 312456789", "Davie Wang: 44556677"
 ]
 const AddFriends = ({inputs, setInputs}) => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  console.log('local: ', user);
+  // const user = JSON.parse(localStorage.getItem('user'));
+  // console.log('local: ', user);
   const [existList, setExistList] = useState(null)
   const [friends, setFriends] = useState([]);
   console.log('friends', friends);
@@ -29,7 +29,7 @@ const AddFriends = ({inputs, setInputs}) => {
   //call the data to get the users exist friends list
   const getFriends = () => {
     //for test use the defatul id
-    let user_id=user.id;
+    let user_id=inputs.host.user_id;
     return axios.get(`/api/friends/?user_id=${user_id}`)
       .then((result) => {
         console.log('client friends res:', result.data);
@@ -55,7 +55,7 @@ const AddFriends = ({inputs, setInputs}) => {
     <>
       {/* <Navbar /> */}
       <Container maxWidth="95%" sx={{p:1, m:1,  width:"92%", justifyContent:"center"}}>
-        {!existList ? <Loading /> :<SearchFriends inputs={inputs} setInputs={setInputs} id={user.id} friends={friends} setFriends={setFriends} existList={existList} setExistList={setExistList}/>}
+        {!existList ? <Loading /> :<SearchFriends inputs={inputs} setInputs={setInputs} id={inputs.host.user_id} friends={friends} setFriends={setFriends} existList={existList} setExistList={setExistList}/>}
         <hr/>
         <Box component="span" sx={{dispaly:'block', fontSize:'larger'}}>
           Friends List
@@ -69,7 +69,7 @@ const AddFriends = ({inputs, setInputs}) => {
           </List>)
           }
         </Box>
-        <Box sx={{justifyContent:"center",textAlign:'center', pt:"20%", m:1}}>
+        {/* <Box sx={{justifyContent:"center",textAlign:'center', pt:"20%", m:1}}>
           <Button
            component={Link}
            to='/mealdetails'
@@ -80,7 +80,7 @@ const AddFriends = ({inputs, setInputs}) => {
             Continue
           </Button>
 
-        </Box>
+        </Box> */}
 
       </Container>
 
