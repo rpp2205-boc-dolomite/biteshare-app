@@ -89,7 +89,7 @@ class MealDetails extends Component {
   }
 
   get evenPerGuestTotal() {
-    return this.evenMealAmt + this.evenTipAmount;
+    return this.evenMealAmount + this.evenTipAmount;
   }
 
   get formDataIsValid() {
@@ -159,7 +159,7 @@ class MealDetails extends Component {
   handleSplitMethodChange(e) {
     e.preventDefault();
     if (this.state.splitMethod === 'even') {
-      if (this.formDataIsValid()) {
+      if (this.formDataIsValid) {
         console.log('FORM DATA VALID!')
         this.buildCustomSplitData();
         this.setState({ splitMethod: 'custom' });
@@ -346,7 +346,7 @@ class MealDetails extends Component {
         </Stack>
         <Divider orientation="vertical" sx={{ height: 80 }} />
         <Stack direction="column" sx={{ ml: 2 }}>
-          <span><FormLabel>Meal due per person: </FormLabel>{getCurrencyString(this.evenMealAmt)}</span>
+          <span><FormLabel>Meal due per person: </FormLabel>{getCurrencyString(this.evenMealAmount)}</span>
           <span><FormLabel>Tip due per person: </FormLabel>{getCurrencyString(this.evenTipAmount)}</span>
           <span><FormLabel>Total due per person: </FormLabel>{getCurrencyString(this.evenPerGuestTotal)}</span>
         </Stack>
