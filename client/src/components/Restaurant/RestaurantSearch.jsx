@@ -4,7 +4,7 @@ import Navbar from '../Dashboard/Navbar.jsx';
 import {Button, Box, Typography, TextField, List, ListItem, ListItemButton, Slider} from '@mui/material';
 import { Navigate, Link } from 'react-router-dom';
 
-const RestaurantSearch = ({}) => {
+const RestaurantSearch = ({inputs, setInputs}) => {
   const [local, setLocation] = useState('');
   const [radius, setRadius] = useState(3215);
   const [businesses, setBusinesses] = useState([]);
@@ -19,6 +19,13 @@ const RestaurantSearch = ({}) => {
       name: bus.substr(0, numIndex - 1),
       address: bus.substr(numIndex)
     });
+    //this is for the Step components
+    setInputs({...inputs, restInfo: {
+      name: bus.substr(0, numIndex - 1),
+      address: bus.substr(numIndex)
+    }})
+    //-----end of step needed code-----
+
     console.log(restInfo);
     console.log(index);
   };
@@ -67,7 +74,7 @@ const RestaurantSearch = ({}) => {
 
   return (
     <Box>
-    <Navbar />
+    {/* <Navbar /> */}
       <Box
       flex-direction="column"
       alignItems="center"

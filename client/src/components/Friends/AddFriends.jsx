@@ -12,18 +12,20 @@ import { useLocation } from 'react-router-dom'
 const fakeFriendsList2 = [
   "Anna: 111123123", "Bob: 312456789", "Davie Wang: 44556677"
 ]
-const AddFriends = (props) => {
+const AddFriends = ({inputs, setInputs}) => {
   const user = JSON.parse(localStorage.getItem('user'));
   console.log('local: ', user);
   const [existList, setExistList] = useState(null)
   const [friends, setFriends] = useState([]);
   console.log('friends', friends);
-
-
-  const { state } = useLocation();
-  const restInfo = state.restInfo;
-  console.log('resInfo', restInfo);
-
+  // useEffect(() => {
+  //   setInputs({...inputs, friends:friends});
+  // }, [friends])
+  //-------- pass props to next components ------//
+  // const { state } = useLocation();
+  // const restInfo = state.restInfo;
+  // console.log('resInfo', restInfo);
+  console.log('info from steps: ', inputs)
   //call the data to get the users exist friends list
   const getFriends = () => {
     //for test use the defatul id
@@ -51,9 +53,9 @@ const AddFriends = (props) => {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Container maxWidth="95%" sx={{p:1, m:1,  width:"92%", justifyContent:"center"}}>
-        {!existList ? <Loading /> :<SearchFriends id={user.id} friends={friends} setFriends={setFriends} existList={existList} setExistList={setExistList}/>}
+        {!existList ? <Loading /> :<SearchFriends inputs={inputs} setInputs={setInputs} id={user.id} friends={friends} setFriends={setFriends} existList={existList} setExistList={setExistList}/>}
         <hr/>
         <Box component="span" sx={{dispaly:'block', fontSize:'larger'}}>
           Friends List
@@ -71,7 +73,7 @@ const AddFriends = (props) => {
           <Button
            component={Link}
            to='/mealdetails'
-           state={{restInfo, friends}}
+           //state={{restInfo, friends}}
            variant="contained"
            size="large"
            sx={{width:'60%', backgroundColor:'orange', '&:hover': {backgroundColor:'orange'}}}>
