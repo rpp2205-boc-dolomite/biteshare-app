@@ -28,15 +28,15 @@ exports.verifyLogin = function(req, res) {
                 } else {
                     console.log('result of compare', result);
                     if (result === false) {
-                        res.status(401).send('password')
+                        res.status(401).send('The password you have entered is incorrect. Please try again.')
                     } else {
-                        res.status(200).send(phoneNumber)
+                        res.status(200).send({name: user.name, phone_num: user.phone_num, id: user.id})
                     }
                 }
             })
         } else {
             console.log('ERR FINDING USER')
-            res.status(401).send('username')
+            res.status(401).send('There is no account registered to this username. Please try again or sign up below.')
         }
     })
 }

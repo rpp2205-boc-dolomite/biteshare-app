@@ -7,16 +7,16 @@ import {
   Typography,
   CircularProgress
 } from "@mui/material";
-import { Formik, Form } from "formik";
+//import { Formik, Form } from "formik";
 
 import MealsList from "./Dashboard/MealsList.jsx";
-import RestaurantSearch from "./Restaurant/RestaurantSearch";
-import MealDetails from "../MealDetails/MealDetails/=";
-import AddFriends from "./Friends/AddFriends";
-import Review from './Review.jsx';
-
+import RestaurantSearch from "./Restaurant/RestaurantSearch.jsx";
+import MealDetails from "./MealDetails/MealDetails.jsx";
+import AddFriends from "./Friends/AddFriends.jsx";
+import Review from './Review/Review.jsx';
+import Navbar from './Dashboard/Navbar.jsx';
 const steps = ["Selecting Restaurant", "Add freinds", "Meal details", "Review your Meal"];
-const { formId, formField } = checkoutFormModel;
+//const { formId, formField } = checkoutFormModel;
 
 const UserContext = createContext();
 export default function Steps() {
@@ -25,18 +25,19 @@ export default function Steps() {
   const [inputs, setInputs] = useState({
     host: {user_id:'', name: '', phone_num:''},
     friends:[],
-    resInfo,{name:'', address:''}
+    restInfo:{name:'', address:''}
   })
+  const [isSubmitting, setSubmit] = useState(false);
   function _renderStepContent(step) {
     switch (step) {
       case 0:
-        return <RestaurantSearch />;
+        return <RestaurantSearch inputs={inputs} setInputs={setInputs}/>;
       case 1:
-        return <AddFriends />;
+        return <AddFriends inputs={inputs} setInputs={setInputs}/>;
       case 2:
-        return <MealDetails />;
+        return <MealDetails inputs={inputs} setInputs={setInputs}/>;
       case 3:
-        return <Review />;
+        return <Review inputs={inputs} setInputs={setInputs}/>;
       default:
         return <div>Not Found</div>;
     }
@@ -61,64 +62,89 @@ export default function Steps() {
   //   }
   // }
 
-//   function _handleBack() {
-//     setActiveStep(activeStep - 1);
-//   }
+  function _handleBack() {
+    setActiveStep(activeStep - 1);
+  }
+  console.log('step page info: ', inputs);
 
   return (
-    <React.Fragment>
-      <Typography component="h1" variant="h4" align="center">
-        Checkout
-      </Typography>
-      <Stepper activeStep={activeStep} className={classes.stepper}>
+    <>
+      <Navbar />
+      <Stepper activeStep={activeStep} sx={{p:1, m:2}}>
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-      <React.Fragment>
-        {activeStep === steps.length ? (
-          <CheckoutSuccess />
-        ) : (
-          <Formik
-            initialValues={formInitialValues}
-            validationSchema={currentValidationSchema}
-            onSubmit={_handleSubmit}
-          >
-            {({ isSubmitting }) => (
-              <Form id={formId}>
-                {_renderStepContent(activeStep)}
 
-                <div className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <Button onClick={_handleBack} className={classes.button}>
-                      Back
-                    </Button>
-                  )}
-                  <div className={classes.wrapper}>
-                    <Button
-                      disabled={isSubmitting}
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                    >
-                      {isLastStep ? "Place order" : "Next"}
-                    </Button>
-                    {isSubmitting && (
-                      <CircularProgress
-                        size={24}
-                        className={classes.buttonProgress}
-                      />
-                    )}
-                  </div>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        )}
-      </React.Fragment>
-    </React.Fragment>
+        {activeStep === steps.length ? (
+          <MealsList />
+        ) : (
+        <>
+          {_renderStepContent(activeStep)}
+
+         <div>
+          {activeStep !== 0 && (
+           <Button onClick={_handleBack} >
+            Back
+          </Button>
+         )}
+        <div>
+          <Button
+            disabled={isSubmitting}
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={() => setActiveStep(activeStep + 1)}
+          >
+            {isLastStep ? "Confirm" : "Next"}
+          </Button>
+          {isSubmitting && (
+            <CircularProgress
+              size={24}
+            />
+          )}
+        </div>
+      </div>
+        </>)
+          // <Formi
+          //   initialValues={formInitialValues}
+          //   validationSchema={currentValidationSchema}
+          //   onSubmit={_handleSubmit}
+          // >
+          //   {({ isSubmitting }) => (
+          //     <Form id={formId}>
+          //       {_renderStepContent(activeStep)}
+
+          //       <div className={classes.buttons}>
+          //         {activeStep !== 0 && (
+          //           <Button onClick={_handleBack} className={classes.button}>
+          //             Back
+          //           </Button>
+          //         )}
+          //         <div className={classes.wrapper}>
+          //           <Button
+          //             disabled={isSubmitting}
+          //             type="submit"
+          //             variant="contained"
+          //             color="primary"
+          //             className={classes.button}
+          //           >
+          //             {isLastStep ? "Place order" : "Next"}
+          //           </Button>
+          //           {isSubmitting && (
+          //             <CircularProgress
+          //               size={24}
+          //               className={classes.buttonProgress}
+          //             />
+          //           )}
+          //         </div>
+          //       </div>
+          //     </Form>
+          //   )}
+          // </Formik>)
+        }
+    </>
   );
 }

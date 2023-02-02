@@ -7,14 +7,14 @@ import { createFilterOptions } from '@mui/material/Autocomplete';
 import NewFriendDialog from './NewFriendDialog.jsx';
 
 const filter = createFilterOptions();
-const SearchFriends = ({id, friends, setFriends, existList, setExistList}) => {
+const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, setExistList}) => {
   const [friendsList, setFriendsList] = useState([])
   const [value, setValue] = useState(null);
   const [open, toggleOpen] = useState(false);
   const [alert, triggerAlert] = useState({status: false, severity:'', msg: ''});
   const [dialogValue, setDialogValue] = useState({name:'', phone:'+1'});
   const [add, setAdd] = useState(true)
-
+  console.log('search friends:', inputs)
   const handleClose = () => {
     setDialogValue({
       name:'',
@@ -39,6 +39,8 @@ const SearchFriends = ({id, friends, setFriends, existList, setExistList}) => {
     if (!isExists) {
       console.log('new added')
       setFriends(friends.concat([{name:friend[0], phone_num:friend[1]}]));
+      //this line if for step components
+      setInputs({...inputs, friends: friends.concat([{name:friend[0], phone_num:friend[1]}])})
       setValue(null);
     }
   }
