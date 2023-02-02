@@ -78,10 +78,10 @@ export default function FriendsPage (props) {
       </Box>
       <Divider><Typography>Add friends</Typography></Divider>
       {open && <NewFriendDialog open={open} setDialogValue={setDialogValue} dialogValue={dialogValue} handleClose={handleClose} existList={friends} handleSubmit={handleSubmit} page="friends"/>}
-      <Box component="div" sx={{pt:2, display: "grid", justifyItems: "center", justifyContent: "center"}}>
+      {/* <Box component="div" sx={{pt:2, display: "grid", justifyItems: "center", justifyContent: "center"}}>
         {/* <SearchFriendsBar err={error} setErr={setError} input={input} setInput={setInput} clicked={handleSearch}/> */}
-        <Button variant="contained" size="large" sx={{bgcolor:'orange', width:'300px'}} onClick={()=> setOpen(true)}>Add a new friend</Button>
-      </Box>
+        {/* <Button variant="contained" size="large" sx={{bgcolor:'orange', width:'300px'}} onClick={()=> setOpen(true)}>Add a new friend</Button>
+      </Box> */}
 
 
       </Box>
