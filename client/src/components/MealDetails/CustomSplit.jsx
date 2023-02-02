@@ -7,7 +7,7 @@ import {
 
 
 export default function CustomSplit({ hidden, data }) {
-  console.log(hidden, data);
+  // console.log(hidden, data);
   if (hidden || !data) { return null; }
 
 

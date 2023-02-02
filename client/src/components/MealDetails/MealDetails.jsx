@@ -71,8 +71,7 @@ class MealDetails extends Component {
     Object.assign(this.state.host, props.host)
     Object.assign(this.state.friends, props.friends);
     Object.assign(this.state.restInfo, props.restInfo);
-    console.log('MD CONSTRUCTOR', this.state);
-
+    // console.log('MD CONSTRUCTOR', this.state);
   }
 
   //#region Statics 🗂️
@@ -140,27 +139,16 @@ class MealDetails extends Component {
         friends: this.props.inputs.friends,
         restInfo:this.props.inputs.restInfo
       }
-    }, () => {
-      console.log('STATE', this.state)
     });
-    console.log('MD DID MOUNT', this.state, this.props);
-    // const location = useLocation();
     getHostData((function (host) {
-      this.setState({ host: { ...this.host, ...host } }, () => {
-        console.log('HOST DATA STATE', this.state)
-      });
+      this.setState({ host: { ...this.host, ...host } });
     }).bind(this));
   }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (!isInitialized && this.state.host)
-  // }
 
   handleSplitMethodChange(e) {
     e.preventDefault();
     if (this.state.splitMethod === 'even') {
       if (this.formDataIsValid) {
-        console.log('FORM DATA VALID!')
         this.buildCustomSplitData();
         this.setState({ splitMethod: 'custom' });
       } else {
@@ -202,7 +190,7 @@ class MealDetails extends Component {
       tipSum += guest.tipAmount;
     }
 
-    console.log('VALIDATE SESSION', mealSum, this.state.mealTotal);
+    // console.log('VALIDATE SESSION', mealSum, this.state.mealTotal);
     return (
       mealSum.toFixed(2) === this.state.mealTotal.toFixed(2)
     );
@@ -238,7 +226,7 @@ class MealDetails extends Component {
 
   render() {
     if (!this.state.isInitialized && this.state.host.phone_num && this.state.friends.length && this.state.restInfo.name) {
-      this.setState({ isInitialized: true }, () => { console.log('INITIALIZED', this.state) });
+      this.setState({ isInitialized: true });
 
       return null;
     }
