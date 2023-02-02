@@ -31,8 +31,8 @@ export default function CustomSplitFriend({ data }) {
         label="Meal Amount"
         startAdornment={<InputAdornment position="start" component="div"><div><AttachMoneyIcon /></div></InputAdornment>}
         error={isError}
-        defaultValue={data.mealAmount}
-        onChange={e => data.setMeal(e.target.value)}
+        defaultValue={data.meal}
+        onChange={e => data.meal = e.target.value}
         required
         width={200}
         size="small"
@@ -41,8 +41,8 @@ export default function CustomSplitFriend({ data }) {
         label="Tip Amount"
         startAdornment={<InputAdornment position="start" component="div"><div><AttachMoneyIcon /></div></InputAdornment>}
         error={isError}
-        defaultValue={data.tipAmount}
-        onChange={e => data.setTip(e.target.value)}
+        defaultValue={data.tip}
+        onChange={e => data.tip = e.target.value}
         required
         width={200}
         size="small"
