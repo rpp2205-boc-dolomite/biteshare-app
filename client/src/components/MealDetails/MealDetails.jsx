@@ -69,7 +69,7 @@ class MealDetails extends Component {
     Object.assign(this.state.host, props.host)
     Object.assign(this.state.friends, props.friends);
     Object.assign(this.state.restInfo, props.restInfo);
-    console.log('MD CONSTRUCTOR', props.router.location.state.friends);
+    console.log('MD CONSTRUCTOR', this.state);
   }
 
   //#region Statics 🗂️
@@ -225,7 +225,7 @@ class MealDetails extends Component {
     const friends = [];
 
     for (let i = 1; i < data.length; i++) {
-      friends.push(data[i].leanCopy());
+      friends.push(data[i].getCopy());
     }
 
     newSession.friends = friends;

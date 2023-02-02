@@ -1,8 +1,8 @@
 
 export default class userObj {
-  name = ''
-  _meal = 0
-  _tip = 0
+  // name = ''
+  // _meal = 0
+  // _tip = 0
 
   constructor(name, meal, tip) {
     this.name = name || '';
@@ -37,3 +37,8 @@ export default class userObj {
     });
   }
 }
+
+
+//////////////////////////////////////
+
+var a = new userObj()
