@@ -54,20 +54,38 @@ exports.addUser = (req, res) => {
   }
   parsePhoneNumbers(docs);
 
-  console.log(docs)
+  console.log('DOCS', docs)
   if (!docs) {
-    res.status(400).end();
+    res.status(400).send('Not a valid phone number. Please enter a 10 digit phone number.');
     return;
   }
+  //Checks if guest account exists and updates to make full account
+  db.User.updateOne({phone_num: docs.phone_num, isGuest: true}, docs)
+  .then(result => {
+    if (result && result.acknowledged && result.modifiedCount) {
+      res.sendStatus(200)
+    } else {      
+  //Adds user to db. 
+      db.User.insertMany(docs)
+      .then((results) => {
+        console.log(results)
+        res.status(200).send(results);
+      })
+      .catch(err => {
+        console.error(err.code);
+        if (err.code === 11000) {
+          res.status(401).send('An account with this phone number already exists.')
+        } else {
+          res.status(500).send(err.toString());
+        }
+      });
+    }
+  })
+  .catch((err) => {
+    console.log(err)
+    res.status(500).send(err.toString())
+  })
 
-  db.User.insertMany(docs)
-    .then((results) => {
-      res.status(201).send(results);
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).send(err.toString());
-    });
 };
 
 exports.updateUser = function (req, res) {
