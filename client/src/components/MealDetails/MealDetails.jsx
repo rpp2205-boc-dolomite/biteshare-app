@@ -35,10 +35,12 @@ import getCurrencyString from '../../helpers/formatCurrency.js';
 export default function MealDetails(props) {
   const [host, setHost] = React.useState();
   if (!host) { getHostData(setHost) }
-  const { state } = useLocation();
-  console.log('MealDetail', state, host);
+  // const { state } = useLocation();
+  // console.log('MealDetail', state, host);
+  console.log('props in meals: ', props.inputs);
+  const state = props.inputs;
 
-  if (!state || !state.friends || !state.restInfo) { console.warn('MealDetails is missing some data') }
+  // if (!state || !state.friends || !state.restInfo) { console.warn('MealDetails is missing some data') }
   // else { // build data for CustomSplit }
   const [guests, setGuests] = React.useState(state.friends.length + 1);
   const [splitMethod, setSplitMethod] = React.useState('even');
@@ -61,6 +63,7 @@ export default function MealDetails(props) {
     } else {
       Object.assign(state.friends[index], change);
     }
+
   };
 
   const handleTipPercentChange = function (value) {
@@ -122,9 +125,9 @@ export default function MealDetails(props) {
     return anyNulls ? false : newSession;
   };
 
-  if (redirect) {
-    return <Navigate to="/review" state={session} />
-  }
+  // if (redirect) {
+  //   return <Navigate to="/review" state={session} />
+  // }
 
   return (<>
     <Stack direction="column" sx={{ m: 0.5, px: 0.5 }}>
