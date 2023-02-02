@@ -13,7 +13,7 @@ import {
 } from '@mui/icons-material';
 
 export default function CustomSplitFriend({ data }) {
-  console.log('CSF', data)
+  // console.log('CSF', data)
   const errorExists = () => {
     return Number.isNaN(data.mealAmount) || Number.isNaN(data.tipAmount);
   };
