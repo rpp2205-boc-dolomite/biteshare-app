@@ -78,6 +78,7 @@ export default function Steps() {
   function _handleNext() {
    if (activeStep === 2) {
       // Matt's page validataion functions
+      console.log('it is 2nd step');
     }
     setActiveStep(activeStep + 1);
   }
@@ -96,7 +97,7 @@ export default function Steps() {
         <div>
           {_renderStepContent(activeStep)}
 
-          <div style={{display:'flex', justifyContent:'flex-end'}}>
+          <div style={{display:'flex', justifyContent:'space-around'}}>
             {activeStep !== 0 && (
               <Button onClick={_handleBack} variant="contained"
               color="primary"  sx={btnStyle}>

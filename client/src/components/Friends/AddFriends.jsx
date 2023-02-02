@@ -45,6 +45,12 @@ const AddFriends = ({inputs, setInputs}) => {
   if (!existList) {
     getFriends();
   }
+  //handle the back button with props
+  useEffect(() => {
+    if (inputs.friends.length > 0) {
+      setFriends(inputs.friends);
+    }
+  }, [])
 
   const deleteOne = (i) => {
     setFriends(friends.slice(0, i).concat(friends.slice(i+1)))
