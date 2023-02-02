@@ -11,10 +11,13 @@ const FriendEntry = ({friend, i, deleteOne, page}) => {
     deleteOne(i);
    }
    let styleForPage = page === "friends" ? {margin:4} : null
-   const avatorColorPool =[deepOrange[500], blue[500], deepPurple[500], null]
-   const pickColor = () =>{
-     let index = Math.floor(Math.random() * 5);
-     return avatorColorPool[index];
+   const avatorColorPool =[deepOrange[500], blue[500], null, deepPurple[500]]
+   const pickColor = (i) =>{
+     if(i < 4) {
+      return i;
+     } else {
+      return i - (Math.floor(i / 4) * 3) -1
+     }
    }
   return (
     <ListItem
@@ -27,7 +30,7 @@ const FriendEntry = ({friend, i, deleteOne, page}) => {
       key={i}
       >
       <ListItemAvatar>
-       <Avatar sx={{bgcolor: avatorColorPool[Math.floor(Math.random()*5)]}}>
+       <Avatar sx={{bgcolor: avatorColorPool[pickColor(i)]}}>
          {friend.name.slice(0,1).toUpperCase()}
        </Avatar>
       </ListItemAvatar>
