@@ -126,18 +126,13 @@ class MealDetails extends Component {
   };
 
   handleSplitMethodChange() {
-    if (this.state.splitMethod === 'even' && this.formDataIsValid) {
-      const evenTipAmount = (mealTotal * tipPercent) / guests;
-      setHost({
-        ...host,
-        meal_amount: evenMealAmt,
-        tip_amount: evenTipAmount
-      });
-
-      this.state.friends.map(item => Object.assign(item, {
-        meal_amount: evenMealAmt,
-        tip_amount: evenTipAmount
-      }));
+    if (this.state.splitMethod === 'even') {
+      if (this.formDataIsValid()) {
+        this.buildCustomSplitData();
+        this.setState({ splitMethod: 'custom' });
+      }
+    } else {
+      this.setState({ splitMethod: 'even' })
     }
 
     setSplitMethod(splitMethod === 'even' ? 'custom' : 'even');
