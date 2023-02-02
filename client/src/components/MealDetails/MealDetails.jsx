@@ -30,7 +30,7 @@ import {
 import { Link, Navigate } from 'react-router-dom';
 import getHostData from '../../helpers/getHostData';
 import getCurrencyString from '../../helpers/formatCurrency.js';
-import userObj from './userObject.js';
+import userObj from './userObject.mjs';
 import withRouter from '../withRouter.jsx';
 
 class MealDetails extends Component {
@@ -171,13 +171,7 @@ class MealDetails extends Component {
     const evenTipAmount = this.evenTipAmount;
 
     const makeGuestObj = (guest) => {
-      const obj = Object.create(userObj);
-
-      obj.name = guest.name;
-      obj.meal = evenMealAmount;
-      obj.tip = evenTipAmount;
-
-      return obj;
+      return new userObj(guest.name, evenMealAmount, evenTipAmount);
     };
 
     data.push(makeGuestObj(this.state.host));
