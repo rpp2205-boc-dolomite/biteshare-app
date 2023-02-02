@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import ReactionsComment from './ReactionsComment.jsx';
 
 export default function Home() {
   const [feed, setFeed] = useState([]);
@@ -46,8 +47,7 @@ export default function Home() {
                   <Typography variant="subtitle1">
                       {element.detail[hostId].name} shared a meal with {total} others at {element.rest_name}
                   </Typography>
-                  <FavoriteBorderIcon />
-                  <ChatBubbleOutlineIcon />
+                <ReactionsComment />
               </Box>
             </Link>
           )
