@@ -147,7 +147,7 @@ export default function MealDetails(props) {
           label="Bill Amount"
           startAdornment={<InputAdornment position="start" component="div"><div><AttachMoneyIcon /></div></InputAdornment>}
           error={Number.isNaN(evenMealAmt)}
-          placeholder="NOT including tip..."
+          placeholder="Not including tip..."
           // defaultValue={""}
           onChange={e => handleMealTotalChange(Math.abs(e.target.value))}
           required
