@@ -13,7 +13,7 @@ import Login from './components/Login.jsx';
 import FriendsPage from './components/Friends/FriendsPage.jsx';
 import RestaurantSearch from './components/Restaurant/RestaurantSearch.jsx';
 import CompletePayment from './components/CompletePayment.jsx'
-
+import Steps from './components/Steps.jsx';
 
 import {
   createBrowserRouter,
@@ -32,7 +32,8 @@ const router = createBrowserRouter([
   {path:'/friends', element:<FriendsPage />},
   {path:"/searchRest", element:<RestaurantSearch />},
   {path:'/home', element: <Home/>},
-  {path:"/completePayment", element: <CompletePayment />}
+  {path:"/completePayment", element: <CompletePayment />},
+  {path:"/step", element: <Steps />}
 ]);
 
 
