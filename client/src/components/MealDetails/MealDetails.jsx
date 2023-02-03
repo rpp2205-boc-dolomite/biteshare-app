@@ -140,6 +140,7 @@ class MealDetails extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.validateSession()) {
       this.session.payload = this.createSession();
+      console.log('SESSION', this.session.payload);
     } else {
       this.session.payload = null;
     }
@@ -336,7 +337,6 @@ class MealDetails extends Component {
             <span><FormLabel>Tip total: </FormLabel>{getCurrencyString(this.tipTotal)}</span>
             <span><FormLabel>Grand total: </FormLabel>{getCurrencyString(this.billTotal)}</span>
           </Stack>
-          {console.log('SM', this.state.splitMethod)}
           <Divider orientation="vertical" sx={{ height: 80 }} />
           <Stack direction="column" sx={{ ml: 2 }}>
             <span><FormLabel>Meal due per person: </FormLabel>{getCurrencyString(this.evenMealAmount)}</span>
