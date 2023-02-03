@@ -98,6 +98,8 @@ details[req.body.host.user_id] = {
 
 exports.updatePaymentStatus = function(req, res)  {
   const userId = req.body.userId;
+  const comment = req.body.comment;
+
   if (!userId) {
     res.status(500).send('User id not found');
   } else {
@@ -115,7 +117,6 @@ exports.updatePaymentStatus = function(req, res)  {
         }
       }
       // all participants have paid
-
       textBody['restaurant'] = data.rest_name;
       textBody['sub_total'] = data.sub_total;
       textBody['tip_total'] = data.tip_total;

@@ -34,7 +34,6 @@ exports.sendTexts = async function (input) {
 };
 
 exports.sendAllFriendHasPaidTexts = function(textBody) {
-  console.log('textBody: ', textBody)
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const authToken = process.env.TWILIO_AUTH_TOKEN;
   const client = require('twilio')(accountSid, authToken);
@@ -48,7 +47,7 @@ exports.sendAllFriendHasPaidTexts = function(textBody) {
       Total: $${textBody['sub_total'] + textBody['tip_total']}
       `,
       from: process.env.TWILIO_PHONE_NUM,
-      to: process.env.MY_PHONE_NUM
+      to: process.env.MY_PHONE_NUM // temporary, change to host when production
     })
     .then(message => console.log('message successfully sent!', message.sid))
     .catch(e => console.log('failed to send text', e))
