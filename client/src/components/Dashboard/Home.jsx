@@ -29,31 +29,35 @@ export default function Home() {
           var hostId = element.host;
           var total = Object.keys(element.detail).length;
           return (
+            <Box sx={{
+              width: 'auto',
+              p: 1,
+              bgcolor: (theme) =>
+                theme.palette.mode === 'dark' ? '#101010' : 'grey.100',
+              color: (theme) =>
+                theme.palette.mode === 'dark' ? 'grey.300' : 'grey.800',
+              border: '1px solid',
+              borderColor: (theme) =>
+                theme.palette.mode === 'dark' ? 'grey.800' : 'grey.300',
+              borderRadius: 2,
+              fontSize: '0.875rem',
+              fontWeight: '700',
+              m: 1
+            }}>
             <Link to="/meal" style={{ textDecoration: 'none' }} state={element} key={index}>
-              <Box sx={{
-                  width: 'auto',
-                  p: 1,
-                  bgcolor: (theme) =>
-                    theme.palette.mode === 'dark' ? '#101010' : 'grey.100',
-                  color: (theme) =>
-                    theme.palette.mode === 'dark' ? 'grey.300' : 'grey.800',
-                  border: '1px solid',
-                  borderColor: (theme) =>
-                    theme.palette.mode === 'dark' ? 'grey.800' : 'grey.300',
-                  borderRadius: 2,
-                  fontSize: '0.875rem',
-                  fontWeight: '700',
-                  m: 1
-                }}>
+              <Box>
                   <Typography variant="subtitle1">
                       {element.detail[hostId].name} shared a meal with {total} others at {element.rest_name}
                   </Typography>
+
               </Box>
             </Link>
+            <ReactionsComment />
+            </Box>
           )
         })}
       </Box>
-                        <ReactionsComment />
+
     </Box>
   )
 }

@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { styled } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Button, ButtonGroup, Box, Typography, Stack, List, ListItem, ListItemButton, Paper} from '@mui/material';
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  fontSize: 26,
-
-}));
+const theme = createTheme({
+  palette: {
+    primary: {
+      // Purple and green play nicely together.
+      main: '#000000',
+    },
+    secondary: {
+      // This is green.A700 as hex.
+      main: '#11cb5f',
+    },
+  },
+});
 
 const ReactionsComment = ({}) => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
@@ -22,25 +25,11 @@ const ReactionsComment = ({}) => {
     console.log(reaction);
   };
 
-  const handleThumb = (e) => {
-    console.log(e.target.id);
+  const handleComment = (e) => {
+    console.log('comment')
   }
-
-  const handleLike = (e) => {
-    console.log("i super like this");
-  }
-
-  const handleFire = (e) => {
-    console.log("fire yo");
-  }
-
-  const handleTooth = (e) => {
-    console.log("tooths!");
-  }
-
 
   return (
-    <Box>
       <Box
         sx={{
         display: 'flex',
@@ -48,41 +37,52 @@ const ReactionsComment = ({}) => {
         m: 1,
         }}
       >
-      <ButtonGroup variant="text">
-      <Button
-        sx={{
-          fontSize: "2rem"
-        }}
-        id='thumb'
-        selected={selectedIndex === 0}
-        onClick={(event) => handleListItemClick(event, 0)}
-      >👍</Button>
-      <Button
-        sx={{
-          fontSize: "2rem"
-        }}
-        id='like'
-        selected={selectedIndex === 1}
-        onClick={(event) => handleListItemClick(event, 1)}
-      >❤️</Button>
-      <Button
-        sx={{
-          fontSize: "2rem"
-        }}
-        id='fire'
-        selected={selectedIndex === 2}
-        onClick={(event) => handleListItemClick(event, 2)}
-        >🔥</Button>
-      <Button
-        sx={{
-          fontSize: "2rem"
-        }}
-        id='tooth'
-        selected={selectedIndex === 3}
-        onClick={(event) => handleListItemClick(event, 3)}
-        >🦷</Button>
-      </ButtonGroup>
-    </Box>
+        <ThemeProvider theme={theme}>
+
+
+          <ButtonGroup variant="text" color="primary">
+          <Button
+            sx={{
+              fontSize: "1.2rem"
+            }}
+            id='thumb'
+            selected={selectedIndex === 0}
+            onClick={(event) => handleListItemClick(event, 0)}
+          >👍</Button>
+          <Button
+            sx={{
+              fontSize: "1.2rem"
+            }}
+            id='like'
+            selected={selectedIndex === 1}
+            onClick={(event) => handleListItemClick(event, 1)}
+          >❤️</Button>
+          <Button
+            sx={{
+              fontSize: "1.2rem"
+            }}
+            id='fire'
+            selected={selectedIndex === 2}
+            onClick={(event) => handleListItemClick(event, 2)}
+            >🔥</Button>
+          <Button
+            sx={{
+              fontSize: "1.2rem"
+            }}
+            id='tooth'
+            selected={selectedIndex === 3}
+            onClick={(event) => handleListItemClick(event, 3)}
+            >🦷</Button>
+            <Button
+              sx={{
+                fontSize: "1.2rem"
+              }}
+              onClick={handleComment}
+              >
+              💬
+            </Button>
+          </ButtonGroup>
+        </ThemeProvider>
 
     </Box>
   )
