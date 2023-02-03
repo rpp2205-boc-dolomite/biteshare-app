@@ -69,11 +69,11 @@ class MealDetails extends Component {
     this.setInputs = props.setInputs;
     this.session = props.inputs.session;
     Object.assign(this.state, {
-      mealTotal: props.inputs.mealTotal,
+      mealTotal: props.inputs.mealTotal || 0,
       tipPercent: props.inputs.tipPercent || 0.2,
       splitMethod: props.inputs.splitMethod || 'even',
-      receipt: props.inputs.receipt,
-      customSplitData: props.inputs.customSplitData
+      receipt: props.inputs.receipt || '',
+      customSplitData: props.inputs.customSplitData || null
     });
     Object.assign(this.state.host, props.inputs.host);
     Object.assign(this.state.friends, props.inputs.friends);
@@ -100,8 +100,8 @@ class MealDetails extends Component {
 
   get formDataIsValid() {
     return (
-      (this.state.mealTotal !== NaN && this.state.mealTotal > 0) &&
-      (this.state.tipPercent !== NaN && this.state.tipPercent >= 0) &&
+      (!Number.isNaN(this.state.mealTotal) && this.state.mealTotal > 0) &&
+      (!Number.isNaN(this.state.tipPercent) && this.state.tipPercent >= 0) &&
       (typeof this.state.receipt === 'string')
     );
   }
@@ -148,6 +148,7 @@ class MealDetails extends Component {
 
   handleSplitMethodChange(e) {
     e.preventDefault();
+    console.log('VALID?', this.formDataIsValid, this.state.splitMethod, this.state.mealTotal, this.state.tipPercent, this.state.receipt);
     if (this.state.splitMethod === 'even') {
       if (this.formDataIsValid) {
         console.log('FORM DATA VALID')
