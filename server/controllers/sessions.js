@@ -101,11 +101,10 @@ exports.updatePaymentStatus = function(req, res)  {
   if (!userId) {
     res.status(500).send('User id not found');
   } else {
+    let textBody = {};
+  
     db.Session.findOneAndUpdate({[`detail.${userId}`] : { $exists : true }}, {$set:{[`detail.${userId}.is_paid`]: true}})
     .then(data => {
-      // after updating the user's status, i want to check if all friends have paid.
-      // if so, i want to send notification to the host
-      const sessionId = data.id; // unique session id
       return db.Session.findById(sessionId)
     })
     .then(data => {
@@ -115,11 +114,26 @@ exports.updatePaymentStatus = function(req, res)  {
           return;
         }
       }
-      // if code comes here, that means all user has paid
-      console.log('all user has paid')
+      // all participants have paid
+
+      textBody['restaurant'] = data.rest_name;
+      textBody['sub_total'] = data.sub_total;
+      textBody['tip_total'] = data.tip_total;
+
+      const hostId = data.host.valueOf();
+      return db.User.findById(hostId)
+    })
+    .then(data => {
+      let hostPhoneNumber = data.phone_num;
+      let hostName = data.name;
+      textBody['host_name'] = hostName;
+      textBody['host_phone_number'] = hostPhoneNumber;
+      helper.sendAllFriendHasPaidTexts(textBody);
+      res.status(200).send('Successfully updated payment status for the user');
     })
     .catch((err) => {
       res.status(500).send('Failed to update payment status for the user');
     })
   }
 }
+
