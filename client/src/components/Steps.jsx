@@ -16,6 +16,7 @@ import AddFriends from "./Friends/AddFriends.jsx";
 import Review from './Review/Review.jsx';
 import Navbar from './Dashboard/Navbar.jsx';
 
+import axios from 'axios';
 const steps = ["Selecting Restaurant", "Add freinds", "Meal details", "Review your Meal"];
 
 const btnStyle = {
@@ -48,9 +49,9 @@ export default function Steps() {
 
   if (!inputs.host.user_id) {
     const user = JSON.parse(localStorage.getItem('user'));
-    const phone = localStorage.getItem('phone');
-    console.log('step local: ', user, phone);
-    setInputs({...inputs, host: {...inputs.host, user_id: user.id, name: user.name, phone_num:phone}})
+    //const phone = localStorage.getItem('phone');
+    console.log('step local: ', user);
+    setInputs({...inputs, host: {...inputs.host, user_id: user.id, name: user.name, phone_num: user.phone_num}})
   }
   function _renderStepContent(step) {
     switch (step) {
@@ -69,9 +70,13 @@ export default function Steps() {
 
   function _handleSubmit() {
     console.log('it is last page we need render to dashboard');
-    //send request to server to store the new meal session
-    //redirect to the dashboard
-    setRedirect(true);
+    axios.post('/api/sessions', inputs)
+    .then((response) => {
+      setRedirect(true);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   function _handleBack() {

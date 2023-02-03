@@ -6,24 +6,36 @@ export default function ReviewPageList (props) {
   var host = {name: 'Jack Daniels', amount: 32.23};
   return(
     <Box sx={{ml: 4}}>
-      {sample.map((element, index) => {
+      {props.friendsAdded.map((element, index) => {
         return(
-            <Grid container spacing={2}>
-              <Grid container item xs={6} direction="column">
+            <Grid container spacing={4} justifyContent="center" key={index}>
+              <Grid container item xs={3} direction="column">
                 <Typography>{element.name}</Typography>
               </Grid>
-              <Grid container item xs={6} direction="column">
-                <Typography>${element.amount}</Typography>
+              <Grid container item xs={3} direction="column">
+                <Typography>30</Typography>
+              </Grid>
+              <Grid container item xs={3} direction="column">
+                <Typography>10</Typography>
+              </Grid>
+              <Grid container item xs={3} direction="column">
+                <Typography>40</Typography>
               </Grid>
             </Grid>
         )
       })}
-      <Grid container spacing={2}>
-        <Grid container item xs={6} direction="column">
+      <Grid container spacing={4} justifyContent="center">
+        <Grid container item xs={3} direction="column">
           <Typography>You (Host)</Typography>
         </Grid>
-        <Grid container item xs={6} direction="column">
-          <Typography>${host.amount}</Typography>
+        <Grid container item xs={3} direction="column">
+          <Typography>${props.hostAmount.meal_amount}</Typography>
+        </Grid>
+        <Grid container item xs={3} direction="column">
+          <Typography>${props.hostAmount.tip_amount}</Typography>
+        </Grid>
+        <Grid container item xs={3} direction="column">
+          <Typography>${props.hostAmount.meal_amount + props.hostAmount.tip_amount}</Typography>
         </Grid>
       </Grid>
     </Box>
