@@ -18,9 +18,7 @@ const AddFriends = ({inputs, setInputs}) => {
   const [existList, setExistList] = useState(null)
   const [friends, setFriends] = useState([]);
   console.log('friends', friends);
-  // useEffect(() => {
-  //   setInputs({...inputs, friends:friends});
-  // }, [friends])
+
   //-------- pass props to next components ------//
   // const { state } = useLocation();
   // const restInfo = state.restInfo;
@@ -36,7 +34,7 @@ const AddFriends = ({inputs, setInputs}) => {
         //convert the result data to matche the fackfriendsList2 data
         let list = !result.data.friends.length ? [] : result.data.friends;
         let userFriends = list.map((friend) => {
-          return friend.name + ': ' + friend.phone_num
+          return {id: friend.id, name: friend.name, phone_num: friend.phone_num}
         })
         setExistList(userFriends);
       })
@@ -75,19 +73,6 @@ const AddFriends = ({inputs, setInputs}) => {
           </List>)
           }
         </Box>
-        {/* <Box sx={{justifyContent:"center",textAlign:'center', pt:"20%", m:1}}>
-          <Button
-           component={Link}
-           to='/mealdetails'
-           //state={{restInfo, friends}}
-           variant="contained"
-           size="large"
-           sx={{width:'60%', backgroundColor:'orange', '&:hover': {backgroundColor:'orange'}}}>
-            Continue
-          </Button>
-
-        </Box> */}
-
       </Container>
 
     </>
