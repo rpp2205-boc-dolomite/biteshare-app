@@ -7,7 +7,7 @@ import {
   Typography,
   CircularProgress
 } from "@mui/material";
-//import { Formik, Form } from "formik";
+import { Navigate } from 'react-router-dom';
 
 import MealsList from "./Dashboard/MealsList.jsx";
 import RestaurantSearch from "./Restaurant/RestaurantSearch.jsx";
@@ -24,7 +24,7 @@ const btnStyle = {
 export default function Steps() {
   const [activeStep, setActiveStep] = useState(0);
   const isLastStep = activeStep === steps.length - 1;
-
+  const [redirect, setRedirect] = useState(false);
   const [inputs, setInputs] = useState({
     host: {
       user_id:'',
@@ -67,7 +67,7 @@ export default function Steps() {
     console.log('it is last page we need render to dashboard');
     //send request to server to store the new meal session
     //redirect to the dashboard
-    setActiveStep(activeStep + 1);
+    setRedirect(true);
   }
 
   function _handleBack() {
@@ -80,9 +80,14 @@ export default function Steps() {
       // Matt's page validataion functions
       console.log('it is 2nd step');
     }
+    if (activeStep === 3) {
+      _handleSubmit();
+    }
     setActiveStep(activeStep + 1);
   }
-
+  if (redirect) {
+    return <Navigate to='/meals' replace={true}/>
+  }
   return (
     <>
       <Navbar />
@@ -105,15 +110,11 @@ export default function Steps() {
               </Button>
             )}
             <div style={{margin:1, position:'relative'}}>
-              {isLastStep ?
-              <Button variant="contained" color="primary" onClick={_handleSubmit} sx={btnStyle}>
-                Confirm
-              </Button>
-              :
+
               <Button variant="contained" color="primary" onClick={_handleNext} sx={btnStyle}>
-                Next
+                {isLastStep ? "Confirm" : "Next" }
               </Button>
-              }
+
             </div>
           </div>
         </div>

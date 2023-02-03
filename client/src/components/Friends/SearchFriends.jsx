@@ -25,11 +25,11 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
   }
 
   const addToList = (e) =>{
-    let friend = value.split(': ');
-    let cur = {name:friend[0], phone_num:friend[1]}
+
+
     let isExists = false;
     friends.forEach(friend => {
-      if (JSON.stringify(friend) === JSON.stringify(cur)) {
+      if (friend.name === value.name && friend.phone_num === value.phone_num) {
         console.log('exists!@')
         isExists=true;
         triggerAlert({status:true, severity:'error', msg:'You already added this friends to this bill!'})
@@ -38,9 +38,9 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
     })
     if (!isExists) {
       console.log('new added')
-      setFriends(friends.concat([{name:friend[0], phone_num:friend[1]}]));
+      setFriends(friends.concat([value]));
       //this line if for step components
-      setInputs({...inputs, friends: friends.concat([{name:friend[0], phone_num:friend[1]}])})
+      setInputs({...inputs, friends: friends.concat([value])})
       setValue(null);
     }
   }
@@ -50,14 +50,17 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
     if (name) {
       setDialogValue({...dialogValue, name: name})
     }
-    let temp = (!name ? dialogValue.name : name) +': ' + dialogValue.phone
-    setValue(temp);
+    // let temp = (!name ? dialogValue.name : name) +': ' + dialogValue.phone
+    let tempName = !name ? dialogValue.name : name;
+    let currentOne = (!name ? dialogValue.name : name) +': ' + dialogValue.phone;
+    setValue(currentOne);
     console.log('temp', temp);
     //if chose add to friends list
     if (add) {
       axios.post(`/api/friends/?user_id=${id}`,{guest_id: guest_id})
         .then((add) => {
-          setExistList(existList.concat([temp]));
+          let cur = {id: guest_id, name:name, phone_num:dialogValue.phone}
+          setExistList(existList.concat([cur]));
           triggerAlert({status:true, severity:'success', msg:'Add friends Success!'})
           handleClose()
         })
@@ -68,6 +71,7 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
 
 
   const handleChange = (e, newValue) => {
+    console.log('newValue in change func', newValue);
     if (typeof newValue === 'string') {
       setValue(newValue);
     } else if (newValue && newValue.inputValue) {
@@ -85,7 +89,7 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
         })
       }
     } else {
-      setValue(newValue);
+      setValue({id: newValue.id, name: newValue.name, phone_num: newValue.phone_num});
     }
   }
 
@@ -104,8 +108,8 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
             options={existList}
             freeSolo={true}
             getOptionLabel={(option) => {
-              if (typeof option === 'string') {
-                return option;
+              if (typeof option === 'object') {
+                return option.name + ': ' + option.phone_num;
               }
               if (option.inputValue) {
                 return option.inputValue;
@@ -127,7 +131,7 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
             selectOnFocus
             clearOnBlur
             handleHomeEndKeys
-            renderOption={(props, option) => <li {...props}>{typeof option === 'string' ? option : option.name}</li>}
+            renderOption={(props, option) => <li {...props}>{option.name + ': ' + option.phone_num}</li>}
           />
         </Grid>
         <Grid item justify="flex-end" alignItems="center" sx={{padding: 2}}>

@@ -28,13 +28,8 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
     }
     let isExistPhone = false;
     existList.forEach(person => {
-      let phone;
-      if (page === 'meal') {
-        phone = person.split(': ')[1];
-      } else {
-        phone = person.phone_num;
-      }
-
+      // let phone = page === 'meal' ? person.split(': ')[1] : person.phone_num;
+      let phone = person.phone_num
       if (phone === dialogValue.phone){
         console.log('number duplicate')
         isExistPhone = true;
@@ -74,7 +69,7 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
   }
   return (
 
-      <Drawer
+    <Drawer
       anchor="bottom"
       open={open}
       onClose={handleClose}

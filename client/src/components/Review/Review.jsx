@@ -69,14 +69,14 @@ export default function Review(props) {
             </Grid>
           <ReviewPageList friendsAdded={props.inputs.friends} hostAmount={props.inputs.host}></ReviewPageList>
         </Box>
-        <Grid container rowSpacing={20} direction="column">
-        {/* if we using step component we don't need these 2 button anymore */}
-        {/* <Grid item>
+        {/* <Grid container rowSpacing={20} direction="column" alignItems="center" justifyContent="center">
+        if we using step component we don't need these 2 button anymore
+        <Grid item>
           Change onClick function in button to postSessions(e) after Matt finishes his part
             <Button variant="contained" size="large" sx={{...btnStyle, backgroundColor: "black"}} onClick={(e) => { setRedirect(true); }}>Confirm</Button>
             <Button component={Link} to="/mealdetails" variant="contained" size="large" sx={{...btnStyle, backgroundColor:'black'}}>Edit</Button>
-          </Grid> */}
-        </Grid>
+          </Grid>
+        </Grid> */}
         </Box>
     </Box>
   )
