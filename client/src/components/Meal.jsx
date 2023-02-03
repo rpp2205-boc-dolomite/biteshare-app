@@ -12,6 +12,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TableHead,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "./Loading.jsx";
@@ -20,6 +21,7 @@ const Meal = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const data = location.state;
+  console.log('data: ', data)
   const userObj = localStorage.getItem("user");
   const parsedUserObj = JSON.parse(userObj);
 
@@ -47,32 +49,33 @@ const Meal = () => {
             <FormLabel>Restaurant:</FormLabel>
             <Typography variant="subtitle1">{data.rest_name}</Typography>
             <Divider sx={{ borderBottomWidth: 1 }}/>
-            <FormLabel>Total:</FormLabel>
+            <FormLabel>Subtotal:</FormLabel>
             <Typography variant="body1">
-              ${data.sub_total.toFixed(2)}
+              $ {data.sub_total.toFixed(2)}
             </Typography>
             <Divider sx={{ borderBottomWidth: 1 }}/>
-            <FormLabel>Tips:</FormLabel>
+            <FormLabel>Tip:</FormLabel>
             <Typography variant="body1">
-              ${data.tip_total.toFixed(2)}
-            </Typography>
-            <Divider sx={{ borderBottomWidth: 1 }}/>
-            <FormLabel>Tip rate:</FormLabel>
-            <Typography variant="body1">
-              {Math.ceil(
+              {`$ ${data.tip_total.toFixed(2)} (${Math.ceil(
                 (data.tip_total.toFixed(2) / data.sub_total.toFixed(2)) * 100
-              )}
-              %
+              )}%)`}
             </Typography>
             <Divider sx={{ borderBottomWidth: 1 }}/>
-            <FormLabel>Number of friends:</FormLabel>
+            <FormLabel>Total: </FormLabel>
             <Typography variant="body1">
-              {Object.entries(data.detail).length} people
+              $ {data.sub_total + data.tip_total}
             </Typography>
             <Divider sx={{ borderBottomWidth: 1 }}/>
-            <FormLabel>Friends:</FormLabel>
+            <FormLabel>{`Friends (${Object.entries(data.detail).length} people) : `}</FormLabel>
             <TableContainer>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 'bold' }}>username</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }}>total</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }}>status</TableCell>
+                  </TableRow>
+                </TableHead>
                 <TableBody>
                   {Object.entries(data.detail).map((friend, index) => {
                     console.log(friend)
