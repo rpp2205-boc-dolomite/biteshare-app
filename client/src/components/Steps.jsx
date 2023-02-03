@@ -15,6 +15,7 @@ import MealDetails from "./MealDetails/MealDetails.jsx";
 import AddFriends from "./Friends/AddFriends.jsx";
 import Review from './Review/Review.jsx';
 import Navbar from './Dashboard/Navbar.jsx';
+import axios from 'axios';
 const steps = ["Selecting Restaurant", "Add freinds", "Meal details", "Review your Meal"];
 
 const btnStyle = {
@@ -65,9 +66,13 @@ export default function Steps() {
 
   function _handleSubmit() {
     console.log('it is last page we need render to dashboard');
-    //send request to server to store the new meal session
-    //redirect to the dashboard
-    setRedirect(true);
+    axios.post('/api/sessions', inputs)
+    .then((response) => {
+      setRedirect(true);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   function _handleBack() {

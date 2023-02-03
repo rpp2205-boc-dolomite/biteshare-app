@@ -54,27 +54,36 @@ var session = {host: '63d56a0483bd4d48f67c9981', detail: {'63d56a0483bd4d48f67c9
 
 //expecting body to be {users, info} where users is an array of objects and
 // info has the rest_name and other info
+console.log(req.body);
 
-  db.User.insertMany(req.body.users)
-    .then((results) => {
-      const details = results.reduce((acc, curr, index) =>
-        (acc[curr] = {
-          name: req.body[index].name,
-          tip: req.body[index].tip,
-          is_paid: true
-        }, acc), {});
+var friends = [ ...req.body.friends]
+const details = friends.reduce((acc, curr, index) =>
+(acc[curr.id] = {
+  name: friends[index].name,
+  bill: 10,   //friends[index].meal_amount
+  tip: 5, //friends[index][tip_amount]?
+  is_paid: false
+}, acc), {});
+console.log(req.body.host.user_id)
+details[req.body.host.user_id] = {
+  name: req.body.host.name,
+  bill: req.body.host.meal_amount,
+  tip: req.body.host.tip_amount,
+  is_paid: false
+}
 
-        return db.Session.insert({
-        detail: details,
-        ...req.body.info
-      });
-    })
-    .then((newResults) => {
-      res.status(200).send(newResults);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    })
+console.log(details);
+
+  //  db.Session.insert({
+  //       detail: details,
+  //       ...req.body.info
+  //     });
+  //   .then((newResults) => {
+  //     res.status(200).send(newResults);
+  //   })
+  //   .catch((err) => {
+  //     res.status(500).send(err);
+  //   })
 }
 
 exports.updatePaymentStatus = function(req, res)  {
