@@ -14,7 +14,7 @@ export default function FriendsPage (props) {
   const [dialogValue, setDialogValue] = useState({name:'', phone:'+1'})
   const [alert, setAlert] = useState(initAlert);
 
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem('phone'));
 
   useEffect(() => {
     if (!friends){
@@ -33,6 +33,7 @@ export default function FriendsPage (props) {
     })
     setOpen(false);
   }
+
   const deleteOne = (i) => {
     //send to server delete the current friend
     let cur = friends[i];
@@ -55,7 +56,6 @@ export default function FriendsPage (props) {
         setFriends(friends.concat([temp]));
         handleClose()
         triggerAlert({status:true, severity:'success', msg:'Add friends Success!'})
-
       })
   }
   return (
@@ -67,7 +67,7 @@ export default function FriendsPage (props) {
       <Box sx={{m:2,  width:"90%", alignItems: "center", justifyContent: "center"}}>
       <Typography align="center" variant="h5" mt={2} p={4}>Your Friends List</Typography>
       <Divider/>
-      <Box component="div" sx={{width: "80%", display: "flex", alignItems: "center", justifyContent: "center"}}>
+      <Box component="div" sx={{width: "80%", display: "flex", alignItems: "center", justifyContent: "flex-end"}}>
         {!friends ? <Loading /> : (!friends.length ? (<h2>You do not have any friends yet</h2> )
         : (<List >
           {friends.map((friend, i) =>
@@ -76,16 +76,12 @@ export default function FriendsPage (props) {
         </List>)
         )}
       </Box>
-      <Divider><Typography>Add friends</Typography></Divider>
       {open && <NewFriendDialog open={open} setDialogValue={setDialogValue} dialogValue={dialogValue} handleClose={handleClose} existList={friends} handleSubmit={handleSubmit} page="friends"/>}
-      {/* <Box component="div" sx={{pt:2, display: "grid", justifyItems: "center", justifyContent: "center"}}>
+      <Box component="div" sx={{pt:2, display: "grid", justifyItems: "center", justifyContent: "center"}}>
         {/* <SearchFriendsBar err={error} setErr={setError} input={input} setInput={setInput} clicked={handleSearch}/> */}
-        {/* <Button variant="contained" size="large" sx={{bgcolor:'orange', width:'300px'}} onClick={()=> setOpen(true)}>Add a new friend</Button>
-      </Box> */}
-
-
+        <Button variant="contained" size="large" sx={{bgcolor:'orange', width:'300px'}} onClick={()=> setOpen(true)}>Add a new friend</Button>
       </Box>
-
+      </Box>
     </>
 
   )
