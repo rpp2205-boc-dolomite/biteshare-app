@@ -14,7 +14,7 @@ export default function FriendsPage (props) {
   const [dialogValue, setDialogValue] = useState({name:'', phone:'+1'})
   const [alert, setAlert] = useState(initAlert);
 
-  const user = JSON.parse(localStorage.getItem('phone'));
+  const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
     if (!friends){
@@ -55,7 +55,7 @@ export default function FriendsPage (props) {
         console.log('friends page res:', res.data);
         setFriends(friends.concat([temp]));
         handleClose()
-        triggerAlert({status:true, severity:'success', msg:'Add friends Success!'})
+        setAlert({status:true, severity:'success', msg:'Add friends Success!'})
       })
   }
   return (

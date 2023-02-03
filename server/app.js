@@ -16,6 +16,7 @@ const { getBiz } = require('./controllers/yelpBiz.js');
 const { addReactionToSession, addCommentToSession, testInit } = require('./controllers/social');
 
 app.use(helmet({
+  crossOriginEmbedderPolicy: false,
   contentSecurityPolicy: {
     useDefaults: true,
     directives: {

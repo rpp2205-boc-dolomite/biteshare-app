@@ -36,7 +36,7 @@ import withRouter from '../withRouter.jsx';
 class MealDetails extends Component {
   state = {
     host: {
-      user_id:'',
+      user_id: '',
       name: '',
       phone_num: '',
       meal_amount: 0,
@@ -53,8 +53,8 @@ class MealDetails extends Component {
     receipt: '',
     customSplitData: null,
     session: null,
-    redirect: false,
-    isInitialized: false
+    // redirect: false,
+    // isInitialized: false
   }
 
   constructor(props) {
@@ -62,16 +62,23 @@ class MealDetails extends Component {
     this.handleSplitMethodChange = this.handleSplitMethodChange.bind(this);
     this.handleMealTotalChange = this.handleMealTotalChange.bind(this);
     this.handleTipPercentChange = this.handleTipPercentChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.buildCustomSplitData = this.buildCustomSplitData.bind(this);
     this.validateSession = this.validateSession.bind(this);
     this.createSession = this.createSession.bind(this);
 
-
-    Object.assign(this.state.host, props.host)
-    Object.assign(this.state.friends, props.friends);
-    Object.assign(this.state.restInfo, props.restInfo);
-    // console.log('MD CONSTRUCTOR', this.state);
+    this.setInputs = props.setInputs;
+    this.session = props.inputs.session;
+    Object.assign(this.state, {
+      mealTotal: props.inputs.mealTotal || 0,
+      tipPercent: props.inputs.tipPercent || 0.2,
+      splitMethod: props.inputs.splitMethod || 'even',
+      receipt: props.inputs.receipt || '',
+      customSplitData: props.inputs.customSplitData || null
+    });
+    Object.assign(this.state.host, props.inputs.host);
+    Object.assign(this.state.friends, props.inputs.friends);
+    Object.assign(this.state.restInfo, props.inputs.restInfo);
+    console.log('MD CONSTRUCTOR', this.state);
   }
 
   //#region Statics 🗂️
@@ -93,8 +100,8 @@ class MealDetails extends Component {
 
   get formDataIsValid() {
     return (
-      (this.state.mealTotal !== NaN && this.state.mealTotal > 0) &&
-      (this.state.tipPercent !== NaN && this.state.tipPercent >= 0) &&
+      (!Number.isNaN(this.state.mealTotal) && this.state.mealTotal > 0) &&
+      (!Number.isNaN(this.state.tipPercent) && this.state.tipPercent >= 0) &&
       (typeof this.state.receipt === 'string')
     );
   }
@@ -116,41 +123,36 @@ class MealDetails extends Component {
     this.setState({ tipPercent: Math.abs(value) });
   }
 
-  handleSubmit() {
-    const session = createAndValidateSession();
-
-    if (session) {
-      console.log('Session is valid! Navigating to review page');
-      console.log('SESSION', session);
-      setRedirect(true);
+  componentDidUpdate(prevProps, prevState) {
+    if (this.validateSession()) {
+      this.session.payload = this.createSession();
+      console.log('SESSION', this.session.payload);
     } else {
-      // Don't submit
-      console.log('could not validate session');
+      this.session.payload = null;
     }
   }
 
-  componentDidMount() {
-    this.setState(state => {
-      return {
-        ...state,
-        // friends: this.props.router.location.state.friends,
-        // restInfo: this.props.router.location.state.restInfo
-        host:{...this.state.host, user_id: this.props.inputs.host.user_id, name: this.props.inputs.host.name},
-        friends: this.props.inputs.friends,
-        restInfo:this.props.inputs.restInfo
-      }
+  componentWillUnmount() {
+    this.setInputs({
+      ...this.state,
+      session: this.session
     });
-    getHostData((function (host) {
-      this.setState({ host: { ...this.host, ...host } });
-    }).bind(this));
+  }
+
+  componentDidMount() {
+    if (this.state.mealTotal) {
+      document.getElementById('bill-amount-text-field').value = this.state.mealTotal;
+      // document.getElementById('choose-tip-radio-group').value = this.state.tipPercent;
+    }
   }
 
   handleSplitMethodChange(e) {
     e.preventDefault();
+    console.log('VALID?', this.formDataIsValid, this.state.splitMethod, this.state.mealTotal, this.state.tipPercent, this.state.receipt);
     if (this.state.splitMethod === 'even') {
       if (this.formDataIsValid) {
-        this.buildCustomSplitData();
-        this.setState({ splitMethod: 'custom' });
+        console.log('FORM DATA VALID')
+        this.setState({ customSplitData: this.buildCustomSplitData(), splitMethod: 'custom' });
       } else {
         document.getElementById("split-method-toggle-group").value = 'even';
       }
@@ -165,7 +167,7 @@ class MealDetails extends Component {
     const evenTipAmount = this.evenTipAmount;
 
     const makeGuestObj = (guest) => {
-      return new userObj(guest.name, evenMealAmount, evenTipAmount);
+      return new userObj(guest.name, guest.id, evenMealAmount, evenTipAmount);
     };
 
     data.push(makeGuestObj(this.state.host));
@@ -174,26 +176,32 @@ class MealDetails extends Component {
       data.push(makeGuestObj(friend));
     }
 
-    this.setState({ customSplitData: data });
+    // this.setState({ customSplitData: data });
     return data;
   }
 
   validateSession() {
-    const data = this.state.customSplitData || this.buildCustomSplitData();
-
-    let mealSum = 0;
-    let tipSum = 0;
-
-    for (const guest of data) {
-      if (Number.isNaN(guest.mealAmount) || Number.isNaN(guest.mealAmount))
-        mealSum += guest.mealAmount;
-      tipSum += guest.tipAmount;
+    if (!this.state.mealTotal || !this.state.tipPercent) {
+      return false;
     }
 
-    // console.log('VALIDATE SESSION', mealSum, this.state.mealTotal);
-    return (
-      mealSum.toFixed(2) === this.state.mealTotal.toFixed(2)
-    );
+    if (this.state.splitMethod !== 'even') {
+      let mealSum = 0;
+      let tipSum = 0;
+      const data = this.state.customSplitData || this.buildCustomSplitData();
+      for (const guest of data) {
+        if (Number.isNaN(guest.meal) || Number.isNaN(guest.meal)) { return false }
+        mealSum += guest.meal;
+        tipSum += guest.tip;
+      }
+
+      return (
+        (mealSum.toFixed(2) === this.state.mealTotal.toFixed(2)) &&
+        (tipSum.toFixed(2) === this.tipTotal.toFixed(2))
+      );
+    }
+
+    return true;
   }
 
   createSession() {
@@ -201,8 +209,8 @@ class MealDetails extends Component {
     const newSession = {
       host: {
         ...this.state.host,
-        meal_amount: data[0].mealAmount,
-        tip_amount: data[0].tipAmount,
+        meal_amount: data[0].meal,
+        tip_amount: data[0].tip,
       },
       rest_name: this.state.restInfo.name,
       sub_total: this.state.mealTotal,
@@ -218,24 +226,14 @@ class MealDetails extends Component {
 
     newSession.friends = friends;
 
-    this.setState({ session: newSession });
-
     return newSession;
   }
 
 
   render() {
-    if (!this.state.isInitialized && this.state.host.phone_num && this.state.friends.length && this.state.restInfo.name) {
-      this.setState({ isInitialized: true });
-
-      return null;
-    }
-
-    if (this.redirect) {
-      return <Navigate to="/review" state={this.state.session} />
-    }
 
     return (<>
+      {/* Rest name and number of guests  */}
       <Stack direction="column" sx={{ m: 0.5, px: 0.5 }}>
         <Box sx={{ py: 0.5 }}>
           <FormLabel>Restaurant: </FormLabel>
@@ -247,17 +245,15 @@ class MealDetails extends Component {
         </Box>
       </Stack>
 
-      {/* <Divider sx={{my: 2}} /> */}
-
+      {/* Bill amount / Tip percentage  */}
       <Stack sx={{ m: 0.5, p: 0.5, border: 1, borderColor: 'primary.main', borderStyle: 'dashed', borderRadius: 2, justifyContent: 'center', alignItems: 'center' }}>
         <Box sx={{ p: 2 }}>
           <TextField
             id="bill-amount-text-field"
             label="Bill Amount"
-            startAdornment={<InputAdornment position="start" component="div"><div><AttachMoneyIcon /></div></InputAdornment>}
+            // startAdornment={<InputAdornment position="start" component="div"><div><AttachMoneyIcon /></div></InputAdornment>}
             error={Number.isNaN(this.state.mealTotal)}
             placeholder="Not including tip.."
-            // defaultValue={""}
             onChange={e => this.handleMealTotalChange(e.target.value)}
             required
             width={400}
@@ -269,7 +265,8 @@ class MealDetails extends Component {
           <span>
             <span><FormLabel id="choose-tip-group-label">Tip percentage: </FormLabel>{`${(this.state.tipPercent * 100).toString()}% (${getCurrencyString(this.tipTotal)})`}</span>
             <RadioGroup
-              defaultValue="0.20"
+              id="choose-tip-radio-group"
+              defaultValue={this.state.tipPercent}
               name="choose-tip-group"
               size="small"
               row
@@ -277,18 +274,17 @@ class MealDetails extends Component {
               padding={0}
               onChange={e => this.handleTipPercentChange(e.target.value)}
             >
-              <FormControlLabel value="0.18" control={<Radio />} label="18%" />
-              <FormControlLabel value="0.20" control={<Radio />} label="20%" />
-              <FormControlLabel value="0.22" control={<Radio />} label="22%" />
-              <FormControlLabel value="-1" control={<Radio />} label="Other:" />
+              <FormControlLabel value={0.18} control={<Radio />} label="18%" />
+              <FormControlLabel value={0.20} control={<Radio />} label="20%" />
+              <FormControlLabel value={0.22} control={<Radio />} label="22%" />
+              <FormControlLabel value={-1} control={<Radio />} label="Other:" />
               <TextField size="small" sx={{ width: 100 }}></TextField>
             </RadioGroup>
           </span>
         </Stack>
       </Stack>
 
-
-      {/* <Divider sx={{my: 2}} /> */}
+      {/* Receipt upload  */}
       <Stack direction="column" sx={{ justifyContent: 'center', alignItems: 'center' }}>
         <ReceiptUpload setReceipt={str => this.setState({ receipt: str })} />
         <Box
@@ -305,6 +301,7 @@ class MealDetails extends Component {
         ><img crossOrigin="anonymous" src={this.state.receipt} style={{ maxWidth: "100%", maxHeight: "100%" }} /></Box>
       </Stack>
 
+      {/* Split method toggle  */}
       <Divider sx={{ my: 2 }} />
       <Stack direction="row" sx={{ justifyContent: 'center', alignItems: 'center' }}>
         <FormLabel id="split-method-label" sx={{ mr: 1 }}>Split method: </FormLabel>
@@ -322,32 +319,27 @@ class MealDetails extends Component {
         </ToggleButtonGroup>
       </Stack>
 
-      <CustomSplit hidden={this.state.splitMethod === 'even'} data={this.state.customSplitData} />
+      {/* Custom split component  */}
+      <CustomSplit hidden={this.state.splitMethod === 'even'} data={this.state.customSplitData} mealTotal={this.state.mealTotal} tipTotal={this.tipTotal} />
 
       <Divider sx={{ my: 2 }} />
 
-      <Stack direction="row" justifyContent="center">
-        <Stack direction="column" sx={{ mr: 2 }}>
-          <span><FormLabel>Sub total: </FormLabel>{getCurrencyString(this.state.mealTotal)}</span>
-          <span><FormLabel>Tip total: </FormLabel>{getCurrencyString(this.tipTotal)}</span>
-          <span><FormLabel>Grand total: </FormLabel>{getCurrencyString(this.billTotal)}</span>
+      {/* Data display  */}
+      <Box hidden={this.state.splitMethod === 'custom'}>
+        <Stack direction="row" justifyContent="center">
+          <Stack direction="column" sx={{ mr: 2 }}>
+            <span><FormLabel>Sub total: </FormLabel>{getCurrencyString(this.state.mealTotal)}</span>
+            <span><FormLabel>Tip total: </FormLabel>{getCurrencyString(this.tipTotal)}</span>
+            <span><FormLabel>Grand total: </FormLabel>{getCurrencyString(this.billTotal)}</span>
+          </Stack>
+          <Divider orientation="vertical" sx={{ height: 80 }} />
+          <Stack direction="column" sx={{ ml: 2 }}>
+            <span><FormLabel>Meal due per person: </FormLabel>{getCurrencyString(this.evenMealAmount)}</span>
+            <span><FormLabel>Tip due per person: </FormLabel>{getCurrencyString(this.evenTipAmount)}</span>
+            <span><FormLabel>Total due per person: </FormLabel>{getCurrencyString(this.evenPerGuestTotal)}</span>
+          </Stack>
         </Stack>
-        <Divider orientation="vertical" sx={{ height: 80 }} />
-        <Stack direction="column" sx={{ ml: 2 }}>
-          <span><FormLabel>Meal due per person: </FormLabel>{getCurrencyString(this.evenMealAmount)}</span>
-          <span><FormLabel>Tip due per person: </FormLabel>{getCurrencyString(this.evenTipAmount)}</span>
-          <span><FormLabel>Total due per person: </FormLabel>{getCurrencyString(this.evenPerGuestTotal)}</span>
-        </Stack>
-      </Stack>
-
-
-
-      <Divider sx={{ my: 2 }} />
-      <Stack sx={{ alignItems: 'center' }}>
-        <Button variant="outlined" onClick={this.handleSubmit}>Save and Review</Button>
-      </Stack>
-
-
+      </Box>
     </>);
   }
 }

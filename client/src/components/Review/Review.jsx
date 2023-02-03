@@ -17,21 +17,9 @@ export default function Review(props) {
 
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
-  //uncomment when Matt finishes his page and update page to display the info
-  // const { state }  = useLocation();
-  // console.log({state});
+
   console.log('props in reviews from step: ', props.inputs);
-  const postSessions = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    axios.post('/api/sessions', data)
-    .then((response) => {
-      setRedirect(true);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  };
+  const info = props.inputs.session.payload;
 
   if(redirect) {
     return <Navigate to='/meals' replace={true}/>
@@ -45,25 +33,30 @@ export default function Review(props) {
       {/* <Navbar></Navbar> */}
         <Box>
         <Box sx={{m: 5}}>
-          <Typography variant="body1" sx={{m: 2}}>Restaurant Name: {props.inputs.restInfo.name}</Typography>
-          <Typography variant="body1" sx={{m: 2}}>Total: $100</Typography>
-          <Button variant="contained" size="small" sx={{ml:3, '&:hover': {backgroundColor:'lightgrey'}, backgroundColor: 'black'}}>View Receipt</Button>
-          <Typography variant="body1" sx={{m: 2}}>Number of friends: {props.inputs.friends.length}</Typography>
+          <Typography variant="body1" sx={{m: 2}}><b>Restaurant Name:</b> {info.rest_name}</Typography>
+          <img crossorigin="anonymous" src={info.receipt}></img>>
+          <Typography variant="body1" sx={{m: 2}}><b>Number of friends:</b> {info.friends.length + 1}</Typography>
           <Box display="flex" sx={{m: 2}}>
-            <Typography variant="body1" >Total: $20.00</Typography>
-            <Typography sx={{ml: 5}}>Tip rate: 20%</Typography>
+            <Typography variant="body1" ><b>Sub total:</b> ${info.sub_total}</Typography>
+            <Typography sx={{ml: 5}}><b>Tip total:</b> ${info.tip_total}</Typography>
+            <Typography sx={{ml: 5}}><b>Grand total: </b>${info.tip_total + info.sub_total}</Typography>
           </Box>
-          <Typography variant="body1" sx={{m: 2}}>Friends: </Typography>
-          <ReviewPageList></ReviewPageList>
+          <Grid container spacing={4} justifyContent="center">
+              <Grid container item xs={3} direction="column">
+                <Typography sx={{ fontWeight: 'bold' }}>Participants</Typography>
+              </Grid>
+              <Grid container item xs={3} direction="column">
+                <Typography sx={{ fontWeight: 'bold' }}>Meal Amount</Typography>
+              </Grid>
+              <Grid container item xs={3} direction="column">
+                <Typography sx={{ fontWeight: 'bold' }}>Tip Amount</Typography>
+              </Grid>
+              <Grid container item xs={3} direction="column">
+                <Typography sx={{ fontWeight: 'bold' }}>Total</Typography>
+              </Grid>
+            </Grid>
+          <ReviewPageList friendsAdded={info.friends} hostAmount={info.host}></ReviewPageList>
         </Box>
-        {/* <Grid container rowSpacing={20} direction="column" alignItems="center" justifyContent="center">
-        if we using step component we don't need these 2 button anymore
-        <Grid item>
-          Change onClick function in button to postSessions(e) after Matt finishes his part
-            <Button variant="contained" size="large" sx={{...btnStyle, backgroundColor: "black"}} onClick={(e) => { setRedirect(true); }}>Confirm</Button>
-            <Button component={Link} to="/mealdetails" variant="contained" size="large" sx={{...btnStyle, backgroundColor:'black'}}>Edit</Button>
-          </Grid>
-        </Grid> */}
         </Box>
     </Box>
   )

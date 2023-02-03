@@ -5,16 +5,22 @@ import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import ReactionsComment from './ReactionsComment.jsx';
+import Loading from '../Loading.jsx';
 
 export default function Home() {
   const [feed, setFeed] = useState([]);
-  const user = JSON.parse(localStorage.getItem('phone'));
+  const [emptyFeed, handleEmptyFeed] = useState('');
+  const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
     axios.get(`/api/feed?user_id=${user.id}`)
     .then((results) => {
-      setFeed([...results.data[0].friendSessions]);
+      console.log(results);
+      if(results.data[0].friendSessions.length === 0) {
+        handleEmptyFeed('Empty, make some friends!');
+      } else {
+        setFeed([...results.data[0].friendSessions]);
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -24,8 +30,7 @@ export default function Home() {
   return(
     <Box>
       <Navbar></Navbar>
-      <Box>
-        {feed.length === 0 ? 'Empty, make some friends!' : feed.map((element, index) => {
+        {feed.length === 0 ? emptyFeed : feed.map((element, index) => {
           var hostId = element.host;
           var total = Object.keys(element.detail).length;
           return (
@@ -47,7 +52,7 @@ export default function Home() {
             <Link to="/meal" style={{ textDecoration: 'none' }} state={element} key={index}>
               <Box>
                   <Typography variant="subtitle1">
-                      {element.detail[hostId].name} shared a meal with {total} others at {element.rest_name}
+                      <b>{element.detail[hostId].name}</b> shared a meal with {total} others at <b>{element.rest_name}</b>
                   </Typography>
 
               </Box>
