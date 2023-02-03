@@ -13,14 +13,10 @@ export default function MealsList() {
   // after getSessions is added, uncomment the folloiwng and change array to data on line 26
 
   const [meals, setMeals] = useState([]);
-  const [user, setUser] = useState({phone: localStorage.getItem('phone'), ...JSON.parse(localStorage.getItem('user'))});
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('phone')));
 
   const getMealSessions = (phoneNum) => {
-    axios.get(`/api/users?phone_num=${phoneNum}`)
-    .then((response) => {
-      localStorage.setItem('user', JSON.stringify({id: response.data.id, name: response.data.name}));
-      return axios.get(`/api/sessions?user_id=${response.data.id}`)
-    })
+    axios.get(`/api/sessions?user_id=${user.id}`)
     .then((sessions) => {
       setMeals([...sessions.data])
     })

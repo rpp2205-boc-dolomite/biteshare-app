@@ -8,7 +8,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 export default function Home() {
   const [feed, setFeed] = useState([]);
-  const user = JSON.parse(localStorage.getItem('user'))
+  const user = JSON.parse(localStorage.getItem('phone'));
 
   useEffect(() => {
     axios.get(`/api/feed?user_id=${user.id}`)
