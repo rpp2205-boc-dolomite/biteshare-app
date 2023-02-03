@@ -33,6 +33,7 @@ export default function FriendsPage (props) {
     })
     setOpen(false);
   }
+
   const deleteOne = (i) => {
     //send to server delete the current friend
     let cur = friends[i];
@@ -55,7 +56,6 @@ export default function FriendsPage (props) {
         setFriends(friends.concat([temp]));
         handleClose()
         triggerAlert({status:true, severity:'success', msg:'Add friends Success!'})
-
       })
   }
   return (
@@ -81,10 +81,7 @@ export default function FriendsPage (props) {
         {/* <SearchFriendsBar err={error} setErr={setError} input={input} setInput={setInput} clicked={handleSearch}/> */}
         <Button variant="contained" size="large" sx={{bgcolor:'orange', width:'300px'}} onClick={()=> setOpen(true)}>Add a new friend</Button>
       </Box>
-
-
       </Box>
-
     </>
 
   )
