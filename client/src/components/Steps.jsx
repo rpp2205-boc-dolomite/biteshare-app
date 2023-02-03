@@ -88,10 +88,10 @@ export default function Steps() {
 
   function _handleNext() {
     let isError = false
-    // if (activeStep === 0 && !inputs.restInfo.name) {
-    //   setAlert({status:true, severity:'warning', msg:'Please select restaurant!'});
-    //   isError = true;
-    // }
+    if (activeStep === 0 && !inputs.restInfo.name) {
+      setAlert({status:true, severity:'warning', msg:'Please select restaurant!'});
+      isError = true;
+    }
     if (activeStep === 1 && !inputs.friends.length) {
       setAlert({status:true, severity:'warning', msg:'Please add friends to this bill!'})
 
