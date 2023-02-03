@@ -15,6 +15,7 @@ import MealDetails from "./MealDetails/MealDetails.jsx";
 import AddFriends from "./Friends/AddFriends.jsx";
 import Review from './Review/Review.jsx';
 import Navbar from './Dashboard/Navbar.jsx';
+import Loading from './Loading.jsx';
 
 import axios from 'axios';
 const steps = ["Selecting Restaurant", "Add freinds", "Meal details", "Review your Meal"];
@@ -48,6 +49,7 @@ export default function Steps() {
     }
   })
   const [isSubmitting, setSubmit] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   if (!inputs.host.user_id) {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -102,6 +104,7 @@ export default function Steps() {
       isError = true;
     }
     if (activeStep === 3) {
+      setLoading(true);
       _handleSubmit();
     }
     if (isError) {
@@ -116,6 +119,9 @@ export default function Steps() {
   }
   if (redirect) {
     return <Navigate to='/meals' replace={true}/>
+  }
+  if(loading) {
+    return <Loading />
   }
   return (
     <>

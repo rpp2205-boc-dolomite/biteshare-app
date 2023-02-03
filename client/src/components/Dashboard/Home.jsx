@@ -51,7 +51,7 @@ export default function Home() {
                   m: 1
                 }}>
                   <Typography variant="subtitle1">
-                      {element.detail[hostId].name} shared a meal with {total} others at {element.rest_name}
+                      <b>{element.detail[hostId].name}</b> shared a meal with {total} others at <b>{element.rest_name}</b>
                   </Typography>
               </Box>
             </Link>
