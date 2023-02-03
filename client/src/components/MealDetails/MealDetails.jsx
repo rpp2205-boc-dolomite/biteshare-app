@@ -36,7 +36,7 @@ import withRouter from '../withRouter.jsx';
 class MealDetails extends Component {
   state = {
     host: {
-      user_id:'',
+      user_id: '',
       name: '',
       phone_num: '',
       meal_amount: 0,
@@ -62,15 +62,19 @@ class MealDetails extends Component {
     this.handleSplitMethodChange = this.handleSplitMethodChange.bind(this);
     this.handleMealTotalChange = this.handleMealTotalChange.bind(this);
     this.handleTipPercentChange = this.handleTipPercentChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
     this.buildCustomSplitData = this.buildCustomSplitData.bind(this);
     this.validateSession = this.validateSession.bind(this);
     this.createSession = this.createSession.bind(this);
 
 
-    Object.assign(this.state.host, props.host)
-    Object.assign(this.state.friends, props.friends);
-    Object.assign(this.state.restInfo, props.restInfo);
+    // Object.assign(this.state.host, props.host);
+    // Object.assign(this.state.friends, props.friends);
+    // Object.assign(this.state.restInfo, props.restInfo);
+    this.setInputs = props.setInputs;
+    Object.assign(this.state.host, props.inputs.host);
+    Object.assign(this.state.friends, props.inputs.friends);
+    Object.assign(this.state.restInfo, props.inputs.restInfo);
     // console.log('MD CONSTRUCTOR', this.state);
   }
 
@@ -116,28 +120,15 @@ class MealDetails extends Component {
     this.setState({ tipPercent: Math.abs(value) });
   }
 
-  handleSubmit() {
-    const session = createAndValidateSession();
-
-    if (session) {
-      console.log('Session is valid! Navigating to review page');
-      console.log('SESSION', session);
-      setRedirect(true);
-    } else {
-      // Don't submit
-      console.log('could not validate session');
-    }
-  }
-
   componentDidMount() {
     this.setState(state => {
       return {
         ...state,
         // friends: this.props.router.location.state.friends,
         // restInfo: this.props.router.location.state.restInfo
-        host:{...this.state.host, user_id: this.props.inputs.host.user_id, name: this.props.inputs.host.name},
+        host: { ...this.state.host, user_id: this.props.inputs.host.user_id, name: this.props.inputs.host.name },
         friends: this.props.inputs.friends,
-        restInfo:this.props.inputs.restInfo
+        restInfo: this.props.inputs.restInfo
       }
     });
     getHostData((function (host) {
@@ -185,9 +176,9 @@ class MealDetails extends Component {
     let tipSum = 0;
 
     for (const guest of data) {
-      if (Number.isNaN(guest.mealAmount) || Number.isNaN(guest.mealAmount))
-        mealSum += guest.mealAmount;
-      tipSum += guest.tipAmount;
+      if (Number.isNaN(guest.meal) || Number.isNaN(guest.meal)) { return false }
+      mealSum += guest.meal;
+      tipSum += guest.tip;
     }
 
     // console.log('VALIDATE SESSION', mealSum, this.state.mealTotal);
@@ -225,11 +216,11 @@ class MealDetails extends Component {
 
 
   render() {
-    if (!this.state.isInitialized && this.state.host.phone_num && this.state.friends.length && this.state.restInfo.name) {
-      this.setState({ isInitialized: true });
+    // if (!this.state.isInitialized && this.state.host.phone_num && this.state.friends.length && this.state.restInfo.name) {
+    //   this.setState({ isInitialized: true });
 
-      return null;
-    }
+    //   return null;
+    // }
 
     if (this.redirect) {
       return <Navigate to="/review" state={this.state.session} />
@@ -322,30 +313,31 @@ class MealDetails extends Component {
         </ToggleButtonGroup>
       </Stack>
 
-      <CustomSplit hidden={this.state.splitMethod === 'even'} data={this.state.customSplitData} />
+      <CustomSplit hidden={this.state.splitMethod === 'even'} data={this.state.customSplitData} mealTotal={this.state.mealTotal} tipTotal={this.tipTotal} />
 
       <Divider sx={{ my: 2 }} />
 
-      <Stack direction="row" justifyContent="center">
-        <Stack direction="column" sx={{ mr: 2 }}>
-          <span><FormLabel>Sub total: </FormLabel>{getCurrencyString(this.state.mealTotal)}</span>
-          <span><FormLabel>Tip total: </FormLabel>{getCurrencyString(this.tipTotal)}</span>
-          <span><FormLabel>Grand total: </FormLabel>{getCurrencyString(this.billTotal)}</span>
+      <Box hidden={this.state.splitMethod === 'custom'}>
+        <Stack direction="row" justifyContent="center">
+          <Stack direction="column" sx={{ mr: 2 }}>
+            <span><FormLabel>Sub total: </FormLabel>{getCurrencyString(this.state.mealTotal)}</span>
+            <span><FormLabel>Tip total: </FormLabel>{getCurrencyString(this.tipTotal)}</span>
+            <span><FormLabel>Grand total: </FormLabel>{getCurrencyString(this.billTotal)}</span>
+          </Stack>
+          {console.log('SM', this.state.splitMethod)}
+          <Divider orientation="vertical" sx={{ height: 80 }} />
+          <Stack direction="column" sx={{ ml: 2 }}>
+            <span><FormLabel>Meal due per person: </FormLabel>{getCurrencyString(this.evenMealAmount)}</span>
+            <span><FormLabel>Tip due per person: </FormLabel>{getCurrencyString(this.evenTipAmount)}</span>
+            <span><FormLabel>Total due per person: </FormLabel>{getCurrencyString(this.evenPerGuestTotal)}</span>
+          </Stack>
         </Stack>
-        <Divider orientation="vertical" sx={{ height: 80 }} />
-        <Stack direction="column" sx={{ ml: 2 }}>
-          <span><FormLabel>Meal due per person: </FormLabel>{getCurrencyString(this.evenMealAmount)}</span>
-          <span><FormLabel>Tip due per person: </FormLabel>{getCurrencyString(this.evenTipAmount)}</span>
-          <span><FormLabel>Total due per person: </FormLabel>{getCurrencyString(this.evenPerGuestTotal)}</span>
-        </Stack>
-      </Stack>
+      </Box>
 
-
-
-      <Divider sx={{ my: 2 }} />
+      {/* <Divider sx={{ my: 2 }} />
       <Stack sx={{ alignItems: 'center' }}>
         <Button variant="outlined" onClick={this.handleSubmit}>Save and Review</Button>
-      </Stack>
+      </Stack> */}
 
 
     </>);
