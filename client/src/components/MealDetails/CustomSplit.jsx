@@ -1,20 +1,73 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomSplitFriend from './CustomSplitFriend.jsx';
 import {
   Box,
-  Stack
+  Stack,
+  Typography
 } from '@mui/material';
+import {
+  red,
+  blue,
+  green
+ } from '@mui/material/colors';
 
 
-export default function CustomSplit({ hidden, data }) {
-  // console.log(hidden, data);
+const getSumTotals = data => {
+  const totals = {
+    meal: 0,
+    tip: 0
+  };
+
+  for (const user of data) {
+    totals.meal += user.meal;
+    totals.tip += user.tip;
+  }
+
+  return totals;
+};
+
+const getDifferenceComp = diff => {
+  const sx = {
+    fontWeight: 'bold',
+    width: 200,
+    // justifyContent: "center",
+    // textAligh: "center",
+    // alighItems: "center",
+  };
+  let str;
+
+  if (diff < 0) {
+    sx.color = red[700];
+    str = '🔴 (-$' + Math.abs(diff.toFixed(2)).toString() + ')';
+  } else if (diff > 0) {
+    sx.color = blue[700];
+    str = '🔵 +$' + diff.toFixed(2).toString();
+  } else if (Number.isNaN(diff)) {
+    str = '🤪';
+  } else {
+    sx.color = green[700];
+    str = '✅ $' + diff.toFixed(2).toString();
+  }
+
+  return <Typography sx={sx}>{str}</Typography>
+};
+
+export default function CustomSplit({ hidden, data, mealTotal, tipTotal }) {
   if (hidden || !data) { return null; }
 
+  const [ change, setChange ] = useState(false);
+
+  const totals = getSumTotals(data);
 
   return (
-    <Box hidden={hidden}>
-      <Stack direction="column">
-        {data.map((guest, i) => <CustomSplitFriend data={guest} key={i} />)}
+    <Box hidden={hidden} spacing={2} justifyContent="right" sx={{width: "100%", my: 1}}>
+      <Stack direction="column" justifyContent="right" sx={{width: "90%"}}>
+        {data.map((guest, i) => <CustomSplitFriend data={guest} key={i} change={change} setChange={setChange} />)}
+        <Stack direction="row" spacing={2} justifyContent="right">
+          <Typography width={200}>{''}</Typography>
+          {getDifferenceComp(totals.meal - mealTotal)}
+          {getDifferenceComp(totals.tip - tipTotal)}
+        </Stack>
       </Stack>
     </Box>);
 };
