@@ -45,18 +45,31 @@ export default function Review(props) {
       {/* <Navbar></Navbar> */}
         <Box>
         <Box sx={{m: 5}}>
-          <Typography variant="body1" sx={{m: 2}}>Restaurant Name: {props.inputs.restInfo.name}</Typography>
-          <Typography variant="body1" sx={{m: 2}}>Total: $100</Typography>
-          <Button variant="contained" size="small" sx={{ml:3, '&:hover': {backgroundColor:'lightgrey'}, backgroundColor: 'black'}}>View Receipt</Button>
-          <Typography variant="body1" sx={{m: 2}}>Number of friends: {props.inputs.friends.length}</Typography>
+          <Typography variant="body1" sx={{m: 2}}><b>Restaurant Name:</b> {props.inputs.restInfo.name}</Typography>
+          <p>Image will go here</p>
+          <Typography variant="body1" sx={{m: 2}}><b>Number of friends:</b> {props.inputs.friends.length + 1}</Typography>
           <Box display="flex" sx={{m: 2}}>
-            <Typography variant="body1" >Total: $20.00</Typography>
-            <Typography sx={{ml: 5}}>Tip rate: 20%</Typography>
+            <Typography variant="body1" ><b>Sub total:</b> ${props.inputs.sub_total}</Typography>
+            <Typography sx={{ml: 5}}><b>Tip total:</b> ${props.inputs.tip_total}</Typography>
+            <Typography sx={{ml: 5}}><b>Grand total: </b>${props.inputs.tip_total + props.inputs.sub_total}</Typography>
           </Box>
-          <Typography variant="body1" sx={{m: 2}}>Friends: </Typography>
-          <ReviewPageList></ReviewPageList>
+          <Grid container spacing={4} justifyContent="center">
+              <Grid container item xs={3} direction="column">
+                <Typography sx={{ fontWeight: 'bold' }}>Participants</Typography>
+              </Grid>
+              <Grid container item xs={3} direction="column">
+                <Typography sx={{ fontWeight: 'bold' }}>Meal Amount</Typography>
+              </Grid>
+              <Grid container item xs={3} direction="column">
+                <Typography sx={{ fontWeight: 'bold' }}>Tip Amount</Typography>
+              </Grid>
+              <Grid container item xs={3} direction="column">
+                <Typography sx={{ fontWeight: 'bold' }}>Total</Typography>
+              </Grid>
+            </Grid>
+          <ReviewPageList friendsAdded={props.inputs.friends} hostAmount={props.inputs.host}></ReviewPageList>
         </Box>
-        <Grid container rowSpacing={20} direction="column" alignItems="center" justifyContent="center">
+        <Grid container rowSpacing={20} direction="column">
         {/* if we using step component we don't need these 2 button anymore */}
         {/* <Grid item>
           Change onClick function in button to postSessions(e) after Matt finishes his part

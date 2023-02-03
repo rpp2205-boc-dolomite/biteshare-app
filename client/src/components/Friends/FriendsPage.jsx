@@ -14,7 +14,7 @@ export default function FriendsPage (props) {
   const [dialogValue, setDialogValue] = useState({name:'', phone:'+1'})
   const [alert, setAlert] = useState(initAlert);
 
-  const user = JSON.parse(localStorage.getItem('phone'));
+  const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
     if (!friends){

@@ -44,9 +44,9 @@ export default function Steps() {
 
   if (!inputs.host.user_id) {
     const user = JSON.parse(localStorage.getItem('user'));
-    const phone = localStorage.getItem('phone');
-    console.log('step local: ', user, phone);
-    setInputs({...inputs, host: {...inputs.host, user_id: user.id, name: user.name, phone_num:phone}})
+    //const phone = localStorage.getItem('phone');
+    console.log('step local: ', user);
+    setInputs({...inputs, host: {...inputs.host, user_id: user.id, name: user.name, phone_num: user.phone_num}})
   }
   function _renderStepContent(step) {
     switch (step) {
