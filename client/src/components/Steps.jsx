@@ -5,7 +5,7 @@ import {
   StepLabel,
   Button,
   Typography,
-  CircularProgress
+  Alert
 } from "@mui/material";
 import { Navigate } from 'react-router-dom';
 
@@ -15,6 +15,7 @@ import MealDetails from "./MealDetails/MealDetails.jsx";
 import AddFriends from "./Friends/AddFriends.jsx";
 import Review from './Review/Review.jsx';
 import Navbar from './Dashboard/Navbar.jsx';
+
 import axios from 'axios';
 const steps = ["Selecting Restaurant", "Add freinds", "Meal details", "Review your Meal"];
 
@@ -22,10 +23,12 @@ const btnStyle = {
   marginTop:3,
   marginLeft:1,
 }
+const initAlert = {status:false, severity:'', msg:''};
 export default function Steps() {
   const [activeStep, setActiveStep] = useState(0);
   const isLastStep = activeStep === steps.length - 1;
   const [redirect, setRedirect] = useState(false);
+  const [alert, setAlert] = useState(initAlert);
   const [inputs, setInputs] = useState({
     host: {
       user_id:'',
@@ -40,6 +43,7 @@ export default function Steps() {
     tip_total: 0,
     receipt: "",
     active: true,
+    session: null
   })
   const [isSubmitting, setSubmit] = useState(false);
 
@@ -81,14 +85,32 @@ export default function Steps() {
   console.log('step page info: ', inputs);
 
   function _handleNext() {
-   if (activeStep === 2) {
-      // Matt's page validataion functions
-      console.log('it is 2nd step');
+    let isError = false
+    // if (activeStep === 0 && !inputs.restInfo.name) {
+    //   setAlert({status:true, severity:'warning', msg:'Please select restaurant!'});
+    //   isError = true;
+    // }
+    if (activeStep === 1 && !inputs.friends.length) {
+      setAlert({status:true, severity:'warning', msg:'Please add friends to this bill!'})
+
+      isError = true;
+    }
+    if (activeStep === 2 && !inputs.session) {
+      setAlert({status:true, severity:'warning', msg:'Please fill in all the blank!'});
+      isError = true;
     }
     if (activeStep === 3) {
       _handleSubmit();
     }
-    setActiveStep(activeStep + 1);
+    if (isError) {
+      setTimeout(() => {
+        setAlert(initAlert);
+        return;
+      }, 2500)
+    } else {
+      setActiveStep(activeStep + 1);
+    }
+
   }
   if (redirect) {
     return <Navigate to='/meals' replace={true}/>
@@ -103,7 +125,9 @@ export default function Steps() {
           </Step>
         ))}
       </Stepper>
-
+        {alert.status &&
+          <Alert severity={alert.severity} onClose={() => setAlert(initAlert)}>{alert.msg}</Alert>
+        }
         <div>
           {_renderStepContent(activeStep)}
 
@@ -115,7 +139,6 @@ export default function Steps() {
               </Button>
             )}
             <div style={{margin:1, position:'relative'}}>
-
               <Button variant="contained" color="primary" onClick={_handleNext} sx={btnStyle}>
                 {isLastStep ? "Confirm" : "Next" }
               </Button>
