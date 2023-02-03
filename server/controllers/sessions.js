@@ -103,7 +103,20 @@ exports.updatePaymentStatus = function(req, res)  {
   } else {
     db.Session.findOneAndUpdate({[`detail.${userId}`] : { $exists : true }}, {$set:{[`detail.${userId}.is_paid`]: true}})
     .then(data => {
-      res.status(200).send('Successfully updated payment status for the user');
+      // after updating the user's status, i want to check if all friends have paid.
+      // if so, i want to send notification to the host
+      const sessionId = data.id; // unique session id
+      return db.Session.findById(sessionId)
+    })
+    .then(data => {
+      for (const friend in data.detail) {
+        if (!data.detail[friend].is_paid) {
+          res.status(200).send('Successfully updated payment status for the user');
+          return;
+        }
+      }
+      // if code comes here, that means all user has paid
+      console.log('all user has paid')
     })
     .catch((err) => {
       res.status(500).send('Failed to update payment status for the user');
