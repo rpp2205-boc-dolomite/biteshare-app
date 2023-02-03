@@ -75,11 +75,12 @@ const Meal = () => {
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableBody>
                   {Object.entries(data.detail).map((friend, index) => {
+                    console.log(friend)
                     const isPaid = friend[1].is_paid ? "Paid" : "Unpaid";
                     return (
                       <TableRow key={index}>
                         <TableCell>{`${friend[1].name}`}</TableCell>
-                        <TableCell>{`$${friend[1].bill.toFixed(2)}`}</TableCell>
+                        <TableCell>{`$${friend[1].bill + friend[1].tip}`}</TableCell>
                         <TableCell>{isPaid}</TableCell>
                       </TableRow>
                     );
