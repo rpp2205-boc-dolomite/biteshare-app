@@ -40,7 +40,7 @@ export default function Steps() {
     session: {
       _payload: null,
       get payload() {
-        return _payload;
+        return this._payload;
       },
       set payload(payload) {
         this._payload = payload;
