@@ -84,13 +84,16 @@ details[req.body.host.user_id] = {
     receipt: req.body.receipt,
     active: true
   })
-  .then((sessionId) => {
-    console.log('sessionId', sessionId);
-    return helper.sendTexts(req.body)
+  .then(sessionId => {
+    res.status(200).send('Session created!')
   })
-  .then((message) => {
-    res.status(200).send(message);
-  })
+  // .then((sessionId) => {
+  //   console.log('sessionId', sessionId);
+  //   return helper.sendTexts(req.body)
+  // })
+  // .then((message) => {
+  //   res.status(200).send(message);
+  // })
   .catch((err) => {
     res.status(500).send(err);
   })
