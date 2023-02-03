@@ -31,8 +31,8 @@ export default class userObj {
     return Object.assign({}, {
       name: this.name,
       id: this.id,
-      meal_amount: this._meal,
-      tip_amount: this._tip
+      meal_amount: this._meal.toFixed(2),
+      tip_amount: this._tip.toFixed(2)
     });
   }
 }
