@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import Loading from '../Loading.jsx';
+import ReactionsComment from './ReactionsComment.jsx';
 
 export default function Home() {
   const [feed, setFeed] = useState([]);
@@ -54,7 +55,6 @@ export default function Home() {
                   <Typography variant="subtitle1">
                       <b>{element.detail[hostId].name}</b> shared a meal with {total} others at <b>{element.rest_name}</b>
                   </Typography>
-
               </Box>
             </Link>
             <ReactionsComment />
@@ -63,6 +63,5 @@ export default function Home() {
         })}
       </Box>
 
-    </Box>
   )
 }
