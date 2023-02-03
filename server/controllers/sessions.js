@@ -101,11 +101,38 @@ details[req.body.host.user_id] = {
 
 exports.updatePaymentStatus = function(req, res)  {
   const userId = req.body.userId;
+  const comment = req.body.comment;
+
   if (!userId) {
     res.status(500).send('User id not found');
   } else {
+    let textBody = {};
+  
     db.Session.findOneAndUpdate({[`detail.${userId}`] : { $exists : true }}, {$set:{[`detail.${userId}.is_paid`]: true}})
     .then(data => {
+      return db.Session.findById(sessionId)
+    })
+    .then(data => {
+      for (const friend in data.detail) {
+        if (!data.detail[friend].is_paid) {
+          res.status(200).send('Successfully updated payment status for the user');
+          return;
+        }
+      }
+      // all participants have paid
+      textBody['restaurant'] = data.rest_name;
+      textBody['sub_total'] = data.sub_total;
+      textBody['tip_total'] = data.tip_total;
+
+      const hostId = data.host.valueOf();
+      return db.User.findById(hostId)
+    })
+    .then(data => {
+      let hostPhoneNumber = data.phone_num;
+      let hostName = data.name;
+      textBody['host_name'] = hostName;
+      textBody['host_phone_number'] = hostPhoneNumber;
+      helper.sendAllFriendHasPaidTexts(textBody);
       res.status(200).send('Successfully updated payment status for the user');
     })
     .catch((err) => {
@@ -113,3 +140,4 @@ exports.updatePaymentStatus = function(req, res)  {
     })
   }
 }
+

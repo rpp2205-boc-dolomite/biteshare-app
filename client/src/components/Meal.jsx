@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./Dashboard/Navbar.jsx";
-import axios from 'axios';
+import axios from "axios";
 import {
   Button,
   Box,
@@ -12,6 +12,8 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TableHead,
+  TextField,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "./Loading.jsx";
@@ -19,6 +21,8 @@ import Loading from "./Loading.jsx";
 const Meal = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [comment, setComment] = useState('');
+
   const data = location.state;
   const userObj = localStorage.getItem("user");
   const parsedUserObj = JSON.parse(userObj);
@@ -27,14 +31,19 @@ const Meal = () => {
     axios
       .post("/api/sessions/status", {
         userId: parsedUserObj.id,
+        comment: comment
       })
       .then((res) => {
         if (res.status === 200) {
           navigate("/completePayment");
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
+
+  const onCommentChange = (e) => {
+    setComment(e.target.value);
+  }
 
   return (
     <div>
@@ -46,40 +55,45 @@ const Meal = () => {
           <Box ml={6} mt={5}>
             <FormLabel>Restaurant:</FormLabel>
             <Typography variant="subtitle1">{data.rest_name}</Typography>
-            <Divider sx={{ borderBottomWidth: 1 }}/>
-            <FormLabel>Total:</FormLabel>
+            <Divider sx={{ borderBottomWidth: 1 }} />
+            <FormLabel>Subtotal:</FormLabel>
             <Typography variant="body1">
-              ${data.sub_total.toFixed(2)}
+              $ {data.sub_total.toFixed(2)}
             </Typography>
-            <Divider sx={{ borderBottomWidth: 1 }}/>
-            <FormLabel>Tips:</FormLabel>
+            <Divider sx={{ borderBottomWidth: 1 }} />
+            <FormLabel>Tip:</FormLabel>
             <Typography variant="body1">
-              ${data.tip_total.toFixed(2)}
-            </Typography>
-            <Divider sx={{ borderBottomWidth: 1 }}/>
-            <FormLabel>Tip rate:</FormLabel>
-            <Typography variant="body1">
-              {Math.ceil(
+              {`$ ${data.tip_total.toFixed(2)} (${Math.ceil(
                 (data.tip_total.toFixed(2) / data.sub_total.toFixed(2)) * 100
-              )}
-              %
+              )}%)`}
             </Typography>
-            <Divider sx={{ borderBottomWidth: 1 }}/>
-            <FormLabel>Number of friends:</FormLabel>
+            <Divider sx={{ borderBottomWidth: 1 }} />
+            <FormLabel>Total: </FormLabel>
             <Typography variant="body1">
-              {Object.entries(data.detail).length} people
+              $ {data.sub_total + data.tip_total}
             </Typography>
-            <Divider sx={{ borderBottomWidth: 1 }}/>
-            <FormLabel>Friends:</FormLabel>
+            <Divider sx={{ borderBottomWidth: 1 }} />
+            <FormLabel>{`Friends (${
+              Object.entries(data.detail).length
+            } people) : `}</FormLabel>
             <TableContainer>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: "bold" }}>username</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>total</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>status</TableCell>
+                  </TableRow>
+                </TableHead>
                 <TableBody>
                   {Object.entries(data.detail).map((friend, index) => {
                     const isPaid = friend[1].is_paid ? "Paid" : "Unpaid";
                     return (
                       <TableRow key={index}>
                         <TableCell>{`${friend[1].name}`}</TableCell>
-                        <TableCell>{`$${friend[1].bill.toFixed(2)}`}</TableCell>
+                        <TableCell>{`$${
+                          friend[1].bill + friend[1].tip
+                        }`}</TableCell>
                         <TableCell>{isPaid}</TableCell>
                       </TableRow>
                     );
@@ -101,7 +115,14 @@ const Meal = () => {
                 src={data.receipt}
               ></Box>
             </Typography>
-            <Divider sx={{ borderBottomWidth: 3 }}/>
+            <Divider sx={{ borderBottomWidth: 1 }} />
+            <TextField
+              id="standard-basic"
+              fullWidth
+              label="Leave a comment"
+              variant="standard"
+              onChange={onCommentChange}
+            />
             <Button
               variant="contained"
               sx={{ mt: 2 }}
