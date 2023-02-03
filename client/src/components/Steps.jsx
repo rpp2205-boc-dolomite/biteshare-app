@@ -33,17 +33,19 @@ export default function Steps() {
     host: {
       user_id:'',
       name: '',
-      phone_num:'',
-      meal_amount: 0,
-      tip_amount: 0
+      phone_num:''
     },
     friends:[],
     restInfo:{name:'', address:''},
-    sub_total: 0,
-    tip_total: 0,
-    receipt: "",
-    active: true,
-    session: null
+    session: {
+      _payload: null,
+      get payload() {
+        return _payload;
+      },
+      set payload(payload) {
+        this._payload = payload;
+      }
+    }
   })
   const [isSubmitting, setSubmit] = useState(false);
 
@@ -70,7 +72,7 @@ export default function Steps() {
 
   function _handleSubmit() {
     console.log('it is last page we need render to dashboard');
-    axios.post('/api/sessions', inputs)
+    axios.post('/api/sessions', inputs.session.payload)
     .then((response) => {
       setRedirect(true);
     })
