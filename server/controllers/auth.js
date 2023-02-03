@@ -30,7 +30,7 @@ exports.verifyLogin = function(req, res) {
                     if (result === false) {
                         res.status(401).send('The password you have entered is incorrect. Please try again.')
                     } else {
-                        res.status(200).send({name: user.name, phone_num: user.phone_num, id: user.id})
+                        res.status(200).send({name: user.name, phone_num: user.phone_num, id: user.id, friends: [ ...user.friends]})
                     }
                 }
             })

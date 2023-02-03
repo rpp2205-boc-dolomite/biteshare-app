@@ -9,7 +9,7 @@ import ReactionsComment from './ReactionsComment.jsx';
 
 export default function Home() {
   const [feed, setFeed] = useState([]);
-  const user = JSON.parse(localStorage.getItem('user'))
+  const user = JSON.parse(localStorage.getItem('phone'));
 
   useEffect(() => {
     axios.get(`/api/feed?user_id=${user.id}`)
@@ -48,7 +48,6 @@ export default function Home() {
                   <Typography variant="subtitle1">
                       {element.detail[hostId].name} shared a meal with {total} others at {element.rest_name}
                   </Typography>
-
               </Box>
             </Link>
           )
