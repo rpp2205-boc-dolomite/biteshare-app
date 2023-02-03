@@ -24,6 +24,7 @@ export default function Home() {
   return(
     <Box>
       <Navbar></Navbar>
+      <Box>
         {feed.length === 0 ? 'Empty, make some friends!' : feed.map((element, index) => {
           var hostId = element.host;
           var total = Object.keys(element.detail).length;
@@ -47,11 +48,13 @@ export default function Home() {
                   <Typography variant="subtitle1">
                       {element.detail[hostId].name} shared a meal with {total} others at {element.rest_name}
                   </Typography>
-                <ReactionsComment />
+
               </Box>
             </Link>
           )
         })}
+      </Box>
+                        <ReactionsComment />
     </Box>
   )
 }
