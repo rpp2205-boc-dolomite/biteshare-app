@@ -13,7 +13,7 @@ export default function MealsList() {
   // after getSessions is added, uncomment the folloiwng and change array to data on line 26
 
   const [meals, setMeals] = useState([]);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('phone')));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
   const getMealSessions = (phoneNum) => {
     axios.get(`/api/sessions?user_id=${user.id}`)
