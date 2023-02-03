@@ -1,8 +1,9 @@
 
 export default class userObj {
 
-  constructor(name, meal, tip) {
+  constructor(name, id, meal, tip) {
     this.name = name || '';
+    this.id = id || '';
     this._meal = meal || 0;
     this._tip = tip || 0;
   }
@@ -29,6 +30,7 @@ export default class userObj {
   getCopy() {
     return Object.assign({}, {
       name: this.name,
+      id: this.id,
       meal_amount: this._meal,
       tip_amount: this._tip
     });
