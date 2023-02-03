@@ -54,7 +54,7 @@ class MealDetails extends Component {
     customSplitData: null,
     session: null,
     redirect: false,
-    isInitialized: false
+    // isInitialized: false
   }
 
   constructor(props) {
@@ -72,6 +72,7 @@ class MealDetails extends Component {
     // Object.assign(this.state.friends, props.friends);
     // Object.assign(this.state.restInfo, props.restInfo);
     this.setInputs = props.setInputs;
+    this.session = props.inputs.session;
     Object.assign(this.state.host, props.inputs.host);
     Object.assign(this.state.friends, props.inputs.friends);
     Object.assign(this.state.restInfo, props.inputs.restInfo);
@@ -120,20 +121,28 @@ class MealDetails extends Component {
     this.setState({ tipPercent: Math.abs(value) });
   }
 
-  componentDidMount() {
-    this.setState(state => {
-      return {
-        ...state,
-        // friends: this.props.router.location.state.friends,
-        // restInfo: this.props.router.location.state.restInfo
-        host: { ...this.state.host, user_id: this.props.inputs.host.user_id, name: this.props.inputs.host.name },
-        friends: this.props.inputs.friends,
-        restInfo: this.props.inputs.restInfo
-      }
-    });
-    getHostData((function (host) {
-      this.setState({ host: { ...this.host, ...host } });
-    }).bind(this));
+  // componentDidMount() {
+  //   this.setState(state => {
+  //     return {
+  //       ...state,
+  //       // friends: this.props.router.location.state.friends,
+  //       // restInfo: this.props.router.location.state.restInfo
+  //       host: { ...this.state.host, user_id: this.props.inputs.host.user_id, name: this.props.inputs.host.name },
+  //       friends: this.props.inputs.friends,
+  //       restInfo: this.props.inputs.restInfo
+  //     }
+  //   });
+  //   getHostData((function (host) {
+  //     this.setState({ host: { ...this.host, ...host } });
+  //   }).bind(this));
+  // }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.validateSession()) {
+      this.session.payload = this.createSession();
+    } else {
+      this.session.payload = null;
+    }
   }
 
   handleSplitMethodChange(e) {
@@ -170,6 +179,9 @@ class MealDetails extends Component {
   }
 
   validateSession() {
+    if (!this.state.mealTotal || !this.state.tipPercent) {
+      return false;
+    }
     const data = this.state.customSplitData || this.buildCustomSplitData();
 
     let mealSum = 0;
@@ -192,8 +204,8 @@ class MealDetails extends Component {
     const newSession = {
       host: {
         ...this.state.host,
-        meal_amount: data[0].mealAmount,
-        tip_amount: data[0].tipAmount,
+        meal_amount: data[0].meal,
+        tip_amount: data[0].tip,
       },
       rest_name: this.state.restInfo.name,
       sub_total: this.state.mealTotal,
@@ -209,7 +221,7 @@ class MealDetails extends Component {
 
     newSession.friends = friends;
 
-    this.setState({ session: newSession });
+    // this.setState({ session: newSession });
 
     return newSession;
   }
@@ -222,9 +234,9 @@ class MealDetails extends Component {
     //   return null;
     // }
 
-    if (this.redirect) {
-      return <Navigate to="/review" state={this.state.session} />
-    }
+    // if (this.redirect) {
+    //   return <Navigate to="/review" state={this.state.session} />
+    // }
 
     return (<>
       <Stack direction="column" sx={{ m: 0.5, px: 0.5 }}>
