@@ -55,7 +55,7 @@ export default function FriendsPage (props) {
         console.log('friends page res:', res.data);
         setFriends(friends.concat([temp]));
         handleClose()
-        triggerAlert({status:true, severity:'success', msg:'Add friends Success!'})
+        setAlert({status:true, severity:'success', msg:'Add friends Success!'})
       })
   }
   return (

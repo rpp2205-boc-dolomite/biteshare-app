@@ -52,6 +52,9 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
               handleSubmit(result.data.id, result.data.name);
             }, 2500)
             return null;
+          } else if (result.data && result.data.name === dialogValue.name) {
+            handleSubmit(result.data.id, result.data.name);
+            return null;
           } else if (!result.data) {
             //add the new friend to user collection
             let newUser = {name: dialogValue.name, phone_num: dialogValue.phone, is_guest: true}
@@ -61,7 +64,7 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
         .then((res) => {
           if (res) {
             let params = Array.isArray(res.data) ? res.data[0].id : res.data.id;
-            //console.log('params:', params);
+            console.log('params:', params);
             handleSubmit(params)
           }
         })
