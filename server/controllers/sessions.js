@@ -55,15 +55,15 @@ exports.postSessions = function(req, res) {
 
 // //expecting body to be {users, info} where users is an array of objects and
 // // info has the rest_name and other info
-// console.log(req.body);
+console.log(req.body);
 
 var friends = [ ...req.body.friends];
-console.log(friends);
+
 const details = friends.reduce((acc, curr, index) =>
 (acc[curr.id] = {
   name: friends[index].name,
-  bill: 10,   //friends[index].meal_amount
-  tip: 5, //friends[index][tip_amount]?
+  bill: friends[index].meal_amount,
+  tip: friends[index].tip_amount,
   is_paid: false
 }, acc), {});
 
@@ -78,7 +78,7 @@ details[req.body.host.user_id] = {
    db.Session.insertMany({
     host: req.body.host.user_id,
     detail: details,
-    rest_name: req.body.restInfo.name,
+    rest_name: req.body.rest_name,
     sub_total: req.body.sub_total,
     tip_total: req.body.tip_total,
     receipt: req.body.receipt,
