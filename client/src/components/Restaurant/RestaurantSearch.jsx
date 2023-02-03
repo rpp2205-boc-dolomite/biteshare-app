@@ -26,8 +26,6 @@ const RestaurantSearch = ({inputs, setInputs}) => {
     }})
     //-----end of step needed code-----
 
-    console.log(restInfo);
-    console.log(index);
   };
 
   const handleLocation = (e) => {
@@ -117,8 +115,6 @@ const RestaurantSearch = ({inputs, setInputs}) => {
             <Typography
             variant="h6"
             align="center"
-            // fontVariant="all-small-caps"
-            // place-content="center"
             >
             {bus.name} {bus.location.display_address[0]} {bus.location.display_address[1]}
             </Typography>
