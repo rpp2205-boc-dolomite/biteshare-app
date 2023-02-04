@@ -1,9 +1,22 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {TextField, Button, Alert, Drawer, Typography} from '@mui/material';
+import {TextField, Button, Alert, Drawer, SwipeableDrawer, Typography, Skeleton, Box} from '@mui/material';
 import {FormGroup, FormControl, FormControlLabel, InputLabel, OutlinedInput, FormHelperText} from '@mui/material';
 import Switch from '@mui/material/Switch';
-const initAlert = {status:false, severity:'warn', msg:'This phone number already in your friends list!'};
+import { styled } from '@mui/material/styles';
+
+const Puller = styled(Box)(({ theme }) => ({
+  width: 30,
+  height: 6,
+  backgroundColor: '#e0e0e0',
+  borderRadius: 3,
+  position: 'absolute',
+  top: 8,
+  left: 'calc(50% - 15px)',
+}));
+
+
+const initAlert = {status:false, severity:'', msg:''};
 const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handleSubmit, add, setAdd, existList, page}) => {
   const [alert, setAlert] = useState(initAlert);
   const [error, setError] = useState(false);
@@ -76,71 +89,80 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
       anchor="bottom"
       open={open}
       onClose={handleClose}
-      sx={{"& .MuiPaper-root": {height: '60%', alignItems:'center'}}}
+      sx={{"& .MuiPaper-root": {height: '60%', alignItems:'center', borderTopLeftRadius:15, borderTopRightRadius:15}}}
       >
       {alert.status &&
         <Alert severity={alert.severity} onClose={() => setAlert(initAlert)} sx={{maxHeight:"8%", width:"95%"}}>{alert.msg}</Alert>
       }
-      <form onSubmit={submit} style={{width:'100%', display:'flex', alignItems:'center',flexDirection: 'column'}}>
-        <Typography variant="h5" sx={{p:1, mt:2}}>A New Friend? Just add to your bill!</Typography>
-        <Typography variant="subtitle1"  sx={{p:1}}>Invite a new friend to share your bill</Typography>
-        <FormControl sx={{ m: 1, width: '60%'}} variant="outlined">
-          <InputLabel>Name</InputLabel>
-          <OutlinedInput
-            type='text'
-            label="Name"
-            error={noName}
-            value={dialogValue.name}
-            onChange={(event) =>
-              setDialogValue({
-                ...dialogValue,
-                name: event.target.value,
-              })
-            }
-          />
-        </FormControl>
-        <FormHelperText>{noName ? "Name required" : ''}</FormHelperText>
 
-        <FormControl sx={{ m: 1, width: '60%'}} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">Phone Number</InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            type='text'
-            label="Phone"
-            value={dialogValue.name}
-            onChange={(event) =>
-              setDialogValue({
-                ...dialogValue,
-                name: event.target.value,
-              })
-            }
-            error={error}
-            value={dialogValue.phone}
-            onChange={(event) =>
-              setDialogValue({
-                ...dialogValue,
-                phone: event.target.value,
-              })
-            }
-            label="phone"
-          />
-          <FormHelperText>{error ? "Invalid phone number" : ''}</FormHelperText>
-        </FormControl>
+          <Puller />
+          <Typography sx={{ p: 4, color: 'text.secondary' }} variant='h5'>Add a new friend</Typography>
 
-        <br />
-        {page === "meal" &&
-        <FormGroup>
-          <FormControlLabel control={<Switch defaultChecked onChange={toggleLabel}/>} label={add ? 'Add to my friends list' : 'Do not add to my friends list'} />
-        </FormGroup>
-        }
-        <FormGroup sx={{display:'block',
-          mt:'2%',
-         '& .MuiButton-root':{m:1, minWidth:'120px'}}}>
-          <Button variant="contained" size="large" onClick={handleClose}>Cancel</Button>
-          <Button variant="contained" size="large" sx={{bgcolor:'orange'}}type="submit">Add</Button>
-        </FormGroup>
-      </form>
+          <Box sx={{px: 2,pb: 2,height: '100%', width:'80%', bgcolor:'#f5f5f5'}}>
+
+            <form onSubmit={submit} style={{width:'100%', display:'flex', alignItems:'center',flexDirection: 'column', bgcolor:'grey'}}>
+              {/* <Typography variant="h5" sx={{p:1, mt:2}}>A New Friend? Just add to your bill!</Typography> */}
+              <Typography variant="subtitle1"  sx={{p:1}}>{page==='meal' ? 'Invite a new friend to this bill' : 'Friends not in the list? Add a new friend'}</Typography>
+              <FormControl sx={{ m: 1, width: '80%'}} variant="outlined">
+                <InputLabel>Name</InputLabel>
+                <OutlinedInput
+                  type='text'
+                  label="Name"
+                  error={noName}
+                  value={dialogValue.name}
+                  onChange={(event) =>
+                    setDialogValue({
+                      ...dialogValue,
+                      name: event.target.value,
+                    })
+                  }
+                />
+              </FormControl>
+              <FormHelperText>{noName ? "Name required" : ''}</FormHelperText>
+
+              <FormControl sx={{ m: 1, width: '80%'}} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">Phone Number</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type='text'
+                  label="Phone"
+                  value={dialogValue.name}
+                  onChange={(event) =>
+                    setDialogValue({
+                      ...dialogValue,
+                      name: event.target.value,
+                    })
+                  }
+                  error={error}
+                  value={dialogValue.phone}
+                  onChange={(event) =>
+                    setDialogValue({
+                      ...dialogValue,
+                      phone: event.target.value,
+                    })
+                  }
+                  label="phone"
+                />
+                <FormHelperText>{error ? "Invalid phone number" : ''}</FormHelperText>
+              </FormControl>
+
+              {page === "meal" &&
+              <FormGroup>
+                <FormControlLabel control={<Switch defaultChecked onChange={toggleLabel}/>} label={add ? 'Add to my friends list' : 'Do not add to my friends list'} />
+              </FormGroup>
+              }
+              <FormGroup sx={{display:'block',
+                mt:'2%',
+              '& .MuiButton-root':{m:1, minWidth:'120px'}}}>
+                <Button variant="contained" size="large" onClick={handleClose}>Cancel</Button>
+                <Button variant="contained" size="large" sx={{bgcolor:'orange'}}type="submit">Add</Button>
+              </FormGroup>
+            </form>
+
+      </Box>
+
     </Drawer>
+
 
   )
 }

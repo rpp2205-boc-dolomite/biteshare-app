@@ -109,7 +109,11 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
             freeSolo={true}
             getOptionLabel={(option) => {
               if (typeof option === 'object') {
-                return option.name + ': ' + option.phone_num;
+                console.log('op',option);
+
+                  return option.name + ': ' + option.phone_num;
+
+
               }
               if (option.inputValue) {
                 return option.inputValue;
@@ -122,7 +126,8 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
               if (params.inputValue !=='') {
                 filtered.push({
                   inputValue: params.inputValue,
-                  name:`Add "${params.inputValue}" to this bill?`
+                  name:`Add "${params.inputValue}" to this bill?`,
+                  phone_num:null
                 })
               }
               return filtered;
@@ -131,7 +136,7 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
             selectOnFocus
             clearOnBlur
             handleHomeEndKeys
-            renderOption={(props, option) => <li {...props}>{option.name + ': ' + option.phone_num}</li>}
+            renderOption={(props, option) => <li {...props}>{!option.phone_num ? option.name : option.name + ': ' + option.phone_num}</li>}
           />
         </Grid>
         <Grid item justify="flex-end" alignItems="center" sx={{padding: 2}}>

@@ -52,7 +52,7 @@ export default function Steps() {
   const [loading, setLoading] = useState(false);
 
   if (!inputs.host.user_id) {
-    const user = JSON.parse(localStorage.getItem('phone'));
+    const user = JSON.parse(localStorage.getItem('user'));
     setInputs({...inputs, host: {...inputs.host, user_id: user.id, name: user.name, phone_num: user.phone_num}})
   }
   function _renderStepContent(step) {
@@ -97,7 +97,7 @@ export default function Steps() {
 
       isError = true;
     }
-    if (activeStep === 2 && !inputs.session) {
+    if (activeStep === 2 && !inputs.session.payload) {
       setAlert({status:true, severity:'warning', msg:'Please fill in all the blank!'});
       isError = true;
     }
