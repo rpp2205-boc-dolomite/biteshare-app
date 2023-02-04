@@ -55,7 +55,6 @@ exports.postSessions = function(req, res) {
 
 // //expecting body to be {users, info} where users is an array of objects and
 // // info has the rest_name and other info
-console.log(req.body);
 
 var friends = [ ...req.body.friends];
 
@@ -67,7 +66,6 @@ const details = friends.reduce((acc, curr, index) =>
   is_paid: false
 }, acc), {});
 
-console.log(req.body.host.user_id)
 details[req.body.host.user_id] = {
   name: req.body.host.name,
   bill: req.body.host.meal_amount,
@@ -85,7 +83,7 @@ details[req.body.host.user_id] = {
   //   active: true
   // })
   helper.sendTexts(req.body)
-  .then(sessionId => {
+  .then((sessionId) => {
     res.status(200).send('Session created!')
   })
   // .then((sessionId) => {

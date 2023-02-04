@@ -11,19 +11,19 @@ exports.sendTexts = async function (input) {
   const from = process.env.TWILIO_PHONE_NUM;
   const client = require("twilio")(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
-  //const promises = [];
-
+  const promises = [];
+  console.log('here in helper.js', input.friends);
   input.friends.forEach((element) => {
+    console.log('here')
     promises.push(
       client.messages.create({
         body: `Hi ${element.name}: \n You have been invited to split the bill at ${input.restInfo.name} \n Please select the link below to view the meal session \n www.google.com`,
-        from: from,
-        to: `${element.phone_num}`
+        from: process.env.TWILIO_PHONE_NUM,
+        to: "+14086934417"
       })
-      .then(message => console.log(message.sid))
    )
   });
-
+  console.log('promises', promises);
   // for (const [to, body] of array) {
   //   promises.push(client.messages
   //     .create({ body, from, to })
