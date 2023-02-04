@@ -21,7 +21,8 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 250,
+  width: 450,
+  height: 450,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   p: 4,
@@ -131,12 +132,17 @@ const ReactionsComment = ({data}) => {
                         multiline
                         required
                         rows={4}
-                        label="Add your comment!"
+                        label="Fill me in!"
                         onChange={handleComment}
                         inputProps={{maxLength: CHARACTER_LIMIT}}
                         helperText={`${comment.length}/${CHARACTER_LIMIT}`}
+                        sx={{
+                          width: "100%"
+                        }}
                       />
-                      <Button onClick={() => {commentPost(comment); handleClose()}}>Post!</Button>
+                      <Typography align="center" padding="10px">
+                        <Button variant="contained" onClick={() => {commentPost(comment); handleClose()}}>Post!</Button>
+                      </Typography>
                     </Box>
                   </Box>
                 </Modal>
