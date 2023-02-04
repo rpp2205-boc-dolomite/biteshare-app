@@ -19,7 +19,7 @@ exports.sendTexts = async function (input) {
       client.messages.create({
         body: `Hi ${element.name}: \n You have been invited to split the bill at ${input.rest_name} \n Please select the link below to view the meal session \n www.google.com`,
         from: process.env.TWILIO_PHONE_NUM,
-        to: "+14086934417"
+        to: `${element.phone_num}`
       })
    )
   });
