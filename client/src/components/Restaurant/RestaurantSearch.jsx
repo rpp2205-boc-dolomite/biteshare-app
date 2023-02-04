@@ -112,12 +112,12 @@ const RestaurantSearch = ({inputs, setInputs}) => {
               selected={selectedIndex === index}
               onClick={(event) => handleListItemClick(event, index)}
             >
-            <Typography
-            variant="h6"
-            align="center"
-            >
-            {bus.name} {bus.location.display_address[0]} {bus.location.display_address[1]}
-            </Typography>
+              <Typography
+              variant="h6"
+              align="center"
+              >
+              {bus.name} {bus.location.display_address[0]} {bus.location.display_address[1]}
+              </Typography>
             </ListItemButton>
           </ListItem>
         )
