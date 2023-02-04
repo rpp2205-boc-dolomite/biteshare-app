@@ -27,8 +27,8 @@ const HomePage = (props) => {
     <Carousel autoPlay infiniteLoop showThumbs={false} animation="fade" navButtonsAlwaysInvisible={true} indicators={false} duration="400">
       {images.map((image, i) => (
         <Box height="100vh" sx={{p:2, backgroundImage:`url(${image.src})`, backgroundPosition: 'top', backgroundSize:'100% 100%'}} key={i}>
-          <Grid container rowSpacing={20} direction="column" alignItems="center" justifyContent="center">
-            <Grid item sx={{mt:"40%"}}>
+          <Grid container rowSpacing={10} direction="column" alignItems="center" justifyContent="center">
+            <Grid item sx={{mt:"35%"}}>
             <img src="../images/logo-slogan.png" alt="BiteShare Logo" width="500" ></img>
             </Grid>
             <Grid item>
