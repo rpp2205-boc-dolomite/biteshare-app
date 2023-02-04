@@ -167,7 +167,7 @@ class MealDetails extends Component {
     const evenTipAmount = this.evenTipAmount;
 
     const makeGuestObj = (guest) => {
-      return new userObj(guest.name, guest.id, evenMealAmount, evenTipAmount);
+      return new userObj(guest.name, guest.id, guest.phone_num, evenMealAmount, evenTipAmount);
     };
 
     data.push(makeGuestObj(this.state.host));
