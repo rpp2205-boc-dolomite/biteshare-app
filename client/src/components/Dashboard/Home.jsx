@@ -25,24 +25,28 @@ export default function Home() {
   const [emptyFeed, handleEmptyFeed] = useState('');
   const [open, setOpen] = React.useState(false);
   const user = JSON.parse(localStorage.getItem('user'));
+  const [ needsUpdate, setNeedsUpdate ] = React.useState(true);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    axios.get(`/api/feed?user_id=${user.id}`)
-    .then((results) => {
-      console.log(results);
-      if(results.data[0].friendSessions.length === 0) {
-        handleEmptyFeed('Empty, make some friends!');
-      } else {
-        setFeed([...results.data[0].friendSessions]);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  }, []);
+    if (needsUpdate) {
+      axios.get(`/api/feed?user_id=${user.id}`)
+      .then((results) => {
+        console.log(results);
+        if(results.data[0].friendSessions.length === 0) {
+          handleEmptyFeed('Empty, make some friends!');
+        } else {
+          setNeedsUpdate(false);
+          setFeed([...results.data[0].friendSessions]);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  });
 
   return(
     <Box>
@@ -113,7 +117,7 @@ export default function Home() {
                 </List>
               </Box>
             </Modal>
-            <ReactionsComment data={element}/>
+            <ReactionsComment setNeedsUpdate={setNeedsUpdate} data={element}/>
             </Box>
           )
         })}
