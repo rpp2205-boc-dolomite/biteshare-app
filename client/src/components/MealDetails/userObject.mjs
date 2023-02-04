@@ -1,9 +1,10 @@
 
 export default class userObj {
 
-  constructor(name, id, meal, tip) {
+  constructor(name, id, phone_num, meal, tip) {
     this.name = name || '';
     this.id = id || '';
+    this.phone_num = phone_num || '';
     this._meal = meal || 0;
     this._tip = tip || 0;
   }
@@ -31,6 +32,7 @@ export default class userObj {
     return Object.assign({}, {
       name: this.name,
       id: this.id,
+      phone_num: this.phone_num,
       meal_amount: this._meal.toFixed(2),
       tip_amount: this._tip.toFixed(2)
     });
