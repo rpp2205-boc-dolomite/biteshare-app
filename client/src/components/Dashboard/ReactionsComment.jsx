@@ -43,11 +43,9 @@ const ReactionsComment = ({data}) => {
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
-    //setReaction(event.target.id)
-
     axios.post(`/api/social/reaction/${data._id}`, { user_id: user.id, emoji: event.target.id})
     .then((result) => {
-      console.log('SUCCESS');
+      console.log('REACTION SUCCESS');
     })
     .catch((err) => {
       console.log(err);
@@ -59,7 +57,13 @@ const ReactionsComment = ({data}) => {
   }
 
   const commentPost = (comment) => {
-    console.log(comment);
+    axios.post(`/api/social/comment/${data._id}`, { user_id: user.id, text: comment})
+    .then((result) => {
+      console.log('COMMENT SUCCESS', result);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   return (
@@ -132,7 +136,7 @@ const ReactionsComment = ({data}) => {
                         inputProps={{maxLength: CHARACTER_LIMIT}}
                         helperText={`${comment.length}/${CHARACTER_LIMIT}`}
                       />
-                      <Button onClick={commentPost(comment), handleClose}>Post!</Button>
+                      <Button onClick={() => {commentPost(comment); handleClose()}}>Post!</Button>
                     </Box>
                   </Box>
                 </Modal>
