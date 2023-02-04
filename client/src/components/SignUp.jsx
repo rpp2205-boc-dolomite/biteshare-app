@@ -17,11 +17,9 @@ import axios from 'axios'
 import { Navigate } from 'react-router-dom'
 
 
-const theme = createTheme();
-
 export default class SignUp extends React.Component {
   constructor(props) {
-    super(props) 
+    super(props)
     this.state = {
       success: false,
       error: false
@@ -60,12 +58,12 @@ export default class SignUp extends React.Component {
   render() {
     let { success, error } = this.state;
     return (
-      <ThemeProvider theme={theme}>
+      <>
         {success && (
           <Navigate to='/login' replace={true} />
         )}
-        <Typography component="h1" variant="h4" align='center' gutterBottom sx={{mt:"10%"}}>
-              Bite Share
+          <Typography align='center' sx={{height:'10%', m:1, p:0}} >
+            <img src="../images/BOC-logo.png" alt="BiteShare Logo" width="175"></img>
           </Typography>
           <hr/>
         <Container component="main" maxWidth="xs" >
@@ -78,7 +76,7 @@ export default class SignUp extends React.Component {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -145,7 +143,7 @@ export default class SignUp extends React.Component {
           </Box>
           <Copyright sx={{ mt: 5 }} />
         </Container>
-      </ThemeProvider>
+      </>
     );
   }
 }

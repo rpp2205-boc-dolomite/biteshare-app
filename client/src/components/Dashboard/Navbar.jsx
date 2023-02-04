@@ -19,7 +19,7 @@ function Navbar (props) {
       </Typography>
 
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" color="default">
+        <AppBar position="static" color="primary">
           <Toolbar>
             <Typography component="div" sx={{ flexGrow: 1}}>
               <Button size="large" variant="text" component={Link} to="/home" color="inherit">Home</Button>
