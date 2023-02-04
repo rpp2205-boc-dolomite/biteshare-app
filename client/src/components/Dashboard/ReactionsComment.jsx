@@ -27,7 +27,7 @@ const style = {
   p: 4,
 };
 
-const ReactionsComment = ({data}) => {
+const ReactionsComment = ({data, setNeedsUpdate}) => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
   const [reaction, setReaction] = useState('');
   const [open, setOpen] = React.useState(false);
@@ -46,6 +46,7 @@ const ReactionsComment = ({data}) => {
     axios.post(`/api/social/reaction/${data._id}`, { user_id: user.id, emoji: event.target.id})
     .then((result) => {
       console.log('REACTION SUCCESS');
+      setNeedsUpdate(true);
     })
     .catch((err) => {
       console.log(err);
@@ -60,6 +61,7 @@ const ReactionsComment = ({data}) => {
     axios.post(`/api/social/comment/${data._id}`, { user_id: user.id, text: comment})
     .then((result) => {
       console.log('COMMENT SUCCESS', result);
+      setNeedsUpdate(true);
     })
     .catch((err) => {
       console.log(err);
