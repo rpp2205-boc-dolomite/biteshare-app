@@ -22,7 +22,7 @@ const FriendEntry = ({friend, i, deleteOne, page}) => {
   return (
     <ListItem
       secondaryAction={
-        <IconButton aria-label="delete" onClick={(e) => deleteFriend(e)}>
+        <IconButton color="primary" aria-label="delete" onClick={(e) => deleteFriend(e)}>
           <DeleteIcon />
         </IconButton>
       }
@@ -34,8 +34,8 @@ const FriendEntry = ({friend, i, deleteOne, page}) => {
          {friend.name.slice(0,1).toUpperCase()}
        </Avatar>
       </ListItemAvatar>
-      <ListItemText sx={{fontWeight:600}} primary={friend.name} />
-      <ListItemText primary={friend.phone_num} />
+      <ListItemText sx={{color: 'primary.main', width:"15%"}} primary={friend.name} />
+      <ListItemText sx={{color: 'primary.main'}} primary={friend.phone_num} />
     </ListItem>
 
 

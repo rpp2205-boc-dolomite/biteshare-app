@@ -40,7 +40,7 @@ export default function MealsList() {
         <Navbar></Navbar>
         <Box display="flex" sx={{justifyContent: 'center'}}>
           <Link to="/step" >
-            <Button size='large' variant="contained" sx={{backgroundColor:'black', m: 2}}>Create a new Meal Session</Button>
+            <Button size='large' variant="contained" color="primary" sx={{ m: 2}}>Create a new Meal Session</Button>
           </Link>
         </Box>
         {meals.length === 0 ? emptyFeed : meals.map((element, index) => {
@@ -65,13 +65,13 @@ export default function MealsList() {
                   fontWeight: '700',
                   m: 1
                 }}>
-                    <Typography variant="h6">
+                    <Typography variant="h6" color="primary">
                       {element.rest_name}
                     </Typography>
-                    <Typography variant="subtitle1">
+                    <Typography variant="subtitle1" color="secondary">
                       Host: {element.detail[hostId].name}
                     </Typography>
-                    <Typography variant="subtitle1">
+                    <Typography variant="subtitle1" color="primary">
                       Amount: {element.detail[user.id].bill + element.detail[user.id].tip}
                     </Typography>
               </Box>

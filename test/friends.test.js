@@ -1,18 +1,19 @@
 import React from 'react';
 import {rest} from 'msw'
 import {setupServer} from 'msw/node'
-// import {render, fireEvent, waitFor, screen} from '@testing-library/react'
-// import '@testing-library/jest-dom';
-// import FriendsPage from './client/src/components/Friends/FriendsPage';
-// const server =setupServer(
-//   rest.get('/friends', (req,res,ctx) => {
-//     return res(ctx.status(200));
-//   })
-// )
+import {render, fireEvent, waitFor, screen} from '@testing-library/react'
+import '@testing-library/jest-dom';
+import FriendsPage from '../client/src/components/Friends/FriendsPage';
+import { Link } from 'react-router-dom';
+const server =setupServer(
+  rest.get('/friends', (req,res,ctx) => {
+    return res(ctx.status(200));
+  })
+)
 
-// beforeAll(() => server.listen());
-// afterEach(() => server.resetHandlers());
-// afterAll(() => server.close());
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 const testUser = {
   id: "63d56a0483bd4d48f67c9981",
@@ -28,7 +29,15 @@ describe('Test!', () => {
 })
 
 // describe('Friends Page render Tests', () => {
-//   test('should render Friends list title', () => {
-//     render(<Reviews state={testUser} />)
-//   });
+//   test('handles server error', async () => {
+//     server.use(
+//       rest.get('/friends', (req, res, ctx) => {
+//         return res(ctx.status(500))
+//       }),
+//     )
+
+//     render(<FriendsPage url='/friends' state={testUser} />)
+//   })
+
+
 // })
