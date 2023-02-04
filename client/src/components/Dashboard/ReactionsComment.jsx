@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import {Button, ButtonGroup, Box, Typography, TextField, Modal} from '@mui/material';
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const theme = createTheme({
@@ -26,11 +27,14 @@ const style = {
   p: 4,
 };
 
-const ReactionsComment = ({}) => {
+const ReactionsComment = ({data}) => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
   const [reaction, setReaction] = useState('');
   const [open, setOpen] = React.useState(false);
   const [comment, setComment] = useState('');
+
+  const user = JSON.parse(localStorage.getItem('user'));
+
 
   const CHARACTER_LIMIT = 120;
 
@@ -39,8 +43,13 @@ const ReactionsComment = ({}) => {
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
-    setReaction(event.target.id)
-    console.log(reaction);
+    axios.post(`/api/social/reaction/${data._id}`, { user_id: user.id, emoji: event.target.id})
+    .then((result) => {
+      console.log('REACTION SUCCESS');
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   };
 
   const handleComment = (e) => {
@@ -48,7 +57,13 @@ const ReactionsComment = ({}) => {
   }
 
   const commentPost = (comment) => {
-    console.log(comment);
+    axios.post(`/api/social/comment/${data._id}`, { user_id: user.id, text: comment})
+    .then((result) => {
+      console.log('COMMENT SUCCESS', result);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   return (
@@ -68,7 +83,7 @@ const ReactionsComment = ({}) => {
               id='thumb'
               selected={selectedIndex === 0}
               onClick={(event) => handleListItemClick(event, 0)}
-            >👍</Button>
+            >{data.reactions.thumb.length} 👍</Button>
             <Button
               sx={{
                 fontSize: "1.2rem"
@@ -76,7 +91,7 @@ const ReactionsComment = ({}) => {
               id='like'
               selected={selectedIndex === 1}
               onClick={(event) => handleListItemClick(event, 1)}
-            >❤️</Button>
+            >{data.reactions.like.length} ❤️</Button>
             <Button
               sx={{
                 fontSize: "1.2rem"
@@ -84,7 +99,7 @@ const ReactionsComment = ({}) => {
               id='fire'
               selected={selectedIndex === 2}
               onClick={(event) => handleListItemClick(event, 2)}
-              >🔥</Button>
+              >{data.reactions.fire.length} 🔥</Button>
             <Button
               sx={{
                 fontSize: "1.2rem"
@@ -92,7 +107,7 @@ const ReactionsComment = ({}) => {
               id='tooth'
               selected={selectedIndex === 3}
               onClick={(event) => handleListItemClick(event, 3)}
-              >🦷</Button>
+              >{data.reactions.tooth.length} 🦷</Button>
               <Button
                 sx={{
                   fontSize: "1.2rem"
@@ -121,7 +136,7 @@ const ReactionsComment = ({}) => {
                         inputProps={{maxLength: CHARACTER_LIMIT}}
                         helperText={`${comment.length}/${CHARACTER_LIMIT}`}
                       />
-                      <Button onClick={commentPost(comment), handleClose}>Post!</Button>
+                      <Button onClick={() => {commentPost(comment); handleClose()}}>Post!</Button>
                     </Box>
                   </Box>
                 </Modal>
