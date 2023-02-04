@@ -96,45 +96,45 @@ details[req.body.host.user_id] = {
   })
 }
 
-exports.updatePaymentStatus = function(req, res)  {
+exports.updatePaymentStatus = async function(req, res)  {
   const userId = req.body.userId;
   const comment = req.body.comment;
-
-  if (!userId) {
-    res.status(500).send('User id not found');
-  } else {
-    let textBody = {};
+  const data = req.body.data;
   
-    db.Session.findOneAndUpdate({[`detail.${userId}`] : { $exists : true }}, {$set:{[`detail.${userId}.is_paid`]: true}})
-    .then(data => {
-      return db.Session.findById(sessionId)
-    })
-    .then(data => {
-      for (const friend in data.detail) {
-        if (!data.detail[friend].is_paid) {
-          res.status(200).send('Successfully updated payment status for the user');
-          return;
-        }
+  if (!userId) {
+    return res.status(500).send('User id not found');
+  } else {
+    try {
+      let textBody = {};
+      let updatedSession = await db.Session.findOneAndUpdate(
+        {
+          _id: data.id,
+          [`detail.${userId}`] : { $exists: true }
+        },
+        { "$set": { [`detail.${userId}.is_paid`] : true }},
+        { new: true }
+      );
+      let entries = Object.entries(updatedSession.detail);
+      let paidUsers = entries.filter((x) => x[1].is_paid);
+      if (paidUsers.length !== entries.length) {
+        return res.status(200).send('Successfully updated payment status for the user');
+      } else {
+        let textBody = {};
+        let hostId = updatedSession.host.valueOf();
+        let hostData = await db.User.findById(hostId);
+        let hostPhoneNumber = hostData.phone_num;
+        let hostName = hostData.name;
+        textBody['host_name'] = hostName;
+        textBody['restaurant'] = updatedSession.rest_name;
+        textBody['sub_total'] = updatedSession.sub_total;
+        textBody['tip_total'] = updatedSession.tip_total;
+        helper.sendAllFriendHasPaidTexts(textBody);
+        res.status(200).send('Successfully updated payment status for the user');
       }
-      // all participants have paid
-      textBody['restaurant'] = data.rest_name;
-      textBody['sub_total'] = data.sub_total;
-      textBody['tip_total'] = data.tip_total;
-
-      const hostId = data.host.valueOf();
-      return db.User.findById(hostId)
-    })
-    .then(data => {
-      let hostPhoneNumber = data.phone_num;
-      let hostName = data.name;
-      textBody['host_name'] = hostName;
-      textBody['host_phone_number'] = hostPhoneNumber;
-      helper.sendAllFriendHasPaidTexts(textBody);
-      res.status(200).send('Successfully updated payment status for the user');
-    })
-    .catch((err) => {
-      res.status(500).send('Failed to update payment status for the user');
-    })
+    } catch (error) {
+      console.log(err);
+      res.status(500).send('Failed to update status')
+    }
   }
 }
 

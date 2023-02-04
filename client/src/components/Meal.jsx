@@ -30,6 +30,7 @@ const Meal = () => {
   const updatePaymentStatus = () => {
     axios
       .post("/api/sessions/status", {
+        data: data,
         userId: parsedUserObj.id,
         comment: comment
       })
