@@ -18,7 +18,7 @@ import Navbar from './Dashboard/Navbar.jsx';
 import Loading from './Loading.jsx';
 
 import axios from 'axios';
-const steps = ["Selecting Restaurant", "Add freinds", "Meal details", "Review your Meal"];
+const steps = ["Selecting Restaurant", "Add friends", "Meal details", "Review your Meal"];
 
 const btnStyle = {
   marginTop:3,
@@ -71,7 +71,7 @@ export default function Steps() {
   }
 
   function _handleSubmit() {
-    console.log('it is last page we need render to dashboard');
+    //console.log('it is last page we need render to dashboard');
     axios.post('/api/sessions', inputs.session.payload)
     .then((response) => {
       setRedirect(true);
