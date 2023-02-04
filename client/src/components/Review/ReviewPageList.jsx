@@ -13,13 +13,13 @@ export default function ReviewPageList (props) {
                 <Typography>{element.name}</Typography>
               </Grid>
               <Grid container item xs={3} direction="column">
-                <Typography>30</Typography>
+                <Typography>{element.meal_amount}</Typography>
               </Grid>
               <Grid container item xs={3} direction="column">
-                <Typography>10</Typography>
+                <Typography>{element.tip_amount}</Typography>
               </Grid>
               <Grid container item xs={3} direction="column">
-                <Typography>40</Typography>
+                <Typography>{Number(element.meal_amount) + Number(element.tip_amount)}</Typography>
               </Grid>
             </Grid>
         )
@@ -32,7 +32,7 @@ export default function ReviewPageList (props) {
           <Typography>${props.hostAmount.meal_amount}</Typography>
         </Grid>
         <Grid container item xs={3} direction="column">
-          <Typography>${props.hostAmount.tip_amount}</Typography>
+          <Typography>${Math.round(props.hostAmount.tip_amount * 100)/100}</Typography>
         </Grid>
         <Grid container item xs={3} direction="column">
           <Typography>${props.hostAmount.meal_amount + props.hostAmount.tip_amount}</Typography>
