@@ -71,7 +71,7 @@ export default function Steps() {
   }
 
   function _handleSubmit() {
-    console.log('it is last page we need render to dashboard');
+    //console.log('it is last page we need render to dashboard');
     axios.post('/api/sessions', inputs.session.payload)
     .then((response) => {
       setRedirect(true);
