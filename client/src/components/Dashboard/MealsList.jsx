@@ -12,8 +12,8 @@ import Loading from '../Loading.jsx';
 export default function MealsList() {
   // after getSessions is added, uncomment the folloiwng and change array to data on line 26
 
-  const [meals, setMeals] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [meals, setMeals] = useState([]);
+  const [emptyFeed, handleEmptyFeed] = useState('');
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
   const getMealSessions = (phoneNum) => {
@@ -21,7 +21,7 @@ export default function MealsList() {
     .then((sessions) => {
       setLoading(false);
       if(sessions.data.length === 0) {
-        setMeals('No new meals');
+        handleEmptyFeed('No new meal sessions');
       } else {
         setMeals([...sessions.data])
       }
@@ -44,7 +44,7 @@ export default function MealsList() {
             <Button size='large' variant="contained" sx={{backgroundColor:'black', m: 2}}>Create a new Meal Session</Button>
           </Link>
         </Box>
-        {loading ? '' : meals.map((element, index) => {
+        {meals.length === 0 ? emptyFeed : meals.map((element, index) => {
           var hostId = element.host;
           return(
             <Link to="/meal" style={{ textDecoration: 'none' }}
