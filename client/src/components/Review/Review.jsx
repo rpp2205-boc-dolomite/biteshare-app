@@ -38,7 +38,7 @@ export default function Review(props) {
           <Typography variant="body1" sx={{m: 2}}><b>Number of friends:</b> {info.friends.length + 1}</Typography>
           <Box display="flex" sx={{m: 2}}>
             <Typography variant="body1" ><b>Sub total:</b> ${info.sub_total}</Typography>
-            <Typography sx={{ml: 5}}><b>Tip total:</b> ${info.tip_total}</Typography>
+            <Typography sx={{ml: 5}}><b>Tip total:</b> ${Math.floor(info.tip_total * 100)/100}</Typography>
             <Typography sx={{ml: 5}}><b>Grand total: </b>${info.tip_total + info.sub_total}</Typography>
           </Box>
           <Grid container spacing={4} justifyContent="center">
