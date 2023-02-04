@@ -82,9 +82,16 @@ details[req.body.host.user_id] = {
   //   receipt: req.body.receipt,
   //   active: true
   // })
+  // helper.sendTelesignTexts((err, results) => {
+  //   if(err) {
+  //     res.status(500).send(err);
+  //   }
+  //   res.status(200).send(results);
+  // });
   helper.sendTexts(req.body)
   .then((sessionId) => {
-    res.status(200).send('Session created!')
+    console.log('sessionId', sessionId);
+    res.status(200).send('sessionId.sid')
   })
   // .then((sessionId) => {
   //   console.log('sessionId', sessionId);
@@ -94,6 +101,7 @@ details[req.body.host.user_id] = {
   //   res.status(200).send(message);
   // })
   .catch((err) => {
+    console.log('error', err);
     res.status(500).send(err);
   })
 }
