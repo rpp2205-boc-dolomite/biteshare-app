@@ -9,20 +9,12 @@ import Loading from '../Loading.jsx';
 import { Navigate, Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom'
 
-const fakeFriendsList2 = [
-  "Anna: 111123123", "Bob: 312456789", "Davie Wang: 44556677"
-]
+
 const AddFriends = ({inputs, setInputs}) => {
-  // const user = JSON.parse(localStorage.getItem('user'));
-  // console.log('local: ', user);
   const [existList, setExistList] = useState(null)
   const [friends, setFriends] = useState([]);
   console.log('friends', friends);
 
-  //-------- pass props to next components ------//
-  // const { state } = useLocation();
-  // const restInfo = state.restInfo;
-  // console.log('resInfo', restInfo);
   console.log('info from steps: ', inputs)
   //call the data to get the users exist friends list
   const getFriends = () => {
@@ -30,8 +22,6 @@ const AddFriends = ({inputs, setInputs}) => {
     let user_id=inputs.host.user_id;
     return axios.get(`/api/friends/?user_id=${user_id}`)
       .then((result) => {
-        console.log('client friends res:', result.data);
-        //convert the result data to matche the fackfriendsList2 data
         let list = !result.data.friends.length ? [] : result.data.friends;
         let userFriends = list.map((friend) => {
           return {id: friend.id, name: friend.name, phone_num: friend.phone_num}
@@ -56,27 +46,23 @@ const AddFriends = ({inputs, setInputs}) => {
 
 
   return (
-    <>
-      {/* <Navbar /> */}
-      <Container maxWidth="95%" sx={{p:1, m:1,  width:"92%", justifyContent:"center"}}>
-        {!existList ? <Loading /> :<SearchFriends inputs={inputs} setInputs={setInputs} id={inputs.host.user_id} friends={friends} setFriends={setFriends} existList={existList} setExistList={setExistList}/>}
-        <hr/>
-        <Box component="span" sx={{dispaly:'block', fontSize:'larger'}}>
-          Friends List
-        </Box>
-        <Box component="div">
-          {!friends.length ? (<h2>No friends in this meal yet</h2>)
-          : (<List>
-            {friends.map((friend, i) =>
-              <FriendEntry friend={friend} i={i} deleteOne={deleteOne} page="addfriends"/>
-            )}
-          </List>)
-          }
-        </Box>
-      </Container>
 
-    </>
-
+    <Container maxWidth="95%" sx={{p:1, m:1,  width:"92%", justifyContent:"center"}}>
+      {!existList ? <Loading /> :<SearchFriends inputs={inputs} setInputs={setInputs} id={inputs.host.user_id} friends={friends} setFriends={setFriends} existList={existList} setExistList={setExistList}/>}
+      <hr/>
+      <Box component="span" sx={{dispaly:'block', fontSize:'larger'}}>
+        Friends List
+      </Box>
+      <Box component="div">
+        {!friends.length ? (<h2>No friends in this meal yet</h2>)
+        : (<List>
+          {friends.map((friend, i) =>
+            <FriendEntry friend={friend} i={i} deleteOne={deleteOne} page="addfriends"/>
+          )}
+        </List>)
+        }
+      </Box>
+    </Container>
   )
 }
 

@@ -14,7 +14,7 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
   const [alert, triggerAlert] = useState({status: false, severity:'', msg: ''});
   const [dialogValue, setDialogValue] = useState({name:'', phone:'+1'});
   const [add, setAdd] = useState(true)
-  console.log('search friends:', inputs)
+  //console.log('search friends:', inputs)
   const handleClose = () => {
     setDialogValue({
       name:'',
@@ -25,8 +25,6 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
   }
 
   const addToList = (e) =>{
-
-
     let isExists = false;
     friends.forEach(friend => {
       if (friend.name === value.name && friend.phone_num === value.phone_num) {
@@ -50,11 +48,9 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
     if (name) {
       setDialogValue({...dialogValue, name: name})
     }
-    // let temp = (!name ? dialogValue.name : name) +': ' + dialogValue.phone
     let tempName = !name ? dialogValue.name : name;
     let currentOne = (!name ? dialogValue.name : name) +': ' + dialogValue.phone;
     setValue(currentOne);
-    console.log('temp', temp);
     //if chose add to friends list
     if (add) {
       axios.post(`/api/friends/?user_id=${id}`,{guest_id: guest_id})
@@ -71,7 +67,7 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
 
 
   const handleChange = (e, newValue) => {
-    console.log('newValue in change func', newValue);
+    //console.log('newValue in change func', newValue);
     if (typeof newValue === 'string') {
       setValue(newValue);
     } else if (newValue && newValue.inputValue) {
@@ -99,7 +95,6 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
          Add Friends:
       </Box>
       {alert.status &&  <Alert severity={alert.severity} onClose={() => triggerAlert(false)}>{alert.msg}</Alert>}
-
       <Grid container justifyContent="center" spacing={1} sx={{alignItems:"center"}}>
         <Grid item>
           <Autocomplete
@@ -122,7 +117,8 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
               if (params.inputValue !=='') {
                 filtered.push({
                   inputValue: params.inputValue,
-                  name:`Add "${params.inputValue}" to this bill?`
+                  name:`Add "${params.inputValue}" to this bill?`,
+                  phone_num:null
                 })
               }
               return filtered;
@@ -131,7 +127,7 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
             selectOnFocus
             clearOnBlur
             handleHomeEndKeys
-            renderOption={(props, option) => <li {...props}>{option.name + ': ' + option.phone_num}</li>}
+            renderOption={(props, option) => <li {...props}>{!option.phone_num ? option.name : option.name + ': ' + option.phone_num}</li>}
           />
         </Grid>
         <Grid item justify="flex-end" alignItems="center" sx={{padding: 2}}>
@@ -143,28 +139,7 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
       <NewFriendDialog open={open} setDialogValue={setDialogValue} dialogValue={dialogValue} handleClose={handleClose} handleSubmit={handleSubmit} add={add} setAdd={setAdd} existList={existList} page="meal"/>
     </>
 
-
-
   )
 }
 
 export default SearchFriends;
-
-
-// --------highlight version -------//
-// renderOption={(props, option, { inputValue }) => {
-//   const matches = match(option, inputValue, { insideWords:true});
-//   const parts = parse(option, matches);
-//   console.log('part', parts, matches);
-//   return (
-//     <Box component="li" {...props} onClick={(e) => {selectExistsFriend(e)}}>
-//       <div>
-//         {parts.map((part, index) => (
-//           <span key={index} style={{fontWeight: part.highlight ? 700:400}} >
-//             {part.text}
-//           </span>
-//         ))}
-//       </div>
-//     </Box>
-//   )
-// }}
