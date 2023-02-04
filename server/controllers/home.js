@@ -10,20 +10,9 @@ exports.getFeed = (req, res) => {
       $match:  { _id: ObjectId(userId)}
     },
     {
-      $project: {
-        friendsId: {
-          $map: {
-            input: "$friends",
-            as: "id",
-            in: { $toString: "$$id"}
-          }
-        }
-      }
-    },
-    {
       $lookup: {
         from: "sessions",
-        localField: "friendsId",
+        localField: "friends",
         foreignField: "host",
         as: "friendSessions"
       }
