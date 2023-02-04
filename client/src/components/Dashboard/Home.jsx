@@ -57,7 +57,7 @@ export default function Home() {
                   </Typography>
               </Box>
             </Link>
-            <ReactionsComment state={element}/>
+            <ReactionsComment data={element}/>
             </Box>
           )
         })}
