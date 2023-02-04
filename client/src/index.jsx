@@ -14,11 +14,24 @@ import FriendsPage from './components/Friends/FriendsPage.jsx';
 import RestaurantSearch from './components/Restaurant/RestaurantSearch.jsx';
 import CompletePayment from './components/CompletePayment.jsx'
 import Steps from './components/Steps.jsx';
+// import { theme } from './components/colorTheme.js';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#76294B',
+    },
+    secondary: {
+      main: '#E3A377',
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {path:"/", element:<App/>},
@@ -39,6 +52,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('app')).render(
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </React.StrictMode>
 )
