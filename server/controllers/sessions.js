@@ -84,16 +84,16 @@ details[req.body.host.user_id] = {
     receipt: req.body.receipt,
     active: true
   })
-  .then(sessionId => {
-    res.status(200).send('Session created!')
+  // .then(sessionId => {
+  //   res.status(200).send('Session created!')
+  // })
+  .then((sessionId) => {
+    console.log('sessionId', sessionId);
+    return helper.sendTexts(req.body)
   })
-  // .then((sessionId) => {
-  //   console.log('sessionId', sessionId);
-  //   return helper.sendTexts(req.body)
-  // })
-  // .then((message) => {
-  //   res.status(200).send(message);
-  // })
+  .then((message) => {
+    res.status(200).send(message);
+  })
   .catch((err) => {
     res.status(500).send(err);
   })
@@ -107,7 +107,7 @@ exports.updatePaymentStatus = function(req, res)  {
     res.status(500).send('User id not found');
   } else {
     let textBody = {};
-  
+
     db.Session.findOneAndUpdate({[`detail.${userId}`] : { $exists : true }}, {$set:{[`detail.${userId}.is_paid`]: true}})
     .then(data => {
       return db.Session.findById(sessionId)
@@ -140,4 +140,3 @@ exports.updatePaymentStatus = function(req, res)  {
     })
   }
 }
-
