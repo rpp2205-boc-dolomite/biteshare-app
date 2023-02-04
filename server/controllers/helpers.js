@@ -13,16 +13,16 @@ exports.sendTexts = async function (input) {
 
   //const promises = [];
 
-  const promises = input.friends.map((element) => {
-    return(
+  input.friends.forEach((element) => {
+    promises.push(
       client.messages.create({
         body: `Hi ${element.name}: \n You have been invited to split the bill at ${input.restInfo.name} \n Please select the link below to view the meal session \n www.google.com`,
         from: from,
         to: `${element.phone_num}`
       })
       .then(message => console.log(message.sid))
-    )
-  })
+   )
+  });
 
   // for (const [to, body] of array) {
   //   promises.push(client.messages
@@ -32,3 +32,23 @@ exports.sendTexts = async function (input) {
 
   return Promise.all(promises);
 };
+
+exports.sendAllFriendHasPaidTexts = function(textBody) {
+  const accountSid = process.env.TWILIO_ACCOUNT_SID;
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const client = require('twilio')(accountSid, authToken);
+
+  client.messages
+    .create({
+      body: `\n
+      Hi, ${textBody['host_name']}: \n All the participants in this meal session have completed payment.\n
+      - Details -
+      Restaurant: ${textBody['restaurant']}
+      Total: $${textBody['sub_total'] + textBody['tip_total']}
+      `,
+      from: process.env.TWILIO_PHONE_NUM,
+      to: process.env.MY_PHONE_NUM // temporary, change to host when production
+    })
+    .then(message => console.log('message successfully sent!', message.sid))
+    .catch(e => console.log('failed to send text', e))
+}

@@ -15,6 +15,7 @@ import MealDetails from "./MealDetails/MealDetails.jsx";
 import AddFriends from "./Friends/AddFriends.jsx";
 import Review from './Review/Review.jsx';
 import Navbar from './Dashboard/Navbar.jsx';
+import Loading from './Loading.jsx';
 
 import axios from 'axios';
 const steps = ["Selecting Restaurant", "Add freinds", "Meal details", "Review your Meal"];
@@ -48,11 +49,10 @@ export default function Steps() {
     }
   })
   const [isSubmitting, setSubmit] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   if (!inputs.host.user_id) {
     const user = JSON.parse(localStorage.getItem('user'));
-    //const phone = localStorage.getItem('phone');
-    console.log('step local: ', user);
     setInputs({...inputs, host: {...inputs.host, user_id: user.id, name: user.name, phone_num: user.phone_num}})
   }
   function _renderStepContent(step) {
@@ -88,20 +88,21 @@ export default function Steps() {
 
   function _handleNext() {
     let isError = false
-    // if (activeStep === 0 && !inputs.restInfo.name) {
-    //   setAlert({status:true, severity:'warning', msg:'Please select restaurant!'});
-    //   isError = true;
-    // }
+    if (activeStep === 0 && !inputs.restInfo.name) {
+      setAlert({status:true, severity:'warning', msg:'Please select restaurant!'});
+      isError = true;
+    }
     if (activeStep === 1 && !inputs.friends.length) {
       setAlert({status:true, severity:'warning', msg:'Please add friends to this bill!'})
 
       isError = true;
     }
-    if (activeStep === 2 && !inputs.session) {
+    if (activeStep === 2 && !inputs.session.payload) {
       setAlert({status:true, severity:'warning', msg:'Please fill in all the blank!'});
       isError = true;
     }
     if (activeStep === 3) {
+      setLoading(true);
       _handleSubmit();
     }
     if (isError) {
@@ -116,6 +117,9 @@ export default function Steps() {
   }
   if (redirect) {
     return <Navigate to='/meals' replace={true}/>
+  }
+  if(loading) {
+    return <Loading />
   }
   return (
     <>

@@ -16,6 +16,7 @@ const { getBiz } = require('./controllers/yelpBiz.js');
 const { addReactionToSession, addCommentToSession, testInit } = require('./controllers/social');
 
 app.use(helmet({
+  crossOriginEmbedderPolicy: false,
   contentSecurityPolicy: {
     useDefaults: true,
     directives: {
@@ -48,6 +49,7 @@ app.use(express.urlencoded({ extended: false }));
 app.get('/api/friends', friendsControllers.getFriends);
 app.post('/api/friends', friendsControllers.addFriend);
 app.put('/api/friends', friendsControllers.deleteFriend);
+
 //---- user info ---//
 app.get('/api/users', userControllers.getUser);
 app.post('/api/users', userControllers.addUser);
@@ -55,7 +57,8 @@ app.post('/api/users', userControllers.addUser);
 //---sessions ---//
 app.get('/api/sessions', sessionControlers.getSessions)
 app.post('/api/sessions', sessionControlers.postSessions);
-app.post('/api/sessions/status', sessionControlers.updatePaymentStatus)
+app.post('/api/sessions/status', sessionControlers.updatePaymentStatus);
+app.get('/api/sessions/friend', sessionControlers.checkIfUserInFriendsList)
 
 //---- login and signup ----//
 app.post('/api/login/', authControllers.verifyLogin)

@@ -13,12 +13,17 @@ export default function MealsList() {
   // after getSessions is added, uncomment the folloiwng and change array to data on line 26
 
   const [meals, setMeals] = useState([]);
+  const [emptyFeed, handleEmptyFeed] = useState('');
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
   const getMealSessions = (phoneNum) => {
     axios.get(`/api/sessions?user_id=${user.id}`)
     .then((sessions) => {
-      setMeals([...sessions.data])
+      if(sessions.data.length === 0) {
+        handleEmptyFeed('No new meal sessions');
+      } else {
+        setMeals([...sessions.data])
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -33,7 +38,12 @@ export default function MealsList() {
     return (
       <Box sx={{ width: '100%'}}>
         <Navbar></Navbar>
-        {meals.length === 0 ? 'No new meals' : meals.map((element, index) => {
+        <Box display="flex" sx={{justifyContent: 'center'}}>
+          <Link to="/step" >
+            <Button size='large' variant="contained" sx={{backgroundColor:'black', m: 2}}>Create a new Meal Session</Button>
+          </Link>
+        </Box>
+        {meals.length === 0 ? emptyFeed : meals.map((element, index) => {
           var hostId = element.host;
           return(
             <Link to="/meal" style={{ textDecoration: 'none' }}
@@ -68,11 +78,7 @@ export default function MealsList() {
             </Link>
           )
         })}
-        <Box display="flex" sx={{justifyContent: 'center'}}>
-          <Link to="/step" >
-            <Button size='large' variant="contained" sx={{backgroundColor:'black', m: 2}}>Create a new Meal Session</Button>
-          </Link>
-        </Box>
+
       </Box>
     );
 }
