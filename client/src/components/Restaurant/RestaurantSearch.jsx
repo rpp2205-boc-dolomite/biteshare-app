@@ -13,21 +13,18 @@ const RestaurantSearch = ({inputs, setInputs}) => {
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
-    let bus = (event.target.outerText);
-    const numIndex = bus.search(/\d/);
+    let a = event.target.title;
     setRestInfo({
-      name: bus.substr(0, numIndex - 1),
-      address: bus.substr(numIndex)
-    });
+      name: event.target.id,
+      address: event.target.title
+    })
     //this is for the Step components
     setInputs({...inputs, restInfo: {
-      name: bus.substr(0, numIndex - 1),
-      address: bus.substr(numIndex)
+      name: event.target.id,
+      address: event.target.title
     }})
     //-----end of step needed code-----
 
-    console.log(restInfo);
-    console.log(index);
   };
 
   const handleLocation = (e) => {
@@ -76,10 +73,10 @@ const RestaurantSearch = ({inputs, setInputs}) => {
     <Box>
     {/* <Navbar /> */}
       <Box
-      flex-direction="column"
-      alignItems="center"
-      justifyContent="center"
-      padding="50px"
+        flex-direction="column"
+        alignItems="center"
+        justifyContent="center"
+        padding="20px"
       >
       <TextField fullWidth label="Type in your location" onChange={handleLocation} />
       <Typography padding="20px">
@@ -106,7 +103,12 @@ const RestaurantSearch = ({inputs, setInputs}) => {
           variant="contained"
         >Continue</Button>
     </Typography> */}
-      <List>
+      <List
+        sx={{
+          height: "450px",
+          overflow: "auto"
+        }}
+      >
       {businesses.map((bus, index) => {
         return (
           <ListItem key={index} align-items="center">
@@ -114,14 +116,13 @@ const RestaurantSearch = ({inputs, setInputs}) => {
               selected={selectedIndex === index}
               onClick={(event) => handleListItemClick(event, index)}
             >
-            <Typography
-            variant="h6"
-            align="center"
-            // fontVariant="all-small-caps"
-            // place-content="center"
-            >
-            {bus.name} {bus.location.display_address[0]} {bus.location.display_address[1]}
-            </Typography>
+              <Typography
+                variant="h6"
+                id={bus.name}
+                title={bus.location.display_address}
+              >
+              {bus.name} {bus.location.display_address[0]} {bus.location.display_address[1]}
+              </Typography>
             </ListItemButton>
           </ListItem>
         )
