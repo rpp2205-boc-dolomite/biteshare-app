@@ -109,10 +109,9 @@ exports.updatePaymentStatus = async function(req, res)  {
     return res.status(500).send('User id not found');
   } else {
     try {
-      let textBody = {};
       let updatedSession = await db.Session.findOneAndUpdate(
         {
-          _id: data.id,
+          _id: data._id,
           [`detail.${userId}`] : { $exists: true }
         },
         { "$set": { [`detail.${userId}.is_paid`] : true }},
@@ -136,8 +135,27 @@ exports.updatePaymentStatus = async function(req, res)  {
         res.status(200).send('Successfully updated payment status for the user');
       }
     } catch (error) {
-      console.log(err);
+      console.log(error);
       res.status(500).send('Failed to update status')
     }
   }
 }
+
+exports.checkIfUserInFriendsList = function(req, res) {
+  const userId = req.query.user_id;
+  const sessionId = req.query.session_id;
+
+  db.Session.findById(sessionId)
+  .then(result => {
+    let friends = result.detail;
+    for (const friend in friends) {
+      let friendId = friend.valueOf();
+      if (friendId === userId) {
+        res.status(200).send('allow');
+        return;
+      }
+    }
+    res.status(200).send('not friends');
+  })
+}
+
