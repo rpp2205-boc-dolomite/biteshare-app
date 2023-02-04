@@ -14,7 +14,10 @@ function Navbar (props) {
 
   return(
     <div>
-      <h1>Bite Share</h1>
+      <Typography align="center">
+      <img src="../images/BOC-logo.png" alt="BiteShare Logo" width="175" ></img>
+      </Typography>
+
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" color="default">
           <Toolbar>
