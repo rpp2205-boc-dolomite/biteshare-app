@@ -13,16 +13,16 @@ exports.sendTexts = async function (input) {
 
   //const promises = [];
 
-  const promises = input.friends.map((element) => {
-    return(
+  input.friends.forEach((element) => {
+    promises.push(
       client.messages.create({
         body: `Hi ${element.name}: \n You have been invited to split the bill at ${input.restInfo.name} \n Please select the link below to view the meal session \n www.google.com`,
         from: from,
         to: `${element.phone_num}`
       })
       .then(message => console.log(message.sid))
-    )
-  })
+   )
+  });
 
   // for (const [to, body] of array) {
   //   promises.push(client.messages

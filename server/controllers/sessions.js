@@ -75,15 +75,16 @@ details[req.body.host.user_id] = {
   is_paid: false
 }
 
-   db.Session.insertMany({
-    host: req.body.host.user_id,
-    detail: details,
-    rest_name: req.body.rest_name,
-    sub_total: req.body.sub_total,
-    tip_total: req.body.tip_total,
-    receipt: req.body.receipt,
-    active: true
-  })
+  //  db.Session.insertMany({
+  //   host: req.body.host.user_id,
+  //   detail: details,
+  //   rest_name: req.body.rest_name,
+  //   sub_total: req.body.sub_total,
+  //   tip_total: req.body.tip_total,
+  //   receipt: req.body.receipt,
+  //   active: true
+  // })
+  helper.sendTexts(req.body)
   .then(sessionId => {
     res.status(200).send('Session created!')
   })
@@ -103,7 +104,7 @@ exports.updatePaymentStatus = async function(req, res)  {
   const userId = req.body.userId;
   const comment = req.body.comment;
   const data = req.body.data;
-  
+
   if (!userId) {
     return res.status(500).send('User id not found');
   } else {
@@ -140,4 +141,3 @@ exports.updatePaymentStatus = async function(req, res)  {
     }
   }
 }
-
