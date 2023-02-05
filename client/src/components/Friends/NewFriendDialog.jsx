@@ -87,6 +87,7 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
 
     <SwipeableDrawer
       anchor="bottom"
+      onOpen={handleClose}
       open={open}
       onClose={handleClose}
       sx={{"& .MuiPaper-root": {height: '60%', alignItems:'center', borderTopLeftRadius:15, borderTopRightRadius:15}}}
