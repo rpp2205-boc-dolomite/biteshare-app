@@ -109,7 +109,7 @@ const Meal = () => {
                 <Divider sx={{ borderBottomWidth: 1 }} />
                 <FormLabel>Total: </FormLabel>
                 <Typography variant="body1">
-                  $ {data.sub_total + data.tip_total}
+                  $ {(data.sub_total + data.tip_total).toFixed(2)}
                 </Typography>
                 <Divider sx={{ borderBottomWidth: 1 }} />
                 <FormLabel>{`Friends (${
@@ -130,13 +130,16 @@ const Meal = () => {
                     </TableHead>
                     <TableBody>
                       {Object.entries(data.detail).map((friend, index) => {
+                        console.log('friend: ', friend);
+                        const total = Number(friend[1].bill) + Number(friend[1].tip);
+                        const formatTotal = total.toFixed(2);
                         const isPaid = friend[1].is_paid ? "Paid" : "Unpaid";
                         return (
                           <TableRow key={index}>
                             <TableCell>{`${friend[1].name}`}</TableCell>
-                            <TableCell>{`$${
-                              friend[1].bill + friend[1].tip
-                            }`}</TableCell>
+                            <TableCell>
+                              $ {formatTotal}
+                            </TableCell>
                             <TableCell>{isPaid}</TableCell>
                           </TableRow>
                         );
@@ -202,14 +205,6 @@ const Meal = () => {
                           {friend[1].name}
                         </ListItemText>
                       </ListItem>
-                      // <div>
-                      //   <Avatar sx={{ bgcolor: avatorColorPool[pickColor()] }}>
-                      //     {friend[1].name.slice(0, 1).toUpperCase()}
-                      //   </Avatar>
-                      //   <ListItemText key={index} sx={{ fontSize: "1.8em" }}>
-                      //     {friend[1].name}
-                      //   </ListItemText>
-                      // </div>
                     );
                   })}
                 </List>

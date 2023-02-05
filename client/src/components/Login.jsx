@@ -17,7 +17,7 @@ import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 
 
-const theme = createTheme();
+//const theme = createTheme();
 
 export default class SignIn extends React.Component {
   constructor(props) {
@@ -78,13 +78,13 @@ export default class SignIn extends React.Component {
   render() {
     let { user, error, phone_num } = this.state;
     return (
-      <ThemeProvider theme={theme}>
+      <>
         {user && (
           <Navigate to='/meals' replace={true}/>
         )
         }
-          <Typography component='h1' variant="h4" align='center' gutterBottom sx={{mt:"10%"}}>
-              Bite Share
+          <Typography align='center' sx={{height:'10%', m:1, p:0}} >
+            <img src="../images/BOC-logo.png" alt="BiteShare Logo" width="175"></img>
           </Typography>
           <hr/>
 
@@ -99,7 +99,7 @@ export default class SignIn extends React.Component {
             }}
           >
 
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -155,7 +155,7 @@ export default class SignIn extends React.Component {
           </Box>
           <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
-      </ThemeProvider>
+      </>
     );
   }
 }

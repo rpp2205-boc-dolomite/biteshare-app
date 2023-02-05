@@ -27,15 +27,14 @@ const HomePage = (props) => {
     <Carousel autoPlay infiniteLoop showThumbs={false} animation="fade" navButtonsAlwaysInvisible={true} indicators={false} duration="400">
       {images.map((image, i) => (
         <Box height="100vh" sx={{p:2, backgroundImage:`url(${image.src})`, backgroundPosition: 'top', backgroundSize:'100% 100%'}} key={i}>
-          <Grid container rowSpacing={20} direction="column" alignItems="center" justifyContent="center">
-            <Grid item sx={{mt:"40%"}}>
-              <h1 style={titleStyle}>Bite Share</h1>
-              <h3>Make splitting bills simple and easy</h3>
+          <Grid container  direction="column" alignItems="center" justifyContent="center">
+            <Grid item sx={{mt:"10%"}}>
+            <img src="../images/logo-slogan.png" alt="BiteShare Logo" width="500" ></img>
             </Grid>
             <Grid item>
               {/* set button as Link component so it will link to the path we set in the index.jsx file */}
-              <Button component={Link} to="/signup" variant="contained" size="large" sx={{...btnStyle, backgroundColor: "white", color: "black"}}>Sign Up</Button>
-              <Button component={Link} to="/login" variant="contained" size="large" sx={{...btnStyle, backgroundColor:'black'}}>Sign In</Button>
+              <Button component={Link} to="/signup" variant="contained" size="large" color="secondary" sx={{...btnStyle}}>Sign Up</Button>
+              <Button component={Link} to="/login" variant="contained" size="large" sx={{...btnStyle}}>Sign In</Button>
             </Grid>
           </Grid>
         </Box>)
