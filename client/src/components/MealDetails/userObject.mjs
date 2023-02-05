@@ -16,16 +16,16 @@ export default class userObj {
     return this._tip;
   }
   get mealStr() {
-    return this._meal === NaN ? '$0.00' : '$' + _meal.toFixed(2).toString();
+    return this._meal === NaN ? '$0.00' : '$' + this._meal.toFixed(2).toLocaleString();
   }
   get tipStr() {
-    return this._tip === NaN ? '$0.00' : '$' + _tip.toFixed(2).toString();
+    return this._tip === NaN ? '$0.00' : '$' + this._tip.toFixed(2).toLocaleString();
   }
   set meal(meal) {
-    this._meal = Number(meal);
+    this._meal = Number(meal.replace(/[^0-9.-]+/g,""));
   }
   set tip(tip) {
-    this._tip = Number(tip);
+    this._tip = Number(tip.replace(/[^0-9.-]+/g,""));
   }
 
   getCopy() {

@@ -17,17 +17,17 @@ export default function CustomSplitFriend({ data, change, setChange }) {
     return Number.isNaN(data.meal) || Number.isNaN(data.tip);
   };
 
-  const [ meal, setMeal ] = useState(data.meal);
-  const [ tip, setTip ] = useState(data.tip);
+  // const [ meal, setMeal ] = useState(data.meal);
+  // const [ tip, setTip ] = useState(data.tip);
   const [ isError, setIsError ] = useState(false);
 
   const handleMealChange = e => {
-    data.meal = e.target.value;
+    data.meal = Number(e.target.value.replace(/[^0-9.-]+/g,""));
     // setMeal(data.meal);
     setChange(!change);
   };
   const handleTipChange = e => {
-    data.tip = e.target.value;
+    data.tip = Number(e.target.value.replace(/[^0-9.-]+/g,""));
     // setTip(data.tip);
     setChange(!change);
   };
@@ -44,9 +44,9 @@ export default function CustomSplitFriend({ data, change, setChange }) {
       <Typography width={200}>{data.name || 'unknown'}</Typography>
       <TextField
         label="Meal Amount"
-        // startAdornment={<InputAdornment position="start" component="div"><div><AttachMoneyIcon /></div></InputAdornment>}
+        // startAdornment={<InputAdornment position="start">$</InputAdornment>}
         error={isError}
-        defaultValue={data.meal || 0}
+        value={data.mealStr || 0}
         onChange={handleMealChange}
         required
         width={200}
@@ -54,9 +54,9 @@ export default function CustomSplitFriend({ data, change, setChange }) {
       />
       <TextField
         label="Tip Amount"
-        startAdornment={<InputAdornment position="start" component="div"><div><AttachMoneyIcon /></div></InputAdornment>}
+        // startAdornment={<InputAdornment position="start" component="div"><div><AttachMoneyIcon /></div></InputAdornment>}
         error={isError}
-        defaultValue={data.tip || 0}
+        defaultValue={data.tipStr || 0}
         onChange={handleTipChange}
         required
         width={200}

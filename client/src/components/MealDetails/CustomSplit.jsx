@@ -36,10 +36,10 @@ const getDifferenceComp = diff => {
   };
   let str;
 
-  if (diff < 0) {
+  if (diff < 0.001) {
     sx.color = red[700];
     str = '🔴 (-$' + Math.abs(diff.toFixed(2)).toString() + ')';
-  } else if (diff > 0) {
+  } else if (diff > 0.001) {
     sx.color = blue[700];
     str = '🔵 +$' + diff.toFixed(2).toString();
   } else if (Number.isNaN(diff)) {
