@@ -36,9 +36,9 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
     })
     if (!isExists) {
       console.log('new added')
-      setFriends(friends.concat([value]));
+      setFriends(friends.concat([{id:value.id, name: value.name, phone_num: value.phone_num}]));
       //this line if for step components
-      setInputs({...inputs, friends: friends.concat([value])})
+      setInputs({...inputs, friends: friends.concat([{id:value.id, name: value.name, phone_num: value.phone_num}])})
       setValue(null);
     }
   }
@@ -50,7 +50,7 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
     }
     let tempName = !name ? dialogValue.name : name;
     let currentOne = (!name ? dialogValue.name : name) +': ' + dialogValue.phone;
-    setValue(currentOne);
+    setValue({...value, id:guest_id, name:tempName, phone_num: dialogValue.phone, text: currentOne});
     //if chose add to friends list
     if (add) {
       axios.post(`/api/friends/?user_id=${id}`,{guest_id: guest_id})
@@ -69,7 +69,7 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
   const handleChange = (e, newValue) => {
     //console.log('newValue in change func', newValue);
     if (typeof newValue === 'string') {
-      setValue(newValue);
+      setValue({...value, text:newValue});
     } else if (newValue && newValue.inputValue) {
       toggleOpen(true);
       let phone = parseInt(newValue.inputValue);
@@ -85,7 +85,7 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
         })
       }
     } else {
-      setValue({id: newValue.id, name: newValue.name, phone_num: newValue.phone_num});
+      setValue({id: newValue.id, name: newValue.name, phone_num: newValue.phone_num, text: newValue.name + ": " + newValue.phone_num});
     }
   }
 
@@ -98,7 +98,7 @@ const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, s
       <Grid container justifyContent="center" spacing={1} sx={{alignItems:"center"}}>
         <Grid item>
           <Autocomplete
-            value={value}
+            value={!value ? value : value.text}
             onChange={(e, newValue) => handleChange(e, newValue)}
             options={existList}
             freeSolo={true}
