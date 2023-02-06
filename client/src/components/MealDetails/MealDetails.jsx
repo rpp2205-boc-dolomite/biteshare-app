@@ -295,8 +295,8 @@ class MealDetails extends Component {
             border: 1,
             borderStyle: 'dashed',
             borderRadius: 2,
-            borderColor: 'blue',
-            backgroundColor: 'lightgrey'
+            borderColor: '#76294B',
+            backgroundColor: 'AntiqueWhite'
           }}
         ><img crossOrigin="anonymous" src={this.state.receipt} style={{ maxWidth: "100%", maxHeight: "100%" }} /></Box>
       </Stack>
