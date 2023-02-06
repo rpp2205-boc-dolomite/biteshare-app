@@ -107,6 +107,7 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
               <OutlinedInput
                 type='text'
                 label="Name"
+                aria-label='name'
                 error={noName}
                 value={dialogValue.name}
                 onChange={(event) =>
@@ -124,6 +125,7 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
                 id="outlined-adornment-password"
                 type='text'
                 label="Phone"
+                aria-label='phone'
                 value={dialogValue.name}
                 onChange={(event) =>
                   setDialogValue({

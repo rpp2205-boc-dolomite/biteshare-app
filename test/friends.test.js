@@ -7,15 +7,25 @@ import '@testing-library/jest-dom';
 import FriendsPage from '../client/src/components/Friends/FriendsPage';
 import { Link } from 'react-router-dom';
 
-// const server = setupServer(
-//   rest.get('/api', (req,res,ctx) => {
-//     return res(ctx.status(200));
-//   })
-// )
+const results = {
+  friends:[
+    {_id: '63d8c7660a277bbead327d8c', name: 'www', phone_num: '+13123334444'},
+    {_id: '63d8be70b09aaa559bcdad88', name: 'ccc', phone_num: '+11231231239'},
+    {_id: '63d5690765b903d98477c097', name: 'stacey', phone_num: '+14086934417'},
+    {_id: '63d71c233a9a07c7037519ca', name: 'ccc', phone_num: '+11231231234'},
+    {_id: '63ddf333424ace3e8d185d10', name: 'Lily', phone_num: '+12248301279'},
+    {_id: '63df1bf3783cd71433b38c76', name: 'lucky', phone_num: '+18889998888'}
+  ]
+};
+const server = setupServer(
+  rest.get('/api/friends', (req,res,ctx) => {
+    return res(ctx.json(results));
+  })
+)
 
-// beforeAll(() => server.listen());
-// afterEach(() => server.resetHandlers());
-// afterAll(() => server.close());
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 const localStorageMock = (function() {
   let store = {
@@ -59,11 +69,32 @@ describe('Friends Page render Tests', () => {
 
   test('FriendsPage rendered', async () => {
     const { container } = render(<FriendsPage />, {wrapper: MemoryRouter})
-
+    await waitFor(() => {
+      expect(container.querySelectorAll('li')).toHaveLength(6);
+    })
     expect(screen.getByText('Your Friends List')).toBeDefined();
-    expect(screen.getByRole('button')).toBeDefined();
-    //expect(screen.querySelecotorAll('li')).toHaveLength(5);
   })
+
+  test ('Click add friends btn should pop up a new window', async() => {
+    const { container, queryByText} = render(<FriendsPage />, {wrapper: MemoryRouter})
+    // fireEvent.click(screen.getByText(/Add a new friend/i));
+    fireEvent.click(screen.getByRole('button', {name:'Add a new friend'}));
+    await waitFor(() => expect(queryByText("New friends?")).toBeDefined());
+
+    fireEvent.click(screen.getByRole('button', {name:'Add'}));
+    expect(screen.getByText('Invalid phone number')).toBeDefined();
+    const nameInput = screen.getByLabelText('name').querySelector('input');
+    const phoneInput = screen.getByLabelText('phone').querySelector('input');
+    fireEvent.change(nameInput, {target: {value: 'userFromTest'}});
+    expect(nameInput.value).toBe('userFromTest');
+    fireEvent.change(phoneInput, {target: {value: '1231231234'}});
+    expect(phoneInput.value).toBe('1231231234');
+    fireEvent.click(screen.getByRole('button', {name:'Add'}));
+    await waitFor(() => expect(container.querySelector('MuiAlert-message')).toBeDefined());
+
+  })
+
+
 
 
 })
