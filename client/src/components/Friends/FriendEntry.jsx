@@ -10,15 +10,7 @@ const FriendEntry = ({friend, i, deleteOne, page}) => {
     e.preventDefault();
     deleteOne(i);
   }
-  console.log('friend 1:', friend);
-  // useEffect(() => {
-  //   if (page === 'meal') {
-  //     let friendArr = friend.split(': ');
-  //     console.log('arr: ', friendArr)
-  //     friend ={name: friendArr[0], phone_num: friendArr[1]};
-  //   }
-  // }, [])
-  // console.log('friend 2:', friend);
+  //console.log('friend 1:', friend);
 
   let styleForPage = page === "friends" ? {margin:4} : null
   const avatorColorPool =[deepOrange[500], blue[500], null, deepPurple[500]]

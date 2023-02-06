@@ -70,7 +70,7 @@ export default function FriendsPage (props) {
       <Divider/>
       <Box component="div" sx={{height: "600px", overflowX: "hidden", overflowY: 'scroll', display: "flex", alignItems: "flex-start", justifyContent: "center"}}>
         {!friends ? <Loading /> : (!friends.length ? (<h2>You do not have any friends yet</h2> )
-        : (<List sx={{width:"90%"}}>
+        : (<List role="list" aria-labelledby="friends-list" sx={{width:"90%"}}>
           {friends.map((friend, i) =>
             <FriendEntry friend={friend} i={i} deleteOne={deleteOne} page="friends"/>
           )}
