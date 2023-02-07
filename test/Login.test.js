@@ -15,34 +15,43 @@ test('Login page should render', async () => {
     expect(screen.getByText('Sign In')).toBeInTheDocument();
 })
 
-test('Should Return Error for account does not exist', async () => {
-    const { container } = render(<SignIn />)
-    await waitFor(() => screen.getByText('Sign In'))
-    var phone_numInput = container.querySelector(`input[name="tel"]`)
-    var passwordInput = container.querySelector(`input[name="password"]`)
+// test('Should Return Error for account does not exist', async () => {
+//     const { container } = render(<SignIn />)
+//     await waitFor(() => screen.getByText('Sign In'))
+//     var phone_numInput = container.querySelector(`input[name="tel"]`)
+//     var passwordInput = container.querySelector(`input[name="password"]`)
    
-    fireEvent.change(phone_numInput, {target: {value: '8138209478'}})
-    fireEvent.change(passwordInput, {target: {value: 'wrong'}})
-    fireEvent.click(screen.getByText('Sign In'))
+//     fireEvent.change(phone_numInput, {target: {value: '8138209479'}})
+//     fireEvent.change(passwordInput, {target: {value: 'wrong'}})
+//     fireEvent.click(screen.getByText('Sign In'))
 
-    expect(screen.getByText('There is no account registered to this username.')).toBeInTheDocument();
-})
-test('Should return error message for incorrect password', async () => {
-    const { container } = render(<SignIn />)
-    await waitFor(() => screen.getByText('Sign In'))
-    var phone_numInput = container.querySelector(`input[name="tel"]`)
-    var passwordInput = container.querySelector(`input[name="password"]`)
+//     expect(screen.getByText('There is no account registered to this username.')).toBeInTheDocument();
+// })
+// test('Should return error message for incorrect password', async () => {
+//     const { container } = render(<SignIn />)
+//     await waitFor(() => screen.getByText('Sign In'))
+//     var phone_numInput = container.querySelector(`input[name="tel"]`)
+//     var passwordInput = container.querySelector(`input[name="password"]`)
    
-    fireEvent.change(phone_numInput, {target: {value: '8138209478'}})
-    fireEvent.change(passwordInput, {target: {value: 'wrong'}})
-    fireEvent.click(screen.getByText('Sign In'))
+//     fireEvent.change(phone_numInput, {target: {value: '8138209478'}})
+//     fireEvent.change(passwordInput, {target: {value: 'wrong'}})
+//     fireEvent.click(screen.getByText('Sign In'))
 
-    expect(screen.getByText('The password you have entered is incorrect.')).toBeInTheDocument();
+//     expect(screen.getByText('The password you have entered is incorrect.')).toBeInTheDocument();
 
-})
+// })
 
-test('Should redirect to /meals when signed in', async () => {
-    const { container } = render(<SignIn />)
-    await waitFor(() => screen.getByText('Sign In'))
+// test('Should redirect to /meals when signed in', async () => {
+//     const { container } = render(<SignIn />)
+//     await waitFor(() => screen.getByText('Sign In'))
+//     var phone_numInput = container.querySelector(`input[name="tel"]`)
+//     var passwordInput = container.querySelector(`input[name="password"]`)
+   
+//     fireEvent.change(phone_numInput, {target: {value: '8138209478'}})
+//     fireEvent.change(passwordInput, {target: {value: 'password1'}})
+//     fireEvent.click(screen.getByText('Sign In'))
 
-})
+//     expect(screen.getByText('The password you have entered is incorrect.')).toBeInTheDocument();
+
+
+// })

@@ -8,7 +8,7 @@
     "start": "NODE_ENV=production node server/server.js",
     "react-dev": "npx webpack --watch",
     "build": "npx webpack",
-    "test": "jest client/src/components --env=jsdom --coverage"
+    "test": "jest ./test --env=jsdom --coverage"
   },
   "repository": {
     "type": "git",
