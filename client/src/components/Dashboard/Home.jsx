@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Button, Box, Typography, Stack, List, ListItem, ListItemButton, Modal} from '@mui/material';
+import {Button, Box, Typography, Stack, List, ListItem, ListItemText,ListItemButton, Modal} from '@mui/material';
 import Navbar from './Navbar.jsx';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
@@ -8,7 +8,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import Loading from '../Loading.jsx';
 import ReactionsComment from './ReactionsComment.jsx';
 import { format, parseISO } from 'date-fns';
-
+import PopModal from './PopModal.jsx';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -26,10 +26,22 @@ export default function Home() {
   const [open, setOpen] = React.useState(false);
   const user = JSON.parse(localStorage.getItem('user'));
   const [ needsUpdate, setNeedsUpdate ] = React.useState(true);
+  const [current, setCurrent] = useState(null)
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = (e, element, index) => {
 
+    setOpen(true);
+  }
+  const handleClose = () => {
+    setCurrent(null);
+    setOpen(false);
+  };
+  useEffect(() => {
+   if (current) {
+    console.log('current in effect: ', current);
+    setOpen(true);
+   }
+  },[current])
   useEffect(() => {
     if (needsUpdate) {
       axios.get(`/api/feed?user_id=${user.id}`)
@@ -47,10 +59,11 @@ export default function Home() {
       });
     }
   });
-
+  console.log('cur', current);
   return(
     <Box>
       <Navbar></Navbar>
+        {open && <PopModal open={open} comments={current} handleClose={handleClose}/>}
         {feed.length === 0 ? emptyFeed : feed.map((element, index) => {
           var hostId = element.host;
           var total = Object.keys(element.detail).length;
@@ -81,42 +94,10 @@ export default function Home() {
                 sx={{
                   fontSize: "0.75rem"
                 }}
-                onClick={handleOpen}
+                onClick={() => {setCurrent(element.comments); setOpen(true);}}
                 >
                 see what others are saying
               </Button>
-            <Modal
-              open={open}
-              onClose={handleClose}
-            >
-              <Box sx={style}>
-                <List
-                  sx={{
-                    height: "450px",
-                    overflow: "auto"
-                  }}
-                >
-                {element.comments.map((com, index) => {
-                  return (
-                    <ListItem
-                      key={index}
-                      align-items="center"
-                      sx={{
-                        borderBottom: 1
-                      }}
-                    >
-                      <Typography variant="h6">
-                        {com.text}
-                        <Typography>
-                          {format(parseISO(com.date), 'MMMM dd yyyy')}
-                        </Typography>
-                      </Typography>
-                    </ListItem>
-                  )
-                })}
-                </List>
-              </Box>
-            </Modal>
             <ReactionsComment setNeedsUpdate={setNeedsUpdate} data={element}/>
             </Box>
           )
