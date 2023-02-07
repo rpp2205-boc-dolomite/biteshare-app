@@ -8,6 +8,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import Loading from '../Loading.jsx';
 import ReactionsComment from './ReactionsComment.jsx';
 import { format, parseISO } from 'date-fns';
+import CommentModal from './CommentModal.jsx';
 
 const style = {
   position: 'absolute',
@@ -85,7 +86,8 @@ export default function Home() {
                 >
                 see what others are saying
               </Button>
-            <Modal
+              {open && <CommentModal data={element} open={open} handleClose={handleClose} />}
+            {/* <Modal
               open={open}
               onClose={handleClose}
             >
@@ -96,10 +98,10 @@ export default function Home() {
                     overflow: "auto"
                   }}
                 >
-                {element.comments.map((com, index) => {
+                {element.comments.map((com, i) => {
                   return (
                     <ListItem
-                      key={index}
+                      key={i}
                       align-items="center"
                       sx={{
                         borderBottom: 1
@@ -116,7 +118,7 @@ export default function Home() {
                 })}
                 </List>
               </Box>
-            </Modal>
+            </Modal> */}
             <ReactionsComment setNeedsUpdate={setNeedsUpdate} data={element}/>
             </Box>
           )
