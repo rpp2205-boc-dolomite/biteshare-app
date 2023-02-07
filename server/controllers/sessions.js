@@ -50,12 +50,13 @@ details[req.body.host.user_id] = {
     active: true
   })
   .then((sessionId) => {
-    return helper.sendTexts(req.body);
+    console.log('new session', sessionId[0].id);
+   // return helper.sendTexts(req.body, sessionId[0].id);
   })
-  .then((message) => {
-    console.log('sessionId', message.sid);
-    res.status(200).send(message.sid)
-  })
+  // .then((message) => {
+  //   console.log('sessionId', message.sid);
+  //   res.status(200).send(message.sid)
+  // })
   .catch((err) => {
     console.log('error', err);
     res.status(500).send(err);

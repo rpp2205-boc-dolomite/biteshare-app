@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 
-exports.sendTexts = async function (input) {
+exports.sendTexts = async function (input, id) {
   // this is an async function and returns an array of results
   // Accepts an array of these arrays: ['+12223334444', "Hello! This is a text from BiteShare!"]
   // https://www.twilio.com/docs/sms/api
@@ -17,7 +17,7 @@ exports.sendTexts = async function (input) {
     console.log('here')
     promises.push(
       client.messages.create({
-        body: `Hi ${element.name}: \n You have been invited to split the bill at ${input.rest_name} \n Please select the link below to view the meal session \n biteshare.ecitytech.net`,
+        body: `Hi ${element.name}: \n You have been invited to split the bill at ${input.rest_name} \n Please select the link below to view the meal session \n biteshare.ecitytech.net/guest?session_id=${id}`,
         from: process.env.TWILIO_PHONE_NUM,
         to: `${element.phone_num}`
       })

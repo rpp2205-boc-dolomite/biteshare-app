@@ -48,23 +48,8 @@ const Meal = () => {
   };
 
   useEffect(() => {
-    checkIfUserInFriends();
+    axios.get('/api/guest')
   }, []);
-
-  const checkIfUserInFriends = () => {
-    const userId = parsedUserObj.id;
-    const sessionId = data._id;
-
-    axios
-      .get(`/api/guest?session_id=$`)
-      .then((data) => {
-        if (data.data === "not friends") {
-          setIsInSession(false);
-        } else {
-          setIsInSession(true);
-        }
-      });
-  };
 
   const updatePaymentStatus = () => {
     axios
