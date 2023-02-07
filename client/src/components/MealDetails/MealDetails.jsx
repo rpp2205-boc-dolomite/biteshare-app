@@ -370,5 +370,5 @@ class MealDetails extends Component {
   }
 }
 
-// export default MealDetails;
-export default withRouter(MealDetails);
+export default MealDetails;
+// export default withRouter(MealDetails);
