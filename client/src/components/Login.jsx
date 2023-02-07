@@ -52,22 +52,13 @@ export default class SignIn extends React.Component {
     })
     .catch((err) => {
       if (err.response.status === 401) {
-        if (err.response.data === 'password') {
-          //response for wrong password
-          this.setState({
-            error: 'Incorrect Password'
-          })
-          console.log('WRONG PASSWORD')
-        } else if (err.response.data === 'username') {
-          //response for wrong username
-          this.setState({
-            error: 'We could not find your phone number in our system.'
-          })
-          console.log('WRONG USERNAME')
-        }
+        this.setState({
+          error: err.response.data
+        })
+        
       } else {
         this.setState({
-          error: 'server'
+          error: 'Internal Server Error. Please try again at another time'
         })
         console.log(err);
         console.log(err.response.status)
@@ -76,7 +67,7 @@ export default class SignIn extends React.Component {
     })
   };
   render() {
-    let { user, error, phone_num } = this.state;
+    let { user, error } = this.state;
     return (
       <>
         {user && (
@@ -105,7 +96,7 @@ export default class SignIn extends React.Component {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            {error && <p>{error}</p>}
+            {error && <p style={{ color: 'red', 'font-weight': 'bold' }}>{error}</p>}
             <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
