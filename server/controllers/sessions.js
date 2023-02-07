@@ -65,7 +65,9 @@ details[req.body.host.user_id] = {
 exports.updatePaymentStatus = async function(req, res)  {
   const userId = req.body.userId;
   const comment = req.body.comment;
-  const data = req.body.data;
+  const sessionId = req.body.sessionId;
+
+  console.log('session id: ', sessionId);
 
   if (!userId) {
     return res.status(500).send('User id not found');
@@ -73,7 +75,7 @@ exports.updatePaymentStatus = async function(req, res)  {
     try {
       let updatedSession = await db.Session.findOneAndUpdate(
         {
-          _id: data._id,
+          _id: sessionId,
           [`detail.${userId}`] : { $exists: true }
         },
         { "$set": { [`detail.${userId}.is_paid`] : true }},
@@ -87,7 +89,6 @@ exports.updatePaymentStatus = async function(req, res)  {
         let textBody = {};
         let hostId = updatedSession.host.valueOf();
         let hostData = await db.User.findById(hostId);
-        let hostPhoneNumber = hostData.phone_num;
         let hostName = hostData.name;
         textBody['host_name'] = hostName;
         textBody['restaurant'] = updatedSession.rest_name;

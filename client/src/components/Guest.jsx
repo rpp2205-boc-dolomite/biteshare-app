@@ -46,10 +46,12 @@ const Guest = () => {
   }, []);
 
   const updatePaymentStatus = () => {
+    const parsed = queryString.parse(location.search);
     axios
       .post("/api/sessions/status", {
         userId: parsedUserObj.id,
         comment: comment,
+        sessionId: parsed.session_id
       })
       .then((res) => {
         if (res.status === 200) {
