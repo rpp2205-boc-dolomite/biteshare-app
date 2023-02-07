@@ -50,7 +50,7 @@ const getDifferenceComp = diff => {
     str = '✅ $' + Math.abs(diff).toFixed(2).toString();
   }
 
-  return <Typography alignCenter sx={sx}>{str}</Typography>
+  return <Typography alignItems="center" sx={sx}>{str}</Typography>
 };
 
 export default function CustomSplit({ hidden, data, mealTotal, tipTotal }) {
@@ -65,7 +65,7 @@ export default function CustomSplit({ hidden, data, mealTotal, tipTotal }) {
       <Stack direction="column" justifyContent="right" sx={{width: "90%"}}>
         {data.map((guest, i) => <CustomSplitFriend data={guest} key={i} change={change} setChange={setChange} />)}
         <Stack direction="row" spacing={2} justifyContent="right">
-          <Typography alignRight width={200}>{''}</Typography>
+          <Typography align="right" width={200}>{''}</Typography>
           <Divider sx={{my: 1}}></Divider>
           {getDifferenceComp(totals.meal - mealTotal)}
           {getDifferenceComp(totals.tip - tipTotal)}

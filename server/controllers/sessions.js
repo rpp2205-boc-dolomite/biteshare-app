@@ -121,3 +121,13 @@ exports.checkIfUserInFriendsList = function(req, res) {
   })
 }
 
+exports.getOneSession = function(req, res) {
+  const sessionId = req.query.session_id;
+  db.Session.findById(sessionId)
+  .then((result) => {
+    res.status(200).send(result);
+  })
+  .catch((err) => {
+    res.status(500).send(err)
+  })
+}
