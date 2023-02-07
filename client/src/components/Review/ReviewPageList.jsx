@@ -13,13 +13,13 @@ export default function ReviewPageList (props) {
                 <Typography>{element.name}</Typography>
               </Grid>
               <Grid container item xs={3} direction="column">
-                <Typography>{element.meal_amount}</Typography>
+                <Typography>${element.meal_amount}</Typography>
               </Grid>
               <Grid container item xs={3} direction="column">
-                <Typography>{element.tip_amount}</Typography>
+                <Typography>${element.tip_amount}</Typography>
               </Grid>
               <Grid container item xs={3} direction="column">
-                <Typography>{Number(element.meal_amount) + Number(element.tip_amount)}</Typography>
+                <Typography>${(Number(element.meal_amount) + Number(element.tip_amount)).toFixed(2)}</Typography>
               </Grid>
             </Grid>
         )
@@ -29,13 +29,13 @@ export default function ReviewPageList (props) {
           <Typography>You (Host)</Typography>
         </Grid>
         <Grid container item xs={3} direction="column">
-          <Typography>${props.hostAmount.meal_amount}</Typography>
+          <Typography>${props.hostAmount.meal_amount.toFixed(2)}</Typography>
         </Grid>
         <Grid container item xs={3} direction="column">
-          <Typography>${Math.round(props.hostAmount.tip_amount * 100)/100}</Typography>
+          <Typography>${props.hostAmount.tip_amount.toFixed(2)}</Typography>
         </Grid>
         <Grid container item xs={3} direction="column">
-          <Typography>${props.hostAmount.meal_amount + props.hostAmount.tip_amount}</Typography>
+          <Typography>${(props.hostAmount.meal_amount + props.hostAmount.tip_amount).toFixed(2)}</Typography>
         </Grid>
       </Grid>
     </Box>
