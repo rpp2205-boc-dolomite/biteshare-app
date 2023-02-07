@@ -21,13 +21,14 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 250,
+  width: 450,
+  height: 300,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   p: 4,
 };
 
-const ReactionsComment = ({data}) => {
+const ReactionsComment = ({data, setNeedsUpdate}) => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
   const [reaction, setReaction] = useState('');
   const [open, setOpen] = React.useState(false);
@@ -46,6 +47,7 @@ const ReactionsComment = ({data}) => {
     axios.post(`/api/social/reaction/${data._id}`, { user_id: user.id, emoji: event.target.id})
     .then((result) => {
       console.log('REACTION SUCCESS');
+      setNeedsUpdate(true);
     })
     .catch((err) => {
       console.log(err);
@@ -60,6 +62,7 @@ const ReactionsComment = ({data}) => {
     axios.post(`/api/social/comment/${data._id}`, { user_id: user.id, text: comment})
     .then((result) => {
       console.log('COMMENT SUCCESS', result);
+      setNeedsUpdate(true);
     })
     .catch((err) => {
       console.log(err);
@@ -131,12 +134,17 @@ const ReactionsComment = ({data}) => {
                         multiline
                         required
                         rows={4}
-                        label="Add your comment!"
+                        label="Fill me in!"
                         onChange={handleComment}
                         inputProps={{maxLength: CHARACTER_LIMIT}}
                         helperText={`${comment.length}/${CHARACTER_LIMIT}`}
+                        sx={{
+                          width: "100%"
+                        }}
                       />
-                      <Button onClick={() => {commentPost(comment); handleClose()}}>Post!</Button>
+                      <Typography align="center" padding="10px">
+                        <Button variant="contained" onClick={() => {commentPost(comment); handleClose()}}>Post!</Button>
+                      </Typography>
                     </Box>
                   </Box>
                 </Modal>

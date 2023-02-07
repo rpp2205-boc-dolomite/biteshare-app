@@ -3,7 +3,8 @@ import CustomSplitFriend from './CustomSplitFriend.jsx';
 import {
   Box,
   Stack,
-  Typography
+  Typography,
+  Divider
 } from '@mui/material';
 import {
   red,
@@ -36,20 +37,20 @@ const getDifferenceComp = diff => {
   };
   let str;
 
-  if (diff < 0) {
+  if (diff < -0.005) {
     sx.color = red[700];
     str = '🔴 (-$' + Math.abs(diff.toFixed(2)).toString() + ')';
-  } else if (diff > 0) {
+  } else if (diff > 0.005) {
     sx.color = blue[700];
     str = '🔵 +$' + diff.toFixed(2).toString();
   } else if (Number.isNaN(diff)) {
     str = '🤪';
   } else {
     sx.color = green[700];
-    str = '✅ $' + diff.toFixed(2).toString();
+    str = '✅ $' + Math.abs(diff).toFixed(2).toString();
   }
 
-  return <Typography sx={sx}>{str}</Typography>
+  return <Typography alignCenter sx={sx}>{str}</Typography>
 };
 
 export default function CustomSplit({ hidden, data, mealTotal, tipTotal }) {
@@ -64,7 +65,8 @@ export default function CustomSplit({ hidden, data, mealTotal, tipTotal }) {
       <Stack direction="column" justifyContent="right" sx={{width: "90%"}}>
         {data.map((guest, i) => <CustomSplitFriend data={guest} key={i} change={change} setChange={setChange} />)}
         <Stack direction="row" spacing={2} justifyContent="right">
-          <Typography width={200}>{''}</Typography>
+          <Typography alignRight width={200}>{''}</Typography>
+          <Divider sx={{my: 1}}></Divider>
           {getDifferenceComp(totals.meal - mealTotal)}
           {getDifferenceComp(totals.tip - tipTotal)}
         </Stack>

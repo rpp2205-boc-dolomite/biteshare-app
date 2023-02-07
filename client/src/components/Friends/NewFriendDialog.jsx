@@ -87,6 +87,7 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
 
     <SwipeableDrawer
       anchor="bottom"
+      onOpen={handleClose}
       open={open}
       onClose={handleClose}
       sx={{"& .MuiPaper-root": {height: '60%', alignItems:'center', borderTopLeftRadius:15, borderTopRightRadius:15}}}
@@ -106,6 +107,7 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
               <OutlinedInput
                 type='text'
                 label="Name"
+                aria-label='name'
                 error={noName}
                 value={dialogValue.name}
                 onChange={(event) =>
@@ -123,6 +125,7 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
                 id="outlined-adornment-password"
                 type='text'
                 label="Phone"
+                aria-label='phone'
                 value={dialogValue.name}
                 onChange={(event) =>
                   setDialogValue({
@@ -151,7 +154,7 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
               mt:'2%',
             '& .MuiButton-root':{m:1, minWidth:'120px'}}}>
               <Button variant="contained" size="large" onClick={handleClose}>Cancel</Button>
-              <Button variant="contained" size="large" sx={{bgcolor:'orange'}}type="submit">Add</Button>
+              <Button variant="contained" size="large" color="secondary" type="submit">Add</Button>
             </FormGroup>
           </form>
       </Box>

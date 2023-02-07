@@ -66,11 +66,11 @@ export default function FriendsPage (props) {
         <Alert severity={alert.severity} onClose={() => setAlert(initAlert)}>{alert.msg}</Alert>
       }
       <Box sx={{m:2, width:"90%", alignItems: "center", justifyContent: "center"}}>
-      <Typography align="center" variant="h5" mt={2} p={4}>Your Friends List</Typography>
+      <Typography align="center" variant="h5" mt={2} p={4} color="primary">Your Friends List</Typography>
       <Divider/>
       <Box component="div" sx={{height: "600px", overflowX: "hidden", overflowY: 'scroll', display: "flex", alignItems: "flex-start", justifyContent: "center"}}>
         {!friends ? <Loading /> : (!friends.length ? (<h2>You do not have any friends yet</h2> )
-        : (<List>
+        : (<List role="list" aria-labelledby="friends-list" sx={{width:"90%"}}>
           {friends.map((friend, i) =>
             <FriendEntry friend={friend} i={i} deleteOne={deleteOne} page="friends"/>
           )}
@@ -79,7 +79,7 @@ export default function FriendsPage (props) {
       </Box>
       {open && <NewFriendDialog open={open} setDialogValue={setDialogValue} dialogValue={dialogValue} handleClose={handleClose} existList={friends} handleSubmit={handleSubmit} page="friends"/>}
       <Box component="div" sx={{pt:2, display: "grid", justifyItems: "center", justifyContent: "center"}}>
-        <Button variant="contained" size="large" sx={{bgcolor:'orange', width:'300px'}} onClick={()=> setOpen(true)}>Add a new friend</Button>
+        <Button variant="contained" size="large" color="primary" sx={{width:'300px'}} onClick={()=> setOpen(true)}>Add a new friend</Button>
       </Box>
       </Box>
     </>

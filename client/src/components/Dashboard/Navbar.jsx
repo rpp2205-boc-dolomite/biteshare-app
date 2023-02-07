@@ -14,9 +14,12 @@ function Navbar (props) {
 
   return(
     <div>
-      <h1>Bite Share</h1>
+      <Typography align="center">
+      <img src="../images/BOC-logo.png" alt="BiteShare Logo" width="175" ></img>
+      </Typography>
+
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" color="default">
+        <AppBar position="static" color="primary">
           <Toolbar>
             <Typography component="div" sx={{ flexGrow: 1}}>
               <Button size="large" variant="text" component={Link} to="/home" color="inherit">Home</Button>

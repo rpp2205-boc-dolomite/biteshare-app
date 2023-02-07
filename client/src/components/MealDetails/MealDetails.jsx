@@ -62,23 +62,26 @@ class MealDetails extends Component {
     this.handleSplitMethodChange = this.handleSplitMethodChange.bind(this);
     this.handleMealTotalChange = this.handleMealTotalChange.bind(this);
     this.handleTipPercentChange = this.handleTipPercentChange.bind(this);
+    this.handleCustomTipChange = this.handleCustomTipChange.bind(this);
     this.buildCustomSplitData = this.buildCustomSplitData.bind(this);
     this.validateSession = this.validateSession.bind(this);
     this.createSession = this.createSession.bind(this);
 
-    this.setInputs = props.setInputs;
-    this.session = props.inputs.session;
-    Object.assign(this.state, {
-      mealTotal: props.inputs.mealTotal || 0,
-      tipPercent: props.inputs.tipPercent || 0.2,
-      splitMethod: props.inputs.splitMethod || 'even',
-      receipt: props.inputs.receipt || '',
-      customSplitData: props.inputs.customSplitData || null
-    });
-    Object.assign(this.state.host, props.inputs.host);
-    Object.assign(this.state.friends, props.inputs.friends);
-    Object.assign(this.state.restInfo, props.inputs.restInfo);
-    console.log('MD CONSTRUCTOR', this.state);
+    this.setInputs = props.setInputs || (() => {});
+    if (props.inputs) {
+      this.session = props.inputs.session;
+      Object.assign(this.state, {
+        mealTotal: props.inputs.mealTotal || 0,
+        tipPercent: props.inputs.tipPercent || 0.2,
+        splitMethod: props.inputs.splitMethod || 'even',
+        receipt: props.inputs.receipt || '',
+        customSplitData: props.inputs.customSplitData || null
+      });
+      Object.assign(this.state.host, props.inputs.host);
+      Object.assign(this.state.friends, props.inputs.friends);
+      Object.assign(this.state.restInfo, props.inputs.restInfo);
+    }
+    // console.log('MD CONSTRUCTOR', this.state);
   }
 
   //#region Statics 🗂️
@@ -116,18 +119,31 @@ class MealDetails extends Component {
   //#endregion
 
   handleMealTotalChange(value) {
-    this.setState({ mealTotal: Math.abs(value) });
+    this.setState({ mealTotal: Math.abs(value), splitMethod: 'even' });
   }
 
-  handleTipPercentChange(value) {
-    this.setState({ tipPercent: Math.abs(value) });
+  handleTipPercentChange(e) {
+    let percent;
+    if (e.target.value === '-1') {
+      // document.getElementById('custom-tip-slider').value = Math.floor(this.state.tipPercent * 100).toString();
+      document.getElementById('custom-tip-slider').disabled = false;
+      percent = Math.floor(document.getElementById('custom-tip-slider').value) / 100;
+    } else {
+      document.getElementById('custom-tip-slider').disabled = true;
+      percent = Math.abs(e.target.value);
+    }
+    this.setState({ tipPercent: percent, splitMethod: 'even' })
+  }
+
+  handleCustomTipChange(e) {
+    this.setState({ tipPercent: Math.floor(e.target.value) / 100 })
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.validateSession()) {
+    if (this.validateSession() && this.session) {
       this.session.payload = this.createSession();
-      console.log('SESSION', this.session.payload);
-    } else {
+      // console.log('SESSION', this.session.payload);
+    } else if (this.session) {
       this.session.payload = null;
     }
   }
@@ -148,10 +164,10 @@ class MealDetails extends Component {
 
   handleSplitMethodChange(e) {
     e.preventDefault();
-    console.log('VALID?', this.formDataIsValid, this.state.splitMethod, this.state.mealTotal, this.state.tipPercent, this.state.receipt);
+    // console.log('VALID?', this.formDataIsValid, this.state.splitMethod, this.state.mealTotal, this.state.tipPercent, this.state.receipt);
     if (this.state.splitMethod === 'even') {
       if (this.formDataIsValid) {
-        console.log('FORM DATA VALID')
+        // console.log('FORM DATA VALID')
         this.setState({ customSplitData: this.buildCustomSplitData(), splitMethod: 'custom' });
       } else {
         document.getElementById("split-method-toggle-group").value = 'even';
@@ -237,11 +253,11 @@ class MealDetails extends Component {
       <Stack direction="column" sx={{ m: 0.5, px: 0.5 }}>
         <Box sx={{ py: 0.5 }}>
           <FormLabel>Restaurant: </FormLabel>
-          <Chip color="primary" variant="outlined" label={this.state.restInfo.name} sx={{ fontWeight: 'bold' }} />
+          <Chip color="primary" variant="outlined" label={this.state.restInfo.name} sx={{ fontWeight: 'bold', fontSize: '1rem' }} />
         </Box>
         <Box sx={{ py: 0.5 }}>
           <FormLabel>People in your party: </FormLabel>
-          <Chip color="primary" variant="outlined" label={this.numGuests} sx={{ fontWeight: 'bold' }} />
+          <Chip color="primary" variant="outlined" label={this.numGuests} sx={{ fontWeight: 'bold', fontSize: '1rem' }} />
         </Box>
       </Stack>
 
@@ -263,7 +279,7 @@ class MealDetails extends Component {
         <Divider width="60%" />
         <Stack sx={{ p: 1, justifyContent: 'center', alignItems: 'center' }}>
           <span>
-            <span><FormLabel id="choose-tip-group-label">Tip percentage: </FormLabel>{`${(this.state.tipPercent * 100).toString()}% (${getCurrencyString(this.tipTotal)})`}</span>
+            <span><FormLabel id="choose-tip-group-label">Tip percentage: </FormLabel><Chip color="primary" variant="outlined" label={`${Math.floor(this.state.tipPercent * 100).toString()}%`} sx={{ fontWeight: 'bold', fontSize: '1rem' }} /></span>
             <RadioGroup
               id="choose-tip-radio-group"
               defaultValue={this.state.tipPercent}
@@ -272,13 +288,23 @@ class MealDetails extends Component {
               row
               margin="none"
               padding={0}
-              onChange={e => this.handleTipPercentChange(e.target.value)}
+              onChange={this.handleTipPercentChange}
             >
               <FormControlLabel value={0.18} control={<Radio />} label="18%" />
               <FormControlLabel value={0.20} control={<Radio />} label="20%" />
               <FormControlLabel value={0.22} control={<Radio />} label="22%" />
               <FormControlLabel value={-1} control={<Radio />} label="Other:" />
-              <TextField size="small" sx={{ width: 100 }}></TextField>
+              <Input
+                id="custom-tip-slider"
+                type='range'
+                min="0"
+                max="100"
+                onChange={this.handleCustomTipChange}
+                disabled={true}
+                defaultValue="25"
+                size="small"
+                sx={{ width: 100 }}
+              />
             </RadioGroup>
           </span>
         </Stack>
@@ -295,8 +321,8 @@ class MealDetails extends Component {
             border: 1,
             borderStyle: 'dashed',
             borderRadius: 2,
-            borderColor: 'blue',
-            backgroundColor: 'lightgrey'
+            borderColor: '#76294B',
+            backgroundColor: 'AntiqueWhite'
           }}
         ><img crossOrigin="anonymous" src={this.state.receipt} style={{ maxWidth: "100%", maxHeight: "100%" }} /></Box>
       </Stack>
@@ -328,15 +354,15 @@ class MealDetails extends Component {
       <Box hidden={this.state.splitMethod === 'custom'}>
         <Stack direction="row" justifyContent="center">
           <Stack direction="column" sx={{ mr: 2 }}>
-            <span><FormLabel>Sub total: </FormLabel>{getCurrencyString(this.state.mealTotal)}</span>
-            <span><FormLabel>Tip total: </FormLabel>{getCurrencyString(this.tipTotal)}</span>
-            <span><FormLabel>Grand total: </FormLabel>{getCurrencyString(this.billTotal)}</span>
+            <span><FormLabel>Sub total: </FormLabel><Typography component='span' color='primary'>{getCurrencyString(this.state.mealTotal)}</Typography></span>
+            <span><FormLabel>Tip total: </FormLabel><Typography component='span' color='primary'>{getCurrencyString(this.tipTotal)}</Typography></span>
+            <span><FormLabel>Grand total: </FormLabel><Typography component='span' color='primary'>{getCurrencyString(this.billTotal)}</Typography></span>
           </Stack>
           <Divider orientation="vertical" sx={{ height: 80 }} />
           <Stack direction="column" sx={{ ml: 2 }}>
-            <span><FormLabel>Meal due per person: </FormLabel>{getCurrencyString(this.evenMealAmount)}</span>
-            <span><FormLabel>Tip due per person: </FormLabel>{getCurrencyString(this.evenTipAmount)}</span>
-            <span><FormLabel>Total due per person: </FormLabel>{getCurrencyString(this.evenPerGuestTotal)}</span>
+            <span><FormLabel>Meal due per person: </FormLabel><Typography component='span' color='primary'>{getCurrencyString(this.evenMealAmount)}</Typography></span>
+            <span><FormLabel>Tip due per person: </FormLabel><Typography component='span' color='primary'>{getCurrencyString(this.evenTipAmount)}</Typography></span>
+            <span><FormLabel>Total due per person: </FormLabel><Typography component='span' color='primary'>{getCurrencyString(this.evenPerGuestTotal)}</Typography></span>
           </Stack>
         </Stack>
       </Box>
