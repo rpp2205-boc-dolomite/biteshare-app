@@ -14,6 +14,7 @@ import FriendsPage from './Friends/FriendsPage.jsx';
 import RestaurantSearch from './Restaurant/RestaurantSearch.jsx';
 import CompletePayment from './CompletePayment.jsx'
 import Steps from './Steps.jsx';
+import Guest from './Guest.jsx';
 import ErrorBoundary from './ErrorBoundary.jsx';
 const App = (props) => {
 
@@ -28,6 +29,8 @@ const App = (props) => {
       <Route path="/home" element={<Home />} />
       <Route path="/friends" element={<FriendsPage />} />
       <Route path="/step" element={<Steps />} />
+      <Route path="/guest" element={<Guest />} />
+      <Route path='/completePayment' element={<CompletePayment />} />
     </Routes>
   )
 }

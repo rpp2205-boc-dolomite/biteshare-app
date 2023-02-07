@@ -8,6 +8,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import Loading from '../Loading.jsx';
 import ReactionsComment from './ReactionsComment.jsx';
 import { format, parseISO } from 'date-fns';
+import CommentModal from './CommentModal.jsx';
 
 const style = {
   position: 'absolute',
@@ -26,15 +27,27 @@ export default function Home() {
   const [open, setOpen] = React.useState(false);
   const user = JSON.parse(localStorage.getItem('user'));
   const [ needsUpdate, setNeedsUpdate ] = React.useState(true);
+  const [current, setCurrent] = useState(null)
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = (e, element, index) => {
+
+    setOpen(true);
+  }
+  const handleClose = () => {
+    setCurrent(null);
+    setOpen(false);
+  };
+  useEffect(() => {
+   if (current) {
+    setOpen(true);
+   }
+  },[current])
 
   useEffect(() => {
     if (needsUpdate) {
       axios.get(`/api/feed?user_id=${user.id}`)
       .then((results) => {
-        console.log(results);
+        // console.log(results);
         if(results.data[0].friendSessions.length === 0) {
           handleEmptyFeed('Empty, make some friends!');
         } else {
@@ -51,6 +64,7 @@ export default function Home() {
   return(
     <Box>
       <Navbar></Navbar>
+      {open && <CommentModal open={open} comments={current} handleClose={handleClose}/>}
         {feed.length === 0 ? emptyFeed : feed.map((element, index) => {
           var hostId = element.host;
           var total = Object.keys(element.detail).length;
@@ -69,7 +83,8 @@ export default function Home() {
               fontSize: '0.875rem',
               fontWeight: '700',
               m: 1
-            }}>
+            }}
+            key={index}>
             <Link to="/meal" style={{ textDecoration: 'none' }} state={element} key={index}>
               <Box>
                   <Typography variant="subtitle1">
@@ -81,42 +96,10 @@ export default function Home() {
                 sx={{
                   fontSize: "0.75rem"
                 }}
-                onClick={handleOpen}
+                onClick={() => {setCurrent(element.comments);}}
                 >
                 see what others are saying
               </Button>
-            <Modal
-              open={open}
-              onClose={handleClose}
-            >
-              <Box sx={style}>
-                <List
-                  sx={{
-                    height: "450px",
-                    overflow: "auto"
-                  }}
-                >
-                {element.comments.map((com, index) => {
-                  return (
-                    <ListItem
-                      key={index}
-                      align-items="center"
-                      sx={{
-                        borderBottom: 1
-                      }}
-                    >
-                      <Typography variant="h6">
-                        {com.text}
-                        <Typography>
-                          {format(parseISO(com.date), 'MMMM dd yyyy')}
-                        </Typography>
-                      </Typography>
-                    </ListItem>
-                  )
-                })}
-                </List>
-              </Box>
-            </Modal>
             <ReactionsComment setNeedsUpdate={setNeedsUpdate} data={element}/>
             </Box>
           )
