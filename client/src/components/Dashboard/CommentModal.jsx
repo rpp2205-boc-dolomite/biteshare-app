@@ -17,14 +17,7 @@ const style = {
   p: 4,
 };
 
-const CommentModal = ({data, open, handleClose}) => {
-
-  const user = JSON.parse(localStorage.getItem('user'));
-
-
-
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
+const CommentModal = ({open, handleClose, comments}) => {
 
   return (
     <Modal
@@ -32,14 +25,18 @@ const CommentModal = ({data, open, handleClose}) => {
     onClose={handleClose}
     >
       <Box sx={style}>
+      {!comments.length ?
+      <Typography>
+        No Comments Yet
+      </Typography> :
         <List
-          sx={{
-            height: "450px",
-            overflow: "auto"
-          }}
+        sx={{
+          height: "450px",
+          overflow: "auto"
+        }}
         >
-        {data.comments.map((com, i) => {
-          console.log(com);
+        {comments.map((com, i) => {
+
           return (
             <ListItem
               key={i}
@@ -58,6 +55,7 @@ const CommentModal = ({data, open, handleClose}) => {
           )
         })}
         </List>
+      }
       </Box>
     </Modal>
   )

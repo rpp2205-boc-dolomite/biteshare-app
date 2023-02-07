@@ -27,9 +27,21 @@ export default function Home() {
   const [open, setOpen] = React.useState(false);
   const user = JSON.parse(localStorage.getItem('user'));
   const [ needsUpdate, setNeedsUpdate ] = React.useState(true);
+  const [current, setCurrent] = useState(null)
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = (e, element, index) => {
+
+    setOpen(true);
+  }
+  const handleClose = () => {
+    setCurrent(null);
+    setOpen(false);
+  };
+  useEffect(() => {
+   if (current) {
+    setOpen(true);
+   }
+  },[current])
 
   useEffect(() => {
     if (needsUpdate) {
@@ -52,6 +64,7 @@ export default function Home() {
   return(
     <Box>
       <Navbar></Navbar>
+      {open && <CommentModal open={open} comments={current} handleClose={handleClose}/>}
         {feed.length === 0 ? emptyFeed : feed.map((element, index) => {
           var hostId = element.host;
           var total = Object.keys(element.detail).length;
@@ -82,43 +95,10 @@ export default function Home() {
                 sx={{
                   fontSize: "0.75rem"
                 }}
-                onClick={handleOpen}
+                onClick={() => {setCurrent(element.comments);}}
                 >
                 see what others are saying
               </Button>
-              {open && <CommentModal data={element} open={open} handleClose={handleClose} />}
-            {/* <Modal
-              open={open}
-              onClose={handleClose}
-            >
-              <Box sx={style}>
-                <List
-                  sx={{
-                    height: "450px",
-                    overflow: "auto"
-                  }}
-                >
-                {element.comments.map((com, i) => {
-                  return (
-                    <ListItem
-                      key={i}
-                      align-items="center"
-                      sx={{
-                        borderBottom: 1
-                      }}
-                    >
-                      <Typography variant="h6">
-                        {com.text}
-                        <Typography>
-                          {format(parseISO(com.date), 'MMMM dd yyyy')}
-                        </Typography>
-                      </Typography>
-                    </ListItem>
-                  )
-                })}
-                </List>
-              </Box>
-            </Modal> */}
             <ReactionsComment setNeedsUpdate={setNeedsUpdate} data={element}/>
             </Box>
           )

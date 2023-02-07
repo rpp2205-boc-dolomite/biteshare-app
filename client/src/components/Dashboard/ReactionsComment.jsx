@@ -36,7 +36,6 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
 
   const user = JSON.parse(localStorage.getItem('user'));
 
-
   const CHARACTER_LIMIT = 120;
 
   const handleOpen = () => setOpen(true);
@@ -46,7 +45,6 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
     setSelectedIndex(index);
     axios.post(`/api/social/reaction/${data._id}`, { user_id: user.id, emoji: event.target.id})
     .then((result) => {
-      console.log('REACTION SUCCESS');
       setNeedsUpdate(true);
     })
     .catch((err) => {
@@ -61,7 +59,6 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
   const commentPost = (comment) => {
     axios.post(`/api/social/comment/${data._id}`, { user_id: user.id, text: comment})
     .then((result) => {
-      console.log('COMMENT SUCCESS', result);
       setNeedsUpdate(true);
     })
     .catch((err) => {
