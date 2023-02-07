@@ -23,48 +23,27 @@ import {
 import { deepPurple, deepOrange, blue } from "@mui/material/colors";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "./Loading.jsx";
+import queryString from "query-string";
 
-const Meal = () => {
-  //const location = useLocation();
+const Guest = () => {
   const navigate = useNavigate();
   const [comment, setComment] = useState("");
-  const [isInSession, setIsInSession] = useState("");
-  //bitesharecity.net/guest?id1=37282&id2=382817
-  const ids = window.location.pathname
-  const sessionId = window.location.pathname.split
+  const [data, setData] = useState('');
 
-  //const data = location.state;
   const userObj = localStorage.getItem("user");
   const parsedUserObj = JSON.parse(userObj);
 
-  const avatorColorPool = [deepOrange[500], blue[500], null, deepPurple[500]];
-
-  const pickColor = (i) => {
-    if(i < 4) {
-      return i;
-     } else {
-      return i - (Math.floor(i / 4) * 3) -1
-     }
-  };
-
   useEffect(() => {
-    checkIfUserInFriends();
-  }, []);
+    const parsed = queryString.parse(location.search);
 
-  const checkIfUserInFriends = () => {
-    const userId = parsedUserObj.id;
-    const sessionId = data._id;
-
-    axios
-      .get(`/api/guest?session_id=$`)
+    axios.get(`/api/guest?session_id=${parsed.session_id}`)
       .then((data) => {
-        if (data.data === "not friends") {
-          setIsInSession(false);
-        } else {
-          setIsInSession(true);
-        }
-      });
-  };
+        setData(data.data)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }, []);
 
   const updatePaymentStatus = () => {
     axios
@@ -86,12 +65,11 @@ const Meal = () => {
 
   return (
     <div>
-      {!data || isInSession.length === 0 ? (
+      {!data ? (
         <Loading />
       ) : (
         <div>
           <Navbar />
-          {isInSession ? (
             <Box>
               <Box ml={6} mt={5}>
                 <FormLabel>Restaurant:</FormLabel>
@@ -178,51 +156,10 @@ const Meal = () => {
                 </Button>
               </Box>
             </Box>
-          ) : (
-            <Box>
-              <Typography align="center" variant="h5" mt={2} p={4}>
-                Friends in the Meal Session
-              </Typography>
-              <Divider />
-              <Box
-                component="div"
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <List>
-                  {Object.entries(data.detail).map((friend, index) => {
-                    return (
-                      <ListItem key={index}>
-                        <ListItemAvatar>
-                          <Avatar sx={{bgcolor: avatorColorPool[pickColor(index)]}}>
-                            {friend[1].name.slice(0, 1).toUpperCase()}
-                          </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText key={index} sx={{ fontSize: "1.8em" }}>
-                          {friend[1].name}
-                        </ListItemText>
-                      </ListItem>
-                      // <div>
-                      //   <Avatar sx={{ bgcolor: avatorColorPool[pickColor()] }}>
-                      //     {friend[1].name.slice(0, 1).toUpperCase()}
-                      //   </Avatar>
-                      //   <ListItemText key={index} sx={{ fontSize: "1.8em" }}>
-                      //     {friend[1].name}
-                      //   </ListItemText>
-                      // </div>
-                    );
-                  })}
-                </List>
-              </Box>
-            </Box>
-          )}
         </div>
       )}
     </div>
   );
 };
 
-export default Meal;
+export default Guest;
