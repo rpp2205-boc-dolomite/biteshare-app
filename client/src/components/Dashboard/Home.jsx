@@ -47,7 +47,7 @@ export default function Home() {
     if (needsUpdate) {
       axios.get(`/api/feed?user_id=${user.id}`)
       .then((results) => {
-        console.log(results);
+        // console.log(results);
         if(results.data[0].friendSessions.length === 0) {
           handleEmptyFeed('Empty, make some friends!');
         } else {
@@ -83,7 +83,8 @@ export default function Home() {
               fontSize: '0.875rem',
               fontWeight: '700',
               m: 1
-            }}>
+            }}
+            key={index}>
             <Link to="/meal" style={{ textDecoration: 'none' }} state={element} key={index}>
               <Box>
                   <Typography variant="subtitle1">
