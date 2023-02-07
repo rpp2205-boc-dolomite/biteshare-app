@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import {Button, ButtonGroup, Box, Typography, TextField, Modal} from '@mui/material';
+import {Button, ButtonGroup, Box, Typography, TextField, Modal, Badge} from '@mui/material';
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#000000',
-    },
-    secondary: {
-      main: '#11cb5f',
-    },
-  },
-});
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: '#000000',
+//     },
+//     secondary: {
+//       main: '#11cb5f',
+//     },
+//   },
+// });
 
 const style = {
   position: 'absolute',
@@ -30,12 +30,13 @@ const style = {
 
 const ReactionsComment = ({data, setNeedsUpdate}) => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-  const [reaction, setReaction] = useState('');
+  // const [reaction, setReaction] = useState('');
   const [open, setOpen] = React.useState(false);
   const [comment, setComment] = useState('');
 
-  const user = JSON.parse(localStorage.getItem('user'));
+  const reaction = data.reactions;
 
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const CHARACTER_LIMIT = 120;
 
@@ -46,7 +47,6 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
     setSelectedIndex(index);
     axios.post(`/api/social/reaction/${data._id}`, { user_id: user.id, emoji: event.target.id})
     .then((result) => {
-      console.log('REACTION SUCCESS');
       setNeedsUpdate(true);
     })
     .catch((err) => {
@@ -61,7 +61,6 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
   const commentPost = (comment) => {
     axios.post(`/api/social/comment/${data._id}`, { user_id: user.id, text: comment})
     .then((result) => {
-      console.log('COMMENT SUCCESS', result);
       setNeedsUpdate(true);
     })
     .catch((err) => {
@@ -77,8 +76,7 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
         m: 1,
         }}
       >
-        <ThemeProvider theme={theme}>
-          <ButtonGroup variant="text" color="primary">
+          <Typography>
             <Button
               sx={{
                 fontSize: "1.2rem"
@@ -86,7 +84,9 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
               id='thumb'
               selected={selectedIndex === 0}
               onClick={(event) => handleListItemClick(event, 0)}
-            >{data.reactions.thumb.length} 👍</Button>
+            >
+              👍 {!reaction.thumb.length ? '' : reaction.thumb.length}
+            </Button>
             <Button
               sx={{
                 fontSize: "1.2rem"
@@ -94,7 +94,9 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
               id='like'
               selected={selectedIndex === 1}
               onClick={(event) => handleListItemClick(event, 1)}
-            >{data.reactions.like.length} ❤️</Button>
+            >
+              ❤️ {!reaction.like.length ? '' : reaction.like.length}
+             </Button>
             <Button
               sx={{
                 fontSize: "1.2rem"
@@ -102,7 +104,9 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
               id='fire'
               selected={selectedIndex === 2}
               onClick={(event) => handleListItemClick(event, 2)}
-              >{data.reactions.fire.length} 🔥</Button>
+            >
+              🔥 {!reaction.fire.length ? '' : reaction.fire.length}
+            </Button>
             <Button
               sx={{
                 fontSize: "1.2rem"
@@ -110,15 +114,17 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
               id='tooth'
               selected={selectedIndex === 3}
               onClick={(event) => handleListItemClick(event, 3)}
-              >{data.reactions.tooth.length} 🦷</Button>
-              <Button
-                sx={{
-                  fontSize: "1.2rem"
-                }}
-                onClick={handleOpen}
-                >
-                <ChatBubbleOutlineIcon />
-              </Button>
+            >
+              🦷 {!reaction.tooth.length ? '' : reaction.tooth.length}
+            </Button>
+            <Button
+              sx={{
+                fontSize: "1.2rem"
+              }}
+              onClick={handleOpen}
+              >
+              <ChatBubbleOutlineIcon />
+            </Button>
                 <Modal
                   open={open}
                   onClose={handleClose}
@@ -148,9 +154,7 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
                     </Box>
                   </Box>
                 </Modal>
-          </ButtonGroup>
-        </ThemeProvider>
-
+          </Typography>
     </Box>
   )
 }
