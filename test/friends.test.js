@@ -71,7 +71,7 @@ describe('Friends Page render Tests', () => {
   test('FriendsPage rendered', async () => {
     const { container } = render(<FriendsPage />, {wrapper: MemoryRouter})
     await waitFor(() => {
-      expect(container.querySelectorAll('li')).toHaveLength(6);
+      expect(container.querySelectorAll('.swipeable-list-item')).toHaveLength(6);
     })
     expect(screen.getByText('Your Friends List')).toBeDefined();
   })
@@ -92,7 +92,6 @@ describe('Friends Page render Tests', () => {
     expect(phoneInput.value).toBe('1231231234');
     fireEvent.click(screen.getByRole('button', {name:'Add'}));
     await waitFor(() => expect(container.querySelector('MuiAlert-message')).toBeDefined());
-
   })
 
 

@@ -24,6 +24,13 @@
   "bugs": {
     "url": "https://github.com/rpp2205-boc-dolomite/biteshare-app/issues"
   },
+  "jest":{
+    "verbose": true,
+    "testEnvironment": "jsdom",
+    "moduleNameMapper": {
+      "^.+\\.(css|less|scss)$": "<rootDir>/test/mock.js"
+    }
+  },
   "homepage": "https://github.com/rpp2205-boc-dolomite/biteshare-app#readme",
   "dependencies": {
     "@babel/core": "^7.20.12",

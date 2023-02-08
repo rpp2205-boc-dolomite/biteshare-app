@@ -89,7 +89,7 @@ export default function FriendsPage (props) {
              role="list"
              type={ListType.IOS}
              aria-labelledby="friends-list"
-             style={{margin:'0 10px', width:"100%", "& .swipeable-list-item__content":{backgroundColor:'black'}}}
+             style={{margin:'0 10px', width:"100%"}}
             >
             {friends.map((friend, i) =>
               <FriendEntry
