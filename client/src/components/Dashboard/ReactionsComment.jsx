@@ -51,12 +51,13 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
       setNeedsUpdate(true);
     })
     .catch((err) => {
-      console.log('err', err.response.data)
       if (err.response.data === 'user already reacted') {
         setAlert({status: true, severity:'warning', msg:`So greedy! Clicked ${emojiMap[event.target.id]}  before! Pick another one.`})
         setTimeout(() => {
           setAlert(initAlert)
         }, 3000)
+      } else {
+        console.log(err);
       }
     })
   };
