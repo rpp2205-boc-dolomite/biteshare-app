@@ -44,7 +44,7 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
   const handleClose = () => setOpen(false);
 
   const handleListItemClick = (event, index) => {
-    console.log('index,', event.target.id, index);
+
     setSelectedIndex(index);
     axios.post(`/api/social/reaction/${data._id}`, { user_id: user.id, emoji: event.target.id})
     .then((result) => {
@@ -53,7 +53,7 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
     .catch((err) => {
       console.log('err', err.response.data)
       if (err.response.data === 'user already reacted') {
-        setAlert({status: true, severity:'warning', msg:`So greddy! Clicked ${emojiMap[event.target.id]}  before! Pick another one.`})
+        setAlert({status: true, severity:'warning', msg:`So greedy! Clicked ${emojiMap[event.target.id]}  before! Pick another one.`})
         setTimeout(() => {
           setAlert(initAlert)
         }, 3000)

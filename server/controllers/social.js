@@ -15,7 +15,7 @@ const reactionsContainUser = (reactions, user_id) => {
 exports.addReactionToSession = function (req, res) {
   const session_id = req.params.session_id;
   const { user_id, emoji } = req.body;
-  console.log('emopji', session_id, user_id, emoji);
+
   if (!session_id || !user_id || !emoji) {
     res.status(400).send('data missing');
     return;
@@ -24,7 +24,6 @@ exports.addReactionToSession = function (req, res) {
   db.Session.findOne({ _id: session_id }, { reactions: 1 })
     .then(result => {
       const reactions = result.reactions;
-      console.log('result', reactions);
       if (reactions && !reactions.emojis) {
         // if no emojis array, create a new reactions obj from template
         const newReactions = Object.assign({}, db.reactionsTemplate);
