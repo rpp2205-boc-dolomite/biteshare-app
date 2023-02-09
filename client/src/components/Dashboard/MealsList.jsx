@@ -39,7 +39,7 @@ export default function MealsList() {
       <Box sx={{ width: '100%'}}>
         <Navbar></Navbar>
         <Box display="flex" sx={{justifyContent: 'center'}}>
-          <Link to="/step" >
+          <Link to="/step" style={{ textDecoration: 'none' }}>
             <Button size='large' variant="contained" color="primary" sx={{ m: 2}}>Create a new Meal Session</Button>
           </Link>
         </Box>
