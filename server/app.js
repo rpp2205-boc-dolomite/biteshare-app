@@ -53,7 +53,7 @@ app.put('/api/friends', friendsControllers.deleteFriend);
 //---- user info ---//
 app.get('/api/users', userControllers.getUser);
 app.post('/api/users', userControllers.addUser);
-
+app.put('/api/users',userControllers.updateUser);
 //---sessions ---//
 app.get('/api/sessions', sessionControlers.getSessions)
 app.post('/api/sessions', sessionControlers.postSessions);
