@@ -27,7 +27,6 @@ import Loading from "./Loading.jsx";
 const Meal = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [comment, setComment] = useState("");
   const [isInSession, setIsInSession] = useState("");
 
   const data = location.state;
@@ -67,7 +66,7 @@ const Meal = () => {
     axios
       .post("/api/sessions/status", {
         userId: parsedUserObj.id,
-        comment: comment,
+        sessionId: data._id
       })
       .then((res) => {
         if (res.status === 200) {
@@ -75,10 +74,6 @@ const Meal = () => {
         }
       })
       .catch((err) => console.log(err));
-  };
-
-  const onCommentChange = (e) => {
-    setComment(e.target.value);
   };
 
   return (
@@ -149,26 +144,9 @@ const Meal = () => {
                 </TableContainer>
                 <FormLabel>Receipt:</FormLabel>
                 <Typography variant="body1">
-                  <Box
-                    component="img"
-                    sx={{
-                      height: 233,
-                      width: 350,
-                      maxHeight: { xs: 233, md: 167 },
-                      maxWidth: { xs: 350, md: 250 },
-                    }}
-                    alt="receipt"
-                    src={data.receipt}
-                  ></Box>
+                  <img src={data.receipt} alt="receipt" crossOrigin="anonymous"/>
                 </Typography>
                 <Divider sx={{ borderBottomWidth: 1 }} />
-                <TextField
-                  id="standard-basic"
-                  fullWidth
-                  label="Leave a comment"
-                  variant="standard"
-                  onChange={onCommentChange}
-                />
                 <Button
                   variant="contained"
                   sx={{ mt: 2 }}
