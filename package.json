@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/rpp2205-boc-dolomite/biteshare-app/issues"
   },
-  "jest":{
+  "jest": {
     "verbose": true,
     "testEnvironment": "jsdom",
     "moduleNameMapper": {
@@ -46,6 +46,8 @@
     "date-fns": "^2.29.3",
     "jest": "^29.4.1",
     "jest-environment-jsdom": "^29.4.1",
+    "js-cookie": "^3.0.1",
+    "jsonwebtoken": "^9.0.0",
     "libphonenumber-js": "^1.10.18",
     "mongoose": "^6.8.4",
     "msw": "^1.0.0",
