@@ -5,6 +5,7 @@ import {FormGroup, FormControl, FormControlLabel, InputLabel, OutlinedInput, For
 import Switch from '@mui/material/Switch';
 import { styled } from '@mui/material/styles';
 
+//create a puller component as a pull of my drawer
 const Puller = styled(Box)(({ theme }) => ({
   width: 30,
   height: 6,
@@ -15,12 +16,14 @@ const Puller = styled(Box)(({ theme }) => ({
   left: 'calc(50% - 15px)',
 }));
 
-
+//setup initial value of alert state
 const initAlert = {status:false, severity:'', msg:''};
+
 const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handleSubmit, add, setAdd, existList, page}) => {
   const [alert, setAlert] = useState(initAlert);
   const [error, setError] = useState(false);
   const [noName, setNoName] = useState(false);
+
   const toggleLabel = (e) => {
     if (e.target.checked) {
       setAdd(true)
@@ -28,9 +31,10 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
       setAdd(false);
     }
   }
-  let errOrNot = false;
+  //handle submit
   const submit = (e) => {
     e.preventDefault();
+    //check input validation
     let validPhone = dialogValue.phone.match(/^\+1[0-9]{10}$/g);
     if (!validPhone) {
       setError(true)
@@ -39,9 +43,9 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
       setNoName(true);
       return;
     }
+    //check the input friend is exist in friends list or not
     let isExistPhone = false;
     existList.forEach(person => {
-      // let phone = page === 'meal' ? person.split(': ')[1] : person.phone_num;
       let phone = person.phone_num
       if (phone === dialogValue.phone){
         console.log('number duplicate')
@@ -52,11 +56,11 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
     })
 
     if(!isExistPhone) {
-      console.log('phone: ', dialogValue.phone)
+      //check the input friend is exist in our db or nor
       axios.get(`/api/users?phone_num=${dialogValue.phone}`)
         .then(result => {
+          //if the input friend alreay has account check the input name
           if(result.data && result.data.name !== dialogValue.name) {
-            //console.log('exist frined', result.data, dialogValue.name);
             setDialogValue({...dialogValue, name:result.data.name});
             setAlert({status: true, severity:"info", msg: `Friends name will be replace to ${result.data.name}`})
             setTimeout(() => {
@@ -120,19 +124,11 @@ const NewFriendDialog = ({open, setDialogValue, dialogValue, handleClose, handle
             </FormControl>
             <FormHelperText>{noName ? "Name required" : ''}</FormHelperText>
             <FormControl sx={{ m: 1, width: '80%'}} variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">Phone Number</InputLabel>
+              <InputLabel>Phone Number</InputLabel>
               <OutlinedInput
-                id="outlined-adornment-password"
                 type='text'
                 label="Phone"
                 aria-label='phone'
-                value={dialogValue.name}
-                onChange={(event) =>
-                  setDialogValue({
-                    ...dialogValue,
-                    name: event.target.value,
-                  })
-                }
                 error={error}
                 value={dialogValue.phone}
                 onChange={(event) =>

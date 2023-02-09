@@ -8,7 +8,8 @@
     "start": "NODE_ENV=production node server/server.js",
     "react-dev": "npx webpack --watch",
     "build": "npx webpack",
-    "test": "jest ./test --env=jsdom --coverage"
+    "test": "jest ./test --env=jsdom --coverage",
+    "test-yuchen":"jest test/friends.test.js --watch --coverage"
   },
   "repository": {
     "type": "git",
