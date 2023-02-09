@@ -16,16 +16,16 @@ import Copyright from './Copyright.jsx';
 import axios from 'axios'
 import { Navigate } from 'react-router-dom'
 
-
 export default class SignUp extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       success: false,
-      error: false
+      error: false,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
   }
+
   handleSubmit(event) {
     event.preventDefault();
     console.log(event.currentTarget)
@@ -41,12 +41,26 @@ export default class SignUp extends React.Component {
       phone_num: data.get('tel'),
       password: data.get('password'),
     });
-    axios.post('/api/users', user)
+    axios.get(`/api/users?phone_num=${data.get('tel')}`)
+    .then((result) => {
+      if (!result) {
+        return axios.post('/api/users', user)
+      } else if (result.data.is_guest) {
+        console.log('id', result.data.id);
+        return axios.put(`/api/users/?user_id=${result.data.id}`, user)
+      } else {
+        this.setState({
+          error: `You already has an account`
+        })
+        return null
+      }
+    })
     .then((data) => {
-      //redirect to login
-      this.setState({
-        success: true
-      })
+      if (data) {
+        this.setState({
+          success:true,
+        })
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -59,7 +73,7 @@ export default class SignUp extends React.Component {
     let { success, error } = this.state;
     return (
       <>
-        {success && (
+        { success && (
           <Navigate to='/login' replace={true} />
         )}
           <Typography align='center' sx={{height:'10%', m:1, p:0}} >

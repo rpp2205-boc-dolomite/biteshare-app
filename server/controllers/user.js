@@ -27,6 +27,7 @@ exports.getUser = function (req, res) {
   const userId = req.query.user_id;
   const parsed = req.query.phone_num && parsePhoneNumber(req.query.phone_num, 'US');
   const phoneNum = parsed && parsed.number;
+  console.log('in getUser', userId, phoneNum);
   if (!userId && !phoneNum) {
 
     res.status(400).end();
@@ -64,8 +65,8 @@ exports.addUser = (req, res) => {
   .then(result => {
     if (result && result.acknowledged && result.modifiedCount) {
       res.sendStatus(200)
-    } else {      
-  //Adds user to db. 
+    } else {
+  //Adds user to db.
       db.User.insertMany(docs)
       .then((results) => {
         console.log(results)
@@ -89,22 +90,35 @@ exports.addUser = (req, res) => {
 };
 
 exports.updateUser = function (req, res) {
-  const userId = req.params.user_id;
-  const update = req.body;
+  const userId = req.query.user_id;
+  if (req.body.password) {
+    req.body.password = auth.createHash(req.body.password)
+  }
+  let update = {
+    name:req.body.name,
+    password:req.body.password,
+    is_guest:req.body.isGuest,
+  }
+  console.log('update', userId,req.body, update);
   if (!userId || !update || !(update instanceof Object)) {
     res.status(400).end();
     return;
   }
-
-  db.User.findById(userId)
-    .then(doc => {
-      Object.assign(doc, update);
-      return doc.save();
+  db.User.updateOne({_id: userId}, update)
+    .then(result => {
+      console.log('update', result)
+      res.status(203).send('updated')
     })
-    .then(() => {
-      res.status(200).end();
-    })
-    .catch(err => {
-      res.status(500).send(err.toString());
-    });
+    .catch(err => res.status(500).send(err.toString()));
+  // db.User.findById(userId)
+  //   .then(doc => {
+  //     Object.assign(doc, update);
+  //     return doc.save();
+  //   })
+  //   .then(() => {
+  //     res.status(200).end();
+  //   })
+  //   .catch(err => {
+  //     res.status(500).send(err.toString());
+  //   });
 };
