@@ -30,11 +30,15 @@ export default function Review(props) {
 
   return(
     <Box>
-      {/* <Navbar></Navbar> */}
         <Box>
         <Box sx={{m: 5}}>
           <Typography variant="body1" sx={{m: 2}}><b>Restaurant Name:</b> {info.rest_name}</Typography>
-          <img crossorigin="anonymous" src={info.receipt}></img>>
+          <Typography variant="body1" sx={{m: 2}}><b>Receipt:</b></Typography>
+          <Grid container direction="column" alignItems="center" justifyContent="center">
+            <Grid item>
+              <img crossorigin="anonymous" src={info.receipt} max-width='100%' height="auto"></img>
+            </Grid>
+          </Grid>
           <Typography variant="body1" sx={{m: 2}}><b>Number of friends:</b> {info.friends.length + 1}</Typography>
           <Box display="flex" sx={{m: 2}}>
             <Typography variant="body1" ><b>Sub total:</b> ${info.sub_total}</Typography>

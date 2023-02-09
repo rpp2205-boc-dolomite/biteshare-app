@@ -2,13 +2,6 @@ import React from 'react';
 import {Button, AppBar, Box, Toolbar, Typography, createTheme} from '@mui/material';
 import { Link } from 'react-router-dom';
 
-// let theme = createThem({
-//   palette: {
-//     primary: {
-//       main: '#000000'
-//     }
-//   }
-// })
 
 function Navbar (props) {
 

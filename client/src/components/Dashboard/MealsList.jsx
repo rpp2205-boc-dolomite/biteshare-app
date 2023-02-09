@@ -70,7 +70,7 @@ export default function MealsList() {
                       Host: {element.detail[hostId].name}
                     </Typography>
                     <Typography variant="subtitle1" color="primary">
-                      Amount: {element.detail[user.id].bill + element.detail[user.id].tip}
+                      Amount: {(element.detail[user.id].bill) + element.detail[user.id].tip}
                     </Typography>
               </Box>
             </Link>

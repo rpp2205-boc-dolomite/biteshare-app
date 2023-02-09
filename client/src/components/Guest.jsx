@@ -35,7 +35,7 @@ const Guest = () => {
 
   useEffect(() => {
     const parsed = queryString.parse(location.search);
-    
+
     axios.get(`/api/guest?session_id=${parsed.session_id}`)
       .then((data) => {
         setData(data.data)
@@ -71,7 +71,7 @@ const Guest = () => {
         <Loading />
       ) : (
         <div>
-          <Navbar guest={true}/>
+          <Navbar guest={'guest'}/>
             <Box>
               <Box ml={6} mt={5}>
                 <FormLabel>Restaurant:</FormLabel>
