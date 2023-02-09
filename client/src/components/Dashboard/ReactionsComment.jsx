@@ -35,7 +35,7 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
   const [comment, setComment] = useState('');
   const [alert, setAlert] = useState(initAlert);
   const reaction = data.reactions;
-  const emojiMap = {thum:'👍', like:'❤️', fire:'🔥', tooth:'🦷'}
+  const emojiMap = {thumb:'👍', like:'❤️', fire:'🔥', tooth:'🦷'}
   const user = JSON.parse(localStorage.getItem('user'));
 
   const CHARACTER_LIMIT = 120;
@@ -55,7 +55,7 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
         setAlert({status: true, severity:'warning', msg:`So greedy! Clicked ${emojiMap[event.target.id]}  before! Pick another one.`})
         setTimeout(() => {
           setAlert(initAlert)
-        }, 3000)
+        }, 4000)
       } else {
         console.log(err);
       }
