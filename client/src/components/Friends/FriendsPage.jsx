@@ -77,11 +77,22 @@ export default function FriendsPage (props) {
       <Box sx={{width:"100%", alignItems: "center", justifyContent: "center"}}>
 
         <Typography align="center" variant="h5" mt={2} p={4} color="primary">Your Friends List</Typography>
-        <Divider/>
+
         {alert.status &&
         <Alert severity={alert.severity} onClose={() => setAlert(initAlert)}>{alert.msg}</Alert>
         }
-        <Box component="div" sx={{display: "flex", alignItems: "center", justifyContent: "center", bgcolor:"#eeeeee"}}>
+        <Box
+         component="div"
+         sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          bgcolor:"#eeeeee",
+          m:1,
+          borderRadius:2,
+          borderColor:'#a6a6a6'
+          }}
+        >
           {!friends ? <Loading /> : (!friends.length ? (<h2>You do not have any friends yet</h2> )
           : (<SwipeableList
              fullSwipe={true}
@@ -89,7 +100,7 @@ export default function FriendsPage (props) {
              role="list"
              type={ListType.IOS}
              aria-labelledby="friends-list"
-             style={{margin:'0 10px', width:"100%"}}
+             style={{margin:'0 10px', width:"100%", maxWidth:'600px'}}
             >
             {friends.map((friend, i) =>
               <FriendEntry
