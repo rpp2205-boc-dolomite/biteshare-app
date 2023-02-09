@@ -82,7 +82,7 @@ const FriendEntry = ({friend, i, deleteOne, page}) => {
          <Typography gutterBottom variant="h6" color="primary">{friend.name}</Typography>
         </div>
         <Typography mt={0.5} variant="body1" color='primary'>{friend.phone_num}</Typography>
-        <Typography gutterBottom variant="overline" sx={{color: 'black', opacity: 0.1}}>Swip to delete</Typography>
+        <Typography gutterBottom variant="overline" sx={{color: 'black', opacity: 0.1}}>Swipe to delete</Typography>
       </div>
     </SwipeableListItem>
   )}

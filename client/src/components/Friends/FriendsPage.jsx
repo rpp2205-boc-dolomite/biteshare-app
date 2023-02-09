@@ -7,7 +7,10 @@ import Loading from '../Loading.jsx';
 import NewFriendDialog from './NewFriendDialog.jsx';
 import  { SwipeableList, Type as ListType } from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
+
+//setup initial value of alert
 const initAlert = {status:false, severity:'', msg:''};
+
 export default function FriendsPage (props) {
   const [friends, setFriends] = useState(null);
   const [input, setInput] = useState('');
@@ -17,16 +20,6 @@ export default function FriendsPage (props) {
 
   const user = JSON.parse(localStorage.getItem('user'));
 
-  useEffect(() => {
-    if (!friends){
-      axios.get(`/api/friends?user_id=${user.id}`)
-        .then(result => {
-          console.log(result.data);
-          setFriends(result.data.friends)
-        })
-    }
-  })
-
   const handleClose = () => {
     setDialogValue({
       name:'',
@@ -34,7 +27,6 @@ export default function FriendsPage (props) {
     })
     setOpen(false);
   }
-
 
   const deleteOne = (i) => {
     //send to server delete the current friend
@@ -61,6 +53,18 @@ export default function FriendsPage (props) {
         setAlert({status:true, severity:'success', msg:'Add friends Success!'})
       })
   }
+
+  //get friends data from server
+  useEffect(() => {
+    if (!friends){
+      axios.get(`/api/friends?user_id=${user.id}`)
+        .then(result => {
+          console.log(result.data);
+          setFriends(result.data.friends)
+        })
+    }
+  })
+  //close alert after 3s if user has not click the close sign
   useEffect(() => {
    if (alert.status) {
     setTimeout(() => {
@@ -68,6 +72,7 @@ export default function FriendsPage (props) {
     }, 3000)
    }
   },[alert.status])
+
   return (
     <>
       <Navbar />
@@ -75,9 +80,7 @@ export default function FriendsPage (props) {
         <Button variant="contained" size="large" color="primary" sx={{m:2, width:'300px'}} onClick={()=> setOpen(true)}>Add a new friend</Button>
       </Box>
       <Box sx={{width:"100%", alignItems: "center", justifyContent: "center"}}>
-
         <Typography align="center" variant="h5" mt={2} p={4} color="primary">Your Friends List</Typography>
-
         {alert.status &&
         <Alert severity={alert.severity} onClose={() => setAlert(initAlert)}>{alert.msg}</Alert>
         }
