@@ -7,6 +7,7 @@ import '@testing-library/jest-dom';
 import FriendsPage from '../client/src/components/Friends/FriendsPage';
 import { Link } from 'react-router-dom';
 import HomePage from '../client/src/components/HomePage';
+// import Steps from '../client/src/components/Steps';
 const results = {
   friends:[
     {_id: '63d8c7660a277bbead327d8c', name: 'www', phone_num: '+13123334444'},
@@ -53,6 +54,11 @@ const localStorageMock = (function() {
   }
 })()
 
+// describe('Step tests', () =>{
+//   test('Step render with a next button for the first page', async() => {
+//     render(<Steps />, {wrapper: MemoryRouter})
+//   })
+// })
 
 describe('HomePage render Tests!', () => {
   test('HomePage with img logo', async() => {
@@ -93,8 +99,5 @@ describe('Friends Page render Tests', () => {
     fireEvent.click(screen.getByRole('button', {name:'Add'}));
     await waitFor(() => expect(container.querySelector('MuiAlert-message')).toBeDefined());
   })
-
-
-
 
 })
