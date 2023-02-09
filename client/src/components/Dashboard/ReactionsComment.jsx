@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import {Button, ButtonGroup, Box, Typography, TextField, Modal, Badge} from '@mui/material';
+import {Button, ButtonGroup, Box, Typography, TextField, Modal, Badge, Alert} from '@mui/material';
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
@@ -15,7 +15,7 @@ import axios from 'axios';
 //     },
 //   },
 // });
-
+const initAlert = {status:false, severity:'', msg:''};
 const style = {
   position: 'absolute',
   top: '50%',
@@ -33,9 +33,9 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
   // const [reaction, setReaction] = useState('');
   const [open, setOpen] = React.useState(false);
   const [comment, setComment] = useState('');
-
+  const [alert, setAlert] = useState(initAlert);
   const reaction = data.reactions;
-
+  const emojiMap = {thum:'👍', like:'❤️', fire:'🔥', tooth:'🦷'}
   const user = JSON.parse(localStorage.getItem('user'));
 
   const CHARACTER_LIMIT = 120;
@@ -44,13 +44,21 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
   const handleClose = () => setOpen(false);
 
   const handleListItemClick = (event, index) => {
+
     setSelectedIndex(index);
     axios.post(`/api/social/reaction/${data._id}`, { user_id: user.id, emoji: event.target.id})
     .then((result) => {
       setNeedsUpdate(true);
     })
     .catch((err) => {
-      console.log(err);
+      if (err.response.data === 'user already reacted') {
+        setAlert({status: true, severity:'warning', msg:`So greedy! Clicked ${emojiMap[event.target.id]}  before! Pick another one.`})
+        setTimeout(() => {
+          setAlert(initAlert)
+        }, 3000)
+      } else {
+        console.log(err);
+      }
     })
   };
 
@@ -76,6 +84,9 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
         m: 1,
         }}
       >
+        {alert.status &&
+          <Alert severity={alert.severity} onClose={() => setAlert(initAlert)}>{alert.msg}</Alert>
+        }
           <Typography>
             <Button
               sx={{

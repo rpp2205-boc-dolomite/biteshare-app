@@ -38,10 +38,8 @@ export default function MealsList() {
     return (
       <Box sx={{ width: '100%'}}>
         <Navbar></Navbar>
-        <Box display="flex" sx={{justifyContent: 'center'}}>
-          <Link to="/step" style={{ textDecoration: 'none' }}>
-            <Button size='large' variant="contained" color="primary" sx={{ m: 2}}>Create a new Meal Session</Button>
-          </Link>
+        <Box display="flex" sx={{pt:1, justifyContent: 'center'}}>
+            <Button component={Link} to={'/step'} size='large' variant="contained" color="primary" sx={{ m: 2}}>Create a new Meal Session</Button>
         </Box>
         {meals.length === 0 ? emptyFeed : meals.map((element, index) => {
           var hostId = element.host;

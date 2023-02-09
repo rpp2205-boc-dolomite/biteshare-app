@@ -3,11 +3,13 @@ const { Types } = require('mongoose');
 
 const reactionsContainUser = (reactions, user_id) => {
   for (const emoji of reactions.emojis) {
+    console.log('single', user_id);
     if (Array.isArray(reactions[emoji]) && reactions[emoji].find(user => user.equals(user_id))) {
       return true;
     }
   }
   return false;
+
 };
 
 exports.addReactionToSession = function (req, res) {
@@ -28,8 +30,8 @@ exports.addReactionToSession = function (req, res) {
         newReactions[emoji].push(Types.ObjectId(user_id));
         return db.Session.updateOne({ _id: session_id }, { reactions: newReactions });
       } else {
-        if (reactionsContainUser(reactions, user_id)) {
-          res.status(409).send('user already reacted');
+        if (reactions[emoji].find(user => user.equals(user_id))) {
+          res.status(400).send('user already reacted');
           return null;
         } else {
           reactions[emoji].push(Types.ObjectId(user_id));

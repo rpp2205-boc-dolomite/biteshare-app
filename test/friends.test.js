@@ -6,7 +6,7 @@ import {BrowserRouter, MemoryRouter} from 'react-router-dom'
 import '@testing-library/jest-dom';
 import FriendsPage from '../client/src/components/Friends/FriendsPage';
 import { Link } from 'react-router-dom';
-
+import HomePage from '../client/src/components/HomePage';
 const results = {
   friends:[
     {_id: '63d8c7660a277bbead327d8c', name: 'www', phone_num: '+13123334444'},
@@ -52,11 +52,12 @@ const localStorageMock = (function() {
     }
   }
 })()
-const testUser =
 
-describe('Test!', () => {
-  test('ADD TEST', () => {
-    expect(1 + 1).toBe(2);
+
+describe('HomePage render Tests!', () => {
+  test('HomePage with img logo', async() => {
+    render(<HomePage />, {wrapper: MemoryRouter});
+    expect(screen.getAllByAltText('BiteShare Logo')).toHaveLength(3);
   });
 })
 
@@ -70,7 +71,7 @@ describe('Friends Page render Tests', () => {
   test('FriendsPage rendered', async () => {
     const { container } = render(<FriendsPage />, {wrapper: MemoryRouter})
     await waitFor(() => {
-      expect(container.querySelectorAll('li')).toHaveLength(6);
+      expect(container.querySelectorAll('.swipeable-list-item')).toHaveLength(6);
     })
     expect(screen.getByText('Your Friends List')).toBeDefined();
   })
@@ -91,7 +92,6 @@ describe('Friends Page render Tests', () => {
     expect(phoneInput.value).toBe('1231231234');
     fireEvent.click(screen.getByRole('button', {name:'Add'}));
     await waitFor(() => expect(container.querySelector('MuiAlert-message')).toBeDefined());
-
   })
 
 
