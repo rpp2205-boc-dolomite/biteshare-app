@@ -6,11 +6,9 @@ import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Loading from '../Loading.jsx';
 
-// // const myMeals = useMemo(() => meals, [])
 
 
 export default function MealsList() {
-  // after getSessions is added, uncomment the folloiwng and change array to data on line 26
 
   const [meals, setMeals] = useState([]);
   const [emptyFeed, handleEmptyFeed] = useState('');
@@ -70,7 +68,7 @@ export default function MealsList() {
                       Host: {element.detail[hostId].name}
                     </Typography>
                     <Typography variant="subtitle1" color="primary">
-                      Amount: {element.detail[user.id].bill + element.detail[user.id].tip}
+                      Amount: {(element.detail[user.id].bill) + element.detail[user.id].tip}
                     </Typography>
               </Box>
             </Link>

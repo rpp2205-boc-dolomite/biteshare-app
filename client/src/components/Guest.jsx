@@ -71,7 +71,7 @@ const Guest = () => {
         <Loading />
       ) : (
         <div>
-          <Navbar />
+          <Navbar guest={'guest'}/>
             <Box>
               <Box ml={6} mt={5}>
                 <FormLabel>Restaurant:</FormLabel>
