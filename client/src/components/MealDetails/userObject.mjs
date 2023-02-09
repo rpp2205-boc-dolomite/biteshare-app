@@ -5,8 +5,8 @@ export default class userObj {
     this.name = name || '';
     this.id = id || '';
     this.phone_num = phone_num || '';
-    this._meal = meal || 0;
-    this._tip = tip || 0;
+    this._meal = Number(meal) || 0;
+    this._tip = Number(tip) || 0;
   }
 
   get meal() {
@@ -33,8 +33,8 @@ export default class userObj {
       name: this.name,
       id: this.id,
       phone_num: this.phone_num,
-      meal_amount: this._meal.toFixed(2),
-      tip_amount: this._tip.toFixed(2)
+      meal_amount: this.meal,
+      tip_amount: this.tip
     });
   }
 }
