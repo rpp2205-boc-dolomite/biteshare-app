@@ -1,18 +1,47 @@
 import React, {useState, useEffect} from 'react';
-import {TextField, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction,Avatar, IconButton} from '@mui/material';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import {TextField,Avatar, IconButton, Typography, Box} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
 import {deepPurple, deepOrange, blue} from '@mui/material/colors';
+import {
+  LeadingActions,
+  SwipeableList,
+  SwipeableListItem,
+  SwipeAction,
+  TrailingActions,
+} from 'react-swipeable-list';
+const actionBox = {
+  height: "100%",
+  display: "flex",
+  alignItems: "center",
+  fontWeight: 500,
+  boxSizing: "border-box",
+  color: "#eee",
+  userSelect: 'none',
+  backgroundColor:'#820009'
+}
+import 'react-swipeable-list/dist/styles.css';
 const FriendEntry = ({friend, i, deleteOne, page}) => {
-  const deleteFriend = (e) => {
-    e.preventDefault();
-    deleteOne(i);
-  }
-  //console.log('friend 1:', friend);
+  const [progress, setProgress] = React.useState(0);
+  const handleSwipeEnd = () => {
+    setProgress()
+    if (progress > 60) {
+      console.log('[Handle DELETE]', i);
+      deleteOne(i);
+    }
+  };
 
-  let styleForPage = page === "friends" ? {margin:4} : null
+  let pageStyle = page === 'friends'? {
+    margin:'1%',
+    height:'60px',
+    width:'100%',
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'space-around',
+    backgroundColor:'#f5f5f5',
+    color: '#424242',
+    border: '1px solid',
+    borderColor:'#e0e0e0',
+  } : {margin:'1%', width:'100%', display:'flex', alignItem:'center',justifyContent:'space-around' };
   const avatorColorPool =[deepOrange[500], blue[500], null, deepPurple[500]]
   const pickColor = (i) =>{
     if(i < 4) {
@@ -21,28 +50,42 @@ const FriendEntry = ({friend, i, deleteOne, page}) => {
       return i - (Math.floor(i / 4) * 3) -1
     }
   }
-  return (
-    <ListItem
-      secondaryAction={
-        <IconButton color="primary" aria-label="delete" onClick={(e) => deleteFriend(e)}>
+
+  const trailingActions = () => (
+
+   <TrailingActions>
+      <SwipeAction destructive={true} onClick={()=>console.log("clicked")}>
+        <div style={actionBox}>
+        <Typography variant="button" sx={{color: 'white'}}>DELETE</Typography>
+        <IconButton aria-label="delete" sx={{color:'white', display:'flex', flexDirection:'column', alignItems:'flex-start'}}>
           <DeleteIcon />
         </IconButton>
-      }
-      sx={styleForPage}
+        </div>
+      </SwipeAction>
+    </TrailingActions>
+
+  );
+
+  return (
+
+    <SwipeableListItem
       key={i}
-      >
-      <ListItemAvatar>
-       <Avatar sx={{bgcolor: avatorColorPool[pickColor(i)]}}>
-         {friend.name.slice(0,1).toUpperCase()}
-       </Avatar>
-      </ListItemAvatar>
-      <ListItemText sx={{color: 'primary.main', width:"15%"}} primary={friend.name} />
-      <ListItemText sx={{color: 'primary.main'}} primary={friend.phone_num} />
-    </ListItem>
-
-
-  )
-}
+      trailingActions={trailingActions(i)}
+      onSwipeEnd={handleSwipeEnd}
+      onSwipeProgress={setProgress}
+    >
+      <div key={i} style={pageStyle}>
+        <div style={{display:'flex', width:'25%'}}>
+          <Avatar sx={{bgcolor: avatorColorPool[pickColor(i)], mr:'5%'}} >
+            {friend.name.slice(0,1).toUpperCase()}
+          </Avatar>
+         <Typography gutterBottom variant="h6" color="primary">{friend.name}</Typography>
+        </div>
+        <Typography mt={0.5} variant="body1" color='primary'>{friend.phone_num}</Typography>
+        <Typography gutterBottom variant="overline" sx={{color: 'black', opacity: 0.1}}>Swip to delete</Typography>
+      </div>
+    </SwipeableListItem>
+  )}
 
 export default FriendEntry;
 

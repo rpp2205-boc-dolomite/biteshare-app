@@ -5,7 +5,8 @@ import Navbar from '../Dashboard/Navbar.jsx';
 import FriendEntry from './FriendEntry.jsx';
 import Loading from '../Loading.jsx';
 import NewFriendDialog from './NewFriendDialog.jsx';
-
+import  { SwipeableList, Type as ListType } from 'react-swipeable-list';
+import 'react-swipeable-list/dist/styles.css';
 const initAlert = {status:false, severity:'', msg:''};
 export default function FriendsPage (props) {
   const [friends, setFriends] = useState(null);
@@ -20,6 +21,7 @@ export default function FriendsPage (props) {
     if (!friends){
       axios.get(`/api/friends?user_id=${user.id}`)
         .then(result => {
+          console.log(result.data);
           setFriends(result.data.friends)
         })
     }
@@ -32,6 +34,7 @@ export default function FriendsPage (props) {
     })
     setOpen(false);
   }
+
 
   const deleteOne = (i) => {
     //send to server delete the current friend
@@ -58,29 +61,48 @@ export default function FriendsPage (props) {
         setAlert({status:true, severity:'success', msg:'Add friends Success!'})
       })
   }
-
+  useEffect(() => {
+   if (alert.status) {
+    setTimeout(() => {
+      setAlert(initAlert)
+    }, 3000)
+   }
+  },[alert.status])
   return (
     <>
       <Navbar />
-      {alert.status &&
+      <Box component="div" sx={{pt:1, display: 'flex', justifyContent: "center"}}>
+        <Button variant="contained" size="large" color="primary" sx={{m:2, width:'300px'}} onClick={()=> setOpen(true)}>Add a new friend</Button>
+      </Box>
+      <Box sx={{width:"100%", alignItems: "center", justifyContent: "center"}}>
+
+        <Typography align="center" variant="h5" mt={2} p={4} color="primary">Your Friends List</Typography>
+        <Divider/>
+        {alert.status &&
         <Alert severity={alert.severity} onClose={() => setAlert(initAlert)}>{alert.msg}</Alert>
-      }
-      <Box sx={{m:2, width:"90%", alignItems: "center", justifyContent: "center"}}>
-      <Typography align="center" variant="h5" mt={2} p={4} color="primary">Your Friends List</Typography>
-      <Divider/>
-      <Box component="div" sx={{height: "600px", overflowX: "hidden", overflowY: 'scroll', display: "flex", alignItems: "flex-start", justifyContent: "center"}}>
-        {!friends ? <Loading /> : (!friends.length ? (<h2>You do not have any friends yet</h2> )
-        : (<List role="list" aria-labelledby="friends-list" sx={{width:"90%"}}>
-          {friends.map((friend, i) =>
-            <FriendEntry friend={friend} i={i} deleteOne={deleteOne} page="friends"/>
+        }
+        <Box component="div" sx={{display: "flex", alignItems: "center", justifyContent: "center", bgcolor:"#eeeeee"}}>
+          {!friends ? <Loading /> : (!friends.length ? (<h2>You do not have any friends yet</h2> )
+          : (<SwipeableList
+             fullSwipe={true}
+             threshold={0.5}
+             role="list"
+             type={ListType.IOS}
+             aria-labelledby="friends-list"
+             style={{margin:'0 10px', width:"100%"}}
+            >
+            {friends.map((friend, i) =>
+              <FriendEntry
+               friend={friend}
+               i={i}
+               deleteOne={deleteOne}
+               page="friends"/>
+            )}
+          </SwipeableList>)
           )}
-        </List>)
-        )}
-      </Box>
-      {open && <NewFriendDialog open={open} setDialogValue={setDialogValue} dialogValue={dialogValue} handleClose={handleClose} existList={friends} handleSubmit={handleSubmit} page="friends"/>}
-      <Box component="div" sx={{pt:2, display: "grid", justifyItems: "center", justifyContent: "center"}}>
-        <Button variant="contained" size="large" color="primary" sx={{width:'300px'}} onClick={()=> setOpen(true)}>Add a new friend</Button>
-      </Box>
+        </Box>
+        {open && <NewFriendDialog open={open} setDialogValue={setDialogValue} dialogValue={dialogValue} handleClose={handleClose} existList={friends} handleSubmit={handleSubmit} page="friends"/>}
+
       </Box>
     </>
 
