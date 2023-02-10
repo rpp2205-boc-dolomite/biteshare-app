@@ -38,15 +38,17 @@ export default function Review(props) {
           <Typography variant="body1" sx={{m: 2}}><b>Restaurant Name:</b> {info.rest_name}</Typography>
           <Typography variant="body1" sx={{m: 2}}><b>Receipt:</b></Typography>
           <Grid container direction="column" alignItems="center" justifyContent="center">
-            <Grid item>
-              <img crossorigin="anonymous" src={info.receipt} max-width='100%' height="auto"></img>
-            </Grid>
+            {info.receipt === '' ? ('') :(
+              <Grid item>
+                <img crossorigin="anonymous" src={info.receipt} max-width='100%' height="auto"></img>
+              </Grid>
+            )}
           </Grid>
           <Typography variant="body1" sx={{m: 2}}><b>Number of friends:</b> {info.friends.length + 1}</Typography>
           <Box display="flex" sx={{m: 2}}>
-            <Typography variant="body1" ><b>Sub total:</b> ${info.sub_total}</Typography>
+            <Typography variant="body1" ><b>Sub total:</b> ${info.sub_total.toFixed(2)}</Typography>
             <Typography sx={{ml: 5}}><b>Tip total:</b> ${info.tip_total.toFixed(2)}</Typography>
-            <Typography sx={{ml: 5}}><b>Grand total: </b>${info.tip_total + info.sub_total}</Typography>
+            <Typography sx={{ml: 5}}><b>Grand total: </b>${(info.tip_total + info.sub_total).toFixed(2)}</Typography>
           </Box>
           <Grid container spacing={4} justifyContent="center">
               <Grid container item xs={3} direction="column">

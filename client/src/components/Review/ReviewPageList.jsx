@@ -13,7 +13,7 @@ export default function ReviewPageList (props) {
                 <Typography>{element.name}</Typography>
               </Grid>
               <Grid container item xs={3} direction="column">
-                <Typography>${element.meal_amount}</Typography>
+                <Typography>${element.meal_amount.toFixed(2)}</Typography>
               </Grid>
               <Grid container item xs={3} direction="column">
                 <Typography>${Number(element.tip_amount).toFixed(2)}</Typography>
