@@ -27,6 +27,9 @@ export default function Review(props) {
   if(loading) {
     return <Loading />
   }
+  if(info.reciept === '') {
+    info.receipt = '../../../dist/images/No_Image_Available.jpeg'
+  }
 
   return(
     <Box>
