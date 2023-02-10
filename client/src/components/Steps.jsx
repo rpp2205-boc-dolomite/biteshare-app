@@ -72,12 +72,21 @@ export default function Steps() {
 
   function _handleSubmit() {
     //console.log('it is last page we need render to dashboard');
+    setLoading(true)
     axios.post('/api/sessions', inputs.session.payload)
     .then((response) => {
-      setRedirect(true);
+      setLoading(false)
     })
+    .then(() => setRedirect(true))
     .catch((err) => {
-      console.log(err);
+      if (err.response.data.status === 400) {
+        setAlert({status:true, severity:'info', msg:'Some friends cannot receive the notifications!'})
+        setTimeout(() => {
+          setAlert(initAlert);
+          setRedirect(true);
+          setLoading(false);
+        }, 3000)
+      }
     })
   }
 
@@ -102,14 +111,13 @@ export default function Steps() {
       isError = true;
     }
     if (activeStep === 3) {
-      setLoading(true);
       _handleSubmit();
     }
     if (isError) {
       setTimeout(() => {
         setAlert(initAlert);
         return;
-      }, 2500)
+      }, 3000)
     } else {
       setActiveStep(activeStep + 1);
     }
@@ -118,22 +126,22 @@ export default function Steps() {
   if (redirect) {
     return <Navigate to='/meals' replace={true}/>
   }
-  if(loading) {
-    return <Loading />
-  }
+
   return (
     <>
       <Navbar />
+      {loading ? <Loading /> :
       <Stepper activeStep={activeStep} sx={{p:1, m:2}}>
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
-      </Stepper>
+      </Stepper>}
         {alert.status &&
           <Alert severity={alert.severity} onClose={() => setAlert(initAlert)}>{alert.msg}</Alert>
         }
+      {!loading &&
         <div>
           {_renderStepContent(activeStep)}
 
@@ -148,11 +156,11 @@ export default function Steps() {
               <Button variant="contained" color="primary" onClick={_handleNext} sx={btnStyle}>
                 {isLastStep ? "Confirm" : "Next" }
               </Button>
-
             </div>
           </div>
-        </div>
 
+        </div>
+      }
     </>
   );
 }

@@ -97,7 +97,6 @@ exports.updatePaymentStatus = async function(req, res)  {
         res.status(200).send('Successfully updated payment status for the user');
       }
     } catch (error) {
-      console.log(error);
       res.status(500).send('Failed to update status')
     }
   }
