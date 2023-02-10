@@ -30,6 +30,7 @@ const Meal = () => {
   const [isInSession, setIsInSession] = useState("");
 
   const data = location.state;
+  console.log(data)
   const userObj = localStorage.getItem("user");
   const parsedUserObj = JSON.parse(userObj);
 
@@ -143,9 +144,8 @@ const Meal = () => {
                   </Table>
                 </TableContainer>
                 <FormLabel>Receipt:</FormLabel>
-                <Typography variant="body1">
-                  <img src={data.receipt} alt="receipt" crossOrigin="anonymous"/>
-                </Typography>
+                  {data.receipt ? <img src={data.receipt} alt="receipt" crossOrigin="anonymous"/> : <Typography>Not uploaded</Typography>}
+                  
                 <Divider sx={{ borderBottomWidth: 1 }} />
                 <Button
                   variant="contained"
