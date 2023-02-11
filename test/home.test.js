@@ -7,6 +7,7 @@ import '@testing-library/jest-dom';
 import MealsList from '../client/src/components/Dashboard/MealsList.jsx';
 import Navbar from '../client/src/components/Dashboard/Navbar.jsx';
 import Home from '../client/src/components/Dashboard/Home.jsx';
+import ReactionsComment from '../client/src/components/Dashboard/ReactionsComment.jsx';
 
 const results = [
     {

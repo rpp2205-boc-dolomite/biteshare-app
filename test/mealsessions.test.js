@@ -114,17 +114,3 @@ describe('Meals List page rendered', () => {
     });
   })
 })
-
-test('Navbar is rendered', async () => {
-  const { container } = render(<Navbar />, {wrapper: MemoryRouter})
-  await waitFor(() => {
-    screen.getByText('Home')
-    screen.getByText('Meals')
-    screen.getByText('Friends')
-    screen.getByText('Logout')
-  })
-  expect(screen.getByText('Home')).toBeInTheDocument();
-  expect(screen.getByText('Meals')).toBeInTheDocument();
-  expect(screen.getByText('Friends')).toBeInTheDocument();
-  expect(screen.getByText('Logout')).toBeInTheDocument();
-})
