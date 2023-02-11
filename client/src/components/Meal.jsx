@@ -144,7 +144,7 @@ const Meal = () => {
                   </Table>
                 </TableContainer>
                 <FormLabel>Receipt:</FormLabel>
-                  {data.receipt ? <img src={data.receipt} alt="receipt" crossOrigin="anonymous"/> : <Typography>Not uploaded</Typography>}
+                  {data.receipt ? <img src={data.receipt} width={500} height={500} alt="receipt" crossOrigin="anonymous" /> : <Typography>Not uploaded</Typography>}
                   
                 <Divider sx={{ borderBottomWidth: 1 }} />
                 <Button
