@@ -1,12 +1,13 @@
+require('dotenv').config();
 const db = require('../db/db.js');
 const bcrypt = require('bcrypt');
 const parsePhoneNumber = require('libphonenumber-js');
+const jwt = require('jsonwebtoken');
 
 exports.createHash = function(password) {
     var salt = bcrypt.genSaltSync(8)
 
     return bcrypt.hashSync(password, salt, null)
-
 };
 
 exports.verifyLogin = function(req, res) {
@@ -17,7 +18,7 @@ exports.verifyLogin = function(req, res) {
         return;
     }
     const phoneNumber = parsed.number;
-    db.User.findOne({phone_num: phoneNumber})
+    db.User.findOne({phone_num: phoneNumber},).select("+password")
     .then((user) => {
         console.log('user from DB', user)
         if (user !== null) {
@@ -30,7 +31,17 @@ exports.verifyLogin = function(req, res) {
                     if (result === false) {
                         res.status(401).send('The password you have entered is incorrect. Please try again.')
                     } else {
-                        res.status(200).send({name: user.name, phone_num: user.phone_num, id: user.id, friends: [ ...user.friends]})
+                        res.status(200).send({
+                            name: user.name,
+                            phone_num: user.phone_num,
+                            id: user.id,
+                            friends: user.friends,
+                            token: jwt.sign({
+                                name: user.name,
+                                user_id: user.id
+                            }, process.env.JWT_AUTH_SECRET_KEY, { expiresIn: '24h' })
+                        });
+
                     }
                 }
             })

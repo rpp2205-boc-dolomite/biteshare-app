@@ -24,7 +24,7 @@ Object.freeze(reactionsTemplate);
 const UserSchema = new Schema({
   name: { type: String, required: true },
   phone_num: { type: String, required: true, match: /^\+1[0-9]{10}$/g, index: true, unique: true }, // this regex matches strings starting with a plus sign and 1, followed by 10 digits
-  password: String,
+  password: { type: String, select: false },
   is_guest: Boolean,
   friends: [{ type: ObjectId, ref: 'User' }]
 }, {
