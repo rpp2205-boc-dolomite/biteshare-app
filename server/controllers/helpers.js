@@ -17,7 +17,7 @@ exports.sendTexts = async function (input, id) {
     console.log('here')
     promises.push(
       client.messages.create({
-        body: `Hi ${element.name}: \n You have been invited to split the bill at ${input.rest_name} \n Please select the link below to view the meal session \n biteshare.ecitytech.net/guest?id1=${id}&id2=${element.id}`,
+        body: `Hi ${element.name}: \n You have been invited to split the bill at ${input.rest_name} \n Please select the link below to view the meal session \n biteshare.ecitytech.net/guest?session_id=${id}`,
         from: process.env.TWILIO_PHONE_NUM,
         to: `${element.phone_num}`
       })
