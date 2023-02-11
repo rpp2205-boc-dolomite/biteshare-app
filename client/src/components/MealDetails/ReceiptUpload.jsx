@@ -7,11 +7,20 @@ import {
 
 // Get production API keys from Upload.io
 const uploader = Uploader({
-  apiKey: "free"
+  apiKey: "public_12a1xxV2euTmG6SK7JjEFv2xc1nc"
 });
 
 // Customize the file upload UI (see "customization"):
-const options = { multi: false }
+const options = {
+  multi: false,
+  maxFileCount: 1,
+  mimeTypes: [
+    "image/jpeg",
+    "image/heif",
+    "image/heic",
+    "image/png"
+  ]
+}
 
 // Render the file upload button:
 const ReceiptUpload = ({ setReceipt }) =>
