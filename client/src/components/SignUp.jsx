@@ -43,7 +43,7 @@ export default class SignUp extends React.Component {
     });
     axios.get(`/api/users?phone_num=${data.get('tel')}`)
     .then((result) => {
-      if (!result) {
+      if (!result.data) {
         return axios.post('/api/users', user)
       } else if (result.data.is_guest) {
         console.log('id', result.data.id);
