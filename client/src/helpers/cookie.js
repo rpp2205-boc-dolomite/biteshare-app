@@ -25,6 +25,10 @@ export const getSession = () => {
   return session
 }
 
+export const setSession = (token) => {
+  Cookies.set('__session', token);
+}
+
 export const logOut = () => {
   Cookies.remove('__session')
 }
