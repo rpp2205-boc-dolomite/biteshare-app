@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from './Copyright.jsx';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
+import { setSession } from '../helpers/cookie.js';
 
 
 //const theme = createTheme();
@@ -32,20 +33,21 @@ export default class SignIn extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     var data = new FormData(event.currentTarget);
-    console.log({
-      phone: data.get('tel'),
-      password: data.get('password'),
-    });
+    // console.log({
+    //   phone: data.get('tel'),
+    //   password: data.get('password'),
+    // });
     var phone_num = data.get('tel')
     var password = data.get('password')
     axios.post(`/api/login/`, {
       'phone_num': phone_num,
       'password': password
     })
-    .then(parsedPhoneNum => {
+    .then(reply => {
       //redirect to dashboard
-      console.log('BACK IN SUCCESS', parsedPhoneNum);
-      localStorage.setItem('user', JSON.stringify(parsedPhoneNum.data));
+      // console.log('BACK IN SUCCESS', parsedPhoneNum);
+      localStorage.setItem('user', JSON.stringify(reply.data));
+      setSession(reply.data.token);
       this.setState({
         user: true
       })
@@ -55,7 +57,7 @@ export default class SignIn extends React.Component {
         this.setState({
           error: err.response.data
         })
-        
+
       } else {
         this.setState({
           error: 'Internal Server Error. Please try again at another time'

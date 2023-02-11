@@ -28,11 +28,12 @@ const Meal = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isInSession, setIsInSession] = useState("");
+  const [data, setData] = useState(location.state);
 
-  const data = location.state;
-  console.log(data)
+  // const data = location.state;
   const userObj = localStorage.getItem("user");
   const parsedUserObj = JSON.parse(userObj);
+
 
   const avatorColorPool = [deepOrange[500], blue[500], null, deepPurple[500]];
 
@@ -126,7 +127,6 @@ const Meal = () => {
                     </TableHead>
                     <TableBody>
                       {Object.entries(data.detail).map((friend, index) => {
-                        console.log('friend: ', friend);
                         const total = Number(friend[1].bill) + Number(friend[1].tip);
                         const formatTotal = total.toFixed(2);
                         const isPaid = friend[1].is_paid ? "Paid" : "Unpaid";

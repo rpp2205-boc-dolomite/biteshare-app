@@ -197,7 +197,7 @@ class MealDetails extends Component {
   }
 
   validateSession() {
-    if (!this.state.mealTotal || !this.state.tipPercent) {
+    if (!this.state.mealTotal || (!this.state.tipPercent && this.state.tipPercent !== 0)) {
       return false;
     }
 
