@@ -18,7 +18,7 @@ exports.verifyLogin = function(req, res) {
         return;
     }
     const phoneNumber = parsed.number;
-    db.User.findOne({phone_num: phoneNumber})
+    db.User.findOne({phone_num: phoneNumber},).select("+password")
     .then((user) => {
         console.log('user from DB', user)
         if (user !== null) {
