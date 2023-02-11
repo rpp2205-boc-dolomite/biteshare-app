@@ -1,15 +1,8 @@
 import React from "react";
-import {
-  BrowserRouter,
-  MemoryRouter,
-  Route,
-  Routes,
-  Router,
-} from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Meal from "../client/src/components/Meal.jsx";
-import { createMemoryHistory } from "history";
 
 const localStorageMock = (function () {
   let store = {
@@ -42,7 +35,7 @@ const localStorageMock = (function () {
   };
 })();
 
-describe.only("Meal page render", () => {
+describe("Meal page render", () => {
   beforeEach(() => {
     Object.defineProperty(window, "localStorage", { value: localStorageMock });
   });
