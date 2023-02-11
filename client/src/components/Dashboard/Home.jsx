@@ -47,7 +47,6 @@ export default function Home() {
     if (needsUpdate) {
       axios.get(`/api/feed?user_id=${user.id}`)
       .then((results) => {
-        // console.log(results);
         if(results.data[0].friendSessions.length === 0) {
           handleEmptyFeed('Empty, make some friends!');
         } else {

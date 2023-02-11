@@ -9,7 +9,8 @@
     "react-dev": "npx webpack --watch",
     "build": "npx webpack",
     "test": "jest ./test --env=jsdom --coverage",
-    "test-yuchen":"jest test/friends.test.js --watch --coverage"
+    "test-yuchen":"jest test/friends.test.js --watch --coverage",
+    "test-stacey": "jest test/mealsessions.test.js --watch --coverage"
   },
   "repository": {
     "type": "git",
