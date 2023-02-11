@@ -1,11 +1,12 @@
 import React from 'react';
+import { getSession } from '../helpers/cookie.js';
 
 function PrivateRoute({ component: Component, ...rest }) {
   return (
     <Route
       {...rest}
       render={props =>
-        fakeAuth.isAuthenticated ? (
+        getSession() ? (
           <Component {...props} />
         ) : (
           <Redirect
