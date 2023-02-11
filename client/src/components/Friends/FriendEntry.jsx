@@ -69,12 +69,11 @@ const FriendEntry = ({friend, i, deleteOne, page}) => {
   return (
 
     <SwipeableListItem
-      key={i}
       trailingActions={trailingActions(i)}
       onSwipeEnd={handleSwipeEnd}
       onSwipeProgress={setProgress}
     >
-      <div key={i} style={pageStyle}>
+      <div style={pageStyle}>
         <div style={{display:'flex', width:'25%'}}>
           <Avatar sx={{bgcolor: avatorColorPool[pickColor(i)], mr:'5%'}} >
             {friend.name.slice(0,1).toUpperCase()}
