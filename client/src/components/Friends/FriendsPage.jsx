@@ -47,7 +47,6 @@ export default function FriendsPage (props) {
     let temp = {name: tempName, phone_num: dialogValue.phone}
     axios.post(`/api/friends/?user_id=${user.id}`, {guest_id:id})
       .then((res) => {
-        console.log('friends page res:', res.data);
         setFriends(friends.concat([temp]));
         handleClose()
         setAlert({status:true, severity:'success', msg:'Add friends Success!'})
@@ -59,7 +58,6 @@ export default function FriendsPage (props) {
     if (!friends){
       axios.get(`/api/friends?user_id=${user.id}`)
         .then(result => {
-          console.log(result.data);
           setFriends(result.data.friends)
         })
     }

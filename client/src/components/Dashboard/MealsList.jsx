@@ -14,7 +14,7 @@ export default function MealsList() {
   const [emptyFeed, handleEmptyFeed] = useState('');
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
-  const getMealSessions = (phoneNum) => {
+  const getMealSessions = () => {
     axios.get(`/api/sessions?user_id=${user.id}`)
     .then((sessions) => {
       if(sessions.data.length === 0) {
@@ -30,7 +30,7 @@ export default function MealsList() {
 
 
   useEffect(() => {
-    getMealSessions(user.phone);
+    getMealSessions();
  }, []);
 
     return (
