@@ -70,7 +70,7 @@ export default function FriendsPage (props) {
     }, 3000)
    }
   },[alert.status])
-
+  console.log('friends:', friends);
   return (
     <>
       <Navbar />
@@ -106,6 +106,7 @@ export default function FriendsPage (props) {
             {friends.map((friend, i) =>
               <FriendEntry
                friend={friend}
+               key={i}
                i={i}
                deleteOne={deleteOne}
                page="friends"/>

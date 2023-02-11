@@ -57,7 +57,7 @@ const AddFriends = ({inputs, setInputs}) => {
         {!friends.length ? (<h2>No friends in this meal yet</h2>)
         : (<List>
           {friends.map((friend, i) =>
-            <FriendEntry friend={friend} i={i} deleteOne={deleteOne} page="addfriends"/>
+            <FriendEntry friend={friend} key={i} i={i} deleteOne={deleteOne} page="addfriends"/>
           )}
         </List>)
         }
