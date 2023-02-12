@@ -97,7 +97,7 @@ export default function Home() {
                 }}
                 onClick={() => {setCurrent(element.comments);}}
                 >
-                see what others are saying
+                see what others are saying ({element.comments.length})
               </Button>
             <ReactionsComment setNeedsUpdate={setNeedsUpdate} data={element}/>
             </Box>

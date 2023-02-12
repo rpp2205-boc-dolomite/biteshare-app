@@ -69,7 +69,9 @@ export default function MealsList() {
                       Host: {element.detail[hostId].name}
                     </Typography>
                     <Typography variant="subtitle1" color="primary">
+
                       Amount: {(element.detail[user.user_id].bill) + element.detail[user.user_id].tip}
+
                     </Typography>
               </Box>
             </Link>
