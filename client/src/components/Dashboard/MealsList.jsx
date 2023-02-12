@@ -5,18 +5,19 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Loading from '../Loading.jsx';
-
+import { useOutletContext } from 'react-router-dom';
 
 
 export default function MealsList() {
 
   const [meals, setMeals] = useState([]);
   const [emptyFeed, handleEmptyFeed] = useState('');
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const { user } = useOutletContext();
 
   const getMealSessions = () => {
-    axios.get(`/api/sessions?user_id=${user.id}`)
+    axios.get(`/api/sessions?user_id=${user.user_id}`)
     .then((sessions) => {
+      console.log('sessions', sessions);
       if(sessions.data.length === 0) {
         handleEmptyFeed('No new meal sessions');
       } else {
@@ -68,7 +69,7 @@ export default function MealsList() {
                       Host: {element.detail[hostId].name}
                     </Typography>
                     <Typography variant="subtitle1" color="primary">
-                      Amount: {(element.detail[user.id].bill) + element.detail[user.id].tip}
+                      Amount: {(element.detail[user.user_id].bill) + element.detail[user.user_id].tip}
                     </Typography>
               </Box>
             </Link>

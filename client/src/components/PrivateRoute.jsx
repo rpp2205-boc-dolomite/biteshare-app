@@ -1,17 +1,14 @@
 import React from 'react';
 import { getSession } from '../helpers/cookie.js';
+import { Navigate, Outlet } from 'react-router-dom';
+export default function PrivateRoute() {
 
-function PrivateRoute({ component: Component, ...rest }) {
-  return (
-    <Route
-      {...rest}
-      render={props =>
-        getSession() ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to='/login' />
-        )
-      }
-    />
-  );
+  const user = getSession();
+
+  if (!user) {
+    return <Navigate to='/login' replace />
+  } else {
+    return <Outlet context={{user}}/>
+  }
 }
+

@@ -7,7 +7,7 @@ import {
   Typography,
   Alert
 } from "@mui/material";
-import { Navigate } from 'react-router-dom';
+import { Navigate, useOutletContext } from 'react-router-dom';
 
 import MealsList from "./Dashboard/MealsList.jsx";
 import RestaurantSearch from "./Restaurant/RestaurantSearch.jsx";
@@ -26,6 +26,7 @@ const btnStyle = {
 }
 const initAlert = {status:false, severity:'', msg:''};
 export default function Steps() {
+  const { user } = useOutletContext();
   const [activeStep, setActiveStep] = useState(0);
   const isLastStep = activeStep === steps.length - 1;
   const [redirect, setRedirect] = useState(false);
@@ -52,8 +53,7 @@ export default function Steps() {
   const [loading, setLoading] = useState(false);
 
   if (!inputs.host.user_id) {
-    const user = JSON.parse(localStorage.getItem('user'));
-    setInputs({...inputs, host: {...inputs.host, user_id: user.id, name: user.name, phone_num: user.phone_num}})
+    setInputs({...inputs, host: {...inputs.host, user_id: user.user_id, name: user.name}})
   }
   function _renderStepContent(step) {
     switch (step) {

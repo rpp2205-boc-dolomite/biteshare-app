@@ -23,7 +23,7 @@ import {
 import { deepPurple, deepOrange, blue } from "@mui/material/colors";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "./Loading.jsx";
-
+import { useOutletContext } from 'react-router-dom';
 const Meal = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -31,8 +31,8 @@ const Meal = () => {
   const [data, setData] = useState(location.state);
 
   // const data = location.state;
-  const userObj = localStorage.getItem("user");
-  const parsedUserObj = JSON.parse(userObj);
+  const { user } = useOutletContext();
+  //const parsedUserObj = JSON.parse(userObj);
 
 
   const avatorColorPool = [deepOrange[500], blue[500], null, deepPurple[500]];
@@ -50,7 +50,7 @@ const Meal = () => {
   }, []);
 
   const checkIfUserInFriends = () => {
-    const userId = parsedUserObj.id;
+    const userId = user.user_id;
     const sessionId = data._id;
 
     axios
@@ -67,7 +67,7 @@ const Meal = () => {
   const updatePaymentStatus = () => {
     axios
       .post("/api/sessions/status", {
-        userId: parsedUserObj.id,
+        userId: user.user_id,
         sessionId: data._id
       })
       .then((res) => {
@@ -145,7 +145,7 @@ const Meal = () => {
                 </TableContainer>
                 <FormLabel>Receipt:</FormLabel>
                   {data.receipt ? <img src={data.receipt} width={500} height={500} alt="receipt" crossOrigin="anonymous" /> : <Typography>Not uploaded</Typography>}
-                  
+
                 <Divider sx={{ borderBottomWidth: 1 }} />
                 <Button
                   variant="contained"
