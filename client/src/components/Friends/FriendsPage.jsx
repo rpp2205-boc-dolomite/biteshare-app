@@ -18,7 +18,7 @@ export default function FriendsPage (props) {
   const [open, setOpen] = useState(false);
   const [dialogValue, setDialogValue] = useState({name:'', phone:'+1'})
   const [alert, setAlert] = useState(initAlert);
-  console.log('frined cooke', user);
+
   // const user = JSON.parse(localStorage.getItem('user'));
 
   const handleClose = () => {
@@ -71,7 +71,7 @@ export default function FriendsPage (props) {
     }, 3000)
    }
   },[alert.status])
-  console.log('friends:', props);
+
   return (
     <>
       <Navbar />

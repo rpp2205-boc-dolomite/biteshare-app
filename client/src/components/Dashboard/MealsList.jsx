@@ -17,7 +17,7 @@ export default function MealsList() {
   const getMealSessions = () => {
     axios.get(`/api/sessions?user_id=${user.user_id}`)
     .then((sessions) => {
-      console.log('sessions', sessions);
+      //console.log('sessions', sessions);
       if(sessions.data.length === 0) {
         handleEmptyFeed('No new meal sessions');
       } else {
