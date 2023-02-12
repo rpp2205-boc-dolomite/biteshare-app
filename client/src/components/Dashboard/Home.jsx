@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {Button, Box, Typography, Stack, List, ListItem, ListItemButton, Modal} from '@mui/material';
 import Navbar from './Navbar.jsx';
 import axios from 'axios';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useOutletContext } from 'react-router-dom';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import Loading from '../Loading.jsx';
@@ -25,7 +25,7 @@ export default function Home() {
   const [feed, setFeed] = useState([]);
   const [emptyFeed, handleEmptyFeed] = useState('');
   const [open, setOpen] = React.useState(false);
-  const user = JSON.parse(localStorage.getItem('user'));
+  const { user } = useOutletContext();
   const [ needsUpdate, setNeedsUpdate ] = React.useState(true);
   const [current, setCurrent] = useState(null)
 
@@ -45,7 +45,7 @@ export default function Home() {
 
   useEffect(() => {
     if (needsUpdate) {
-      axios.get(`/api/feed?user_id=${user.id}`)
+      axios.get(`/api/feed?user_id=${user.user_id}`)
       .then((results) => {
         if(results.data[0].friendSessions.length === 0) {
           handleEmptyFeed('Empty, make some friends!');

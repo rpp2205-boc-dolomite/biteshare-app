@@ -7,18 +7,19 @@ import Loading from '../Loading.jsx';
 import NewFriendDialog from './NewFriendDialog.jsx';
 import  { SwipeableList, Type as ListType } from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
-
+import { useOutletContext } from 'react-router-dom';
 //setup initial value of alert
 const initAlert = {status:false, severity:'', msg:''};
 
 export default function FriendsPage (props) {
+  const { user } = useOutletContext();
   const [friends, setFriends] = useState(null);
   const [input, setInput] = useState('');
   const [open, setOpen] = useState(false);
   const [dialogValue, setDialogValue] = useState({name:'', phone:'+1'})
   const [alert, setAlert] = useState(initAlert);
 
-  const user = JSON.parse(localStorage.getItem('user'));
+  // const user = JSON.parse(localStorage.getItem('user'));
 
   const handleClose = () => {
     setDialogValue({
@@ -31,7 +32,7 @@ export default function FriendsPage (props) {
   const deleteOne = (i) => {
     //send to server delete the current friend
     let cur = friends[i];
-    return axios.put('/api/friends', {user_id: user.id, friend: cur})
+    return axios.put('/api/friends', {user_id: user.user_id, friend: cur})
       .then(() => {
         setAlert({status:true, severity:"success", msg:"Friends removed!"})
         setTimeout(() => {
@@ -45,7 +46,7 @@ export default function FriendsPage (props) {
     //console.log('friends page params: ', id, name);
     let tempName = !name ? dialogValue.name : name
     let temp = {name: tempName, phone_num: dialogValue.phone}
-    axios.post(`/api/friends/?user_id=${user.id}`, {guest_id:id})
+    axios.post(`/api/friends/?user_id=${user.user_id}`, {guest_id:id})
       .then((res) => {
         setFriends(friends.concat([temp]));
         handleClose()
@@ -56,7 +57,7 @@ export default function FriendsPage (props) {
   //get friends data from server
   useEffect(() => {
     if (!friends){
-      axios.get(`/api/friends?user_id=${user.id}`)
+      axios.get(`/api/friends?user_id=${user.user_id}`)
         .then(result => {
           setFriends(result.data.friends)
         })
@@ -70,7 +71,7 @@ export default function FriendsPage (props) {
     }, 3000)
    }
   },[alert.status])
-  console.log('friends:', friends);
+
   return (
     <>
       <Navbar />

@@ -45,19 +45,18 @@ export default class SignIn extends React.Component {
     })
     .then(reply => {
       //redirect to dashboard
-      // console.log('BACK IN SUCCESS', parsedPhoneNum);
-      localStorage.setItem('user', JSON.stringify(reply.data));
+      // console.log('BACK IN SUCCESS', reply.data);
+      // localStorage.setItem('user', JSON.stringify(reply.data));
       setSession(reply.data.token);
       this.setState({
         user: true
       })
     })
     .catch((err) => {
-      if (err.response.status === 401) {
+      if (err && err.response && err.response.status === 401) {
         this.setState({
           error: err.response.data
         })
-
       } else {
         this.setState({
           error: 'Internal Server Error. Please try again at another time'
