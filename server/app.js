@@ -5,7 +5,7 @@ const compression = require('compression');
 
 const helmet = require('helmet');
 const cors = require('cors');
-
+const verifyToken = require('./middleware/verifyToken');
 
 const userControllers = require('./controllers/user'); // This line will be changed. It is here to trigger the DB to load.
 const friendsControllers = require('./controllers/friend');
@@ -44,6 +44,11 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+//---- login and signup ----//
+app.post('/api/login/', authControllers.verifyLogin)
+
+//---- Apply auth middleware ----//
+app.use(verifyToken);
 
 //---  user's friends list ---//
 app.get('/api/friends', friendsControllers.getFriends);
@@ -60,9 +65,6 @@ app.post('/api/sessions', sessionControlers.postSessions);
 app.post('/api/sessions/status', sessionControlers.updatePaymentStatus);
 app.get('/api/sessions/friend', sessionControlers.checkIfUserInFriendsList)
 app.get('/api/guest', sessionControlers.getOneSession)
-
-//---- login and signup ----//
-app.post('/api/login/', authControllers.verifyLogin)
 
 //---- yelp businesses ---//
 app.get('/biz', (req, res) => {
