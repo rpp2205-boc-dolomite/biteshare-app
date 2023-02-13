@@ -48,6 +48,7 @@ export default class SignIn extends React.Component {
       // console.log('BACK IN SUCCESS', reply.data);
       // localStorage.setItem('user', JSON.stringify(reply.data));
       setSession(reply.data.token);
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + reply.data.token;
       this.setState({
         user: true
       })
