@@ -36,7 +36,7 @@ const RestaurantSearch = ({inputs, setInputs}) => {
   }
 
   const searchLocal = (local, radius) => {
-    axios.get(`/biz?location=${local}&radius=${radius}`)
+    axios.get(`/api/biz?location=${local}&radius=${radius}`)
       .then ((results) => {
         setBusinesses(results.data);
       })
