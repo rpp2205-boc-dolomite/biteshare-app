@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, AppBar, Box, Toolbar, Typography, createTheme} from '@mui/material';
 import { Link } from 'react-router-dom';
+import { logOut } from '../../helpers/cookie.js';
 
 
 function Navbar (props) {
@@ -20,7 +21,7 @@ function Navbar (props) {
                   <Button size="large" variant="text" component={Link} to="/meals" color="inherit">Meals</Button>
                   <Button size="large" variant="text" component={Link} to="/friends" color="inherit">Friends</Button>
                 </Typography>
-                <Button component={Link} to="/" color="inherit" onClick={() => {localStorage.clear()}}>Logout</Button>
+                <Button component={Link} to="/" color="inherit" onClick={() => logOut()}>Logout</Button>
               </Toolbar>
             </AppBar>
           </Box>
