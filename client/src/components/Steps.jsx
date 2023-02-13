@@ -93,7 +93,7 @@ export default function Steps() {
   function _handleBack() {
     setActiveStep(activeStep - 1);
   }
-  console.log('step page info: ', inputs);
+  // console.log('step page info: ', inputs);
 
   function _handleNext() {
     let isError = false

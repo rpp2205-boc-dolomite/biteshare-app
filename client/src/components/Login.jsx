@@ -62,8 +62,8 @@ export default class SignIn extends React.Component {
         this.setState({
           error: 'Internal Server Error. Please try again at another time'
         })
-        console.log(err);
-        console.log(err.response.status)
+        // console.log(err);
+        // console.log(err.response.status)
       }
 
     })

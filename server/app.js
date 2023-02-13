@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const authControllers = require('./controllers/auth.js');
 const privateApiRoutes = require('./routers/privateApiRoutes');
+const favicon = require('serve-favicon');
 
 app.use(helmet({
   crossOriginEmbedderPolicy: false,
@@ -26,6 +27,7 @@ app.use(cors({
   origin: process.env.CORS_ORIGIN,
 }));
 app.use(compression());
+app.use(favicon(path.join(__dirname, '../client', 'dist', 'images', 'favicon.ico')));
 app.use((req, res, next) => {
   if (req.url === '/bundle.js') {
     res.setHeader('Content-Type', 'text/javascript; charset=UTF-8');
