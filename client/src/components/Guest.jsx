@@ -35,7 +35,7 @@ const Guest = () => {
 
   useEffect(() => {
     const parsed = queryString.parse(location.search);
-    console.log(parsed)
+    // console.log(parsed)
     axios.get(`/api/guest?session_id=${parsed.session_id}`)
       .then((data) => {
         setData(data.data)
@@ -47,7 +47,7 @@ const Guest = () => {
 
   const updatePaymentStatus = () => {
     const parsed = queryString.parse(location.search);
-    console.log('updatePaymentstatus', parsed)
+    // console.log('updatePaymentstatus', parsed);
     axios
       .post("/api/sessions/status", {
         userId: parsedUserObj.id,

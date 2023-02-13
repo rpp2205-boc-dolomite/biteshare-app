@@ -28,7 +28,7 @@ export default class SignUp extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(event.currentTarget)
+    // console.log(event.currentTarget)
     var data = new FormData(event.currentTarget);
     var user = {
       name: data.get('username'),
@@ -36,17 +36,17 @@ export default class SignUp extends React.Component {
       password: data.get('password'),
       isGuest: false
     }
-    console.log({
-      name: data.get('username'),
-      phone_num: data.get('tel'),
-      password: data.get('password'),
-    });
+    // console.log({
+    //   name: data.get('username'),
+    //   phone_num: data.get('tel'),
+    //   password: data.get('password'),
+    // });
     axios.get(`/api/users?phone_num=${data.get('tel')}`)
     .then((result) => {
       if (!result.data) {
         return axios.post('/api/users', user)
       } else if (result.data.is_guest) {
-        console.log('id', result.data.id);
+        // console.log('id', result.data.id);
         return axios.put(`/api/users/?user_id=${result.data.id}`, user)
       } else {
         this.setState({
@@ -63,7 +63,7 @@ export default class SignUp extends React.Component {
       }
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       this.setState({
         error: 'There was an error creating your account'
       })

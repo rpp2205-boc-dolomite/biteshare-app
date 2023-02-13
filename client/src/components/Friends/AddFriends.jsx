@@ -13,9 +13,9 @@ import { useLocation } from 'react-router-dom'
 const AddFriends = ({inputs, setInputs}) => {
   const [existList, setExistList] = useState(null)
   const [friends, setFriends] = useState([]);
-  console.log('friends', friends);
+  // console.log('friends', friends);
 
-  console.log('info from steps: ', inputs)
+  // console.log('info from steps: ', inputs);
   //call the data to get the users exist friends list
   const getFriends = () => {
     //for test use the defatul id
