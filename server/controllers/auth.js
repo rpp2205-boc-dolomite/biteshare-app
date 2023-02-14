@@ -52,5 +52,21 @@ exports.verifyLogin = function(req, res) {
     })
 }
 
+exports.sendCode = function (req, res) {
+    // get the user object from the DB
+    // create a code
+    // save a timestamp and the code to the user obj
+    // send a text to the user with said code, return 201
+}
+
+exports.verifyCode = function (req, res) {
+    // parse code from req
+    // store current timestamp
+    // retrieve user obj from DB
+    // compare the codes and the timestamps
+        // same: set verified to true and save timestamp
+        // return 201
+        // otherwise return 406
+}
 
 // console.log(exports.verifyPass('Voeiroak', newPass));

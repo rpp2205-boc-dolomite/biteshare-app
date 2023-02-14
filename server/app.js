@@ -41,6 +41,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../client/dist')));
 //---- login and signup ----//
 app.post('/api/login/', authControllers.verifyLogin)
+//---- Verify user ----//
+app.route('/api/verify')
+  .post(authControllers.sendCode)
+  .put(authControllers.verifyCode);
 
 //---- private API routes ----//
 app.use('/api', privateApiRoutes);
