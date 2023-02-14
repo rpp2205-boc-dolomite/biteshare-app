@@ -1,5 +1,13 @@
 require('dotenv').config();
+const client = require("twilio")(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
+exports.sendText = function (text, number) {
+  client.messages.create({
+    from: process.env.TWILIO_PHONE_NUM,
+    body: text,
+    to: number
+  });
+}
 
 exports.sendTexts = async function (input, id) {
   // this is an async function and returns an array of results
@@ -9,7 +17,6 @@ exports.sendTexts = async function (input, id) {
   if (!Array.isArray(input.friends) || !input.friends.length) { return }
 
   const from = process.env.TWILIO_PHONE_NUM;
-  const client = require("twilio")(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
   const promises = [];
   console.log('here in helper.js', input.friends);
@@ -34,9 +41,6 @@ exports.sendTexts = async function (input, id) {
 };
 
 exports.sendAllFriendHasPaidTexts = function(textBody) {
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-  const client = require('twilio')(accountSid, authToken);
 
   client.messages
     .create({
