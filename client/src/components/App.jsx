@@ -10,7 +10,7 @@ import MealDetails from './MealDetails/MealDetails.jsx';
 import Review from './Review/Review.jsx';
 import SignUp from './SignUp.jsx';
 import Login from './Login.jsx';
-import ChangePass from './ChangePass.jsx';
+import ChangePass from './Forgot/ChangePass.jsx';
 import FriendsPage from './Friends/FriendsPage.jsx';
 import RestaurantSearch from './Restaurant/RestaurantSearch.jsx';
 import CompletePayment from './CompletePayment.jsx'

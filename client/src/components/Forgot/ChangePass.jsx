@@ -8,7 +8,7 @@ import {
 import {
   LockResetOutlined as LockResetOutlinedIcon
 } from '@mui/icons-material';
-import Verify from './Verify.jsx';
+import VerifyPhone from './VerifyPhone.jsx';
 
 class ChangePass extends Component {
   state = {
@@ -21,7 +21,7 @@ class ChangePass extends Component {
 
   render() {
     return (<>
-      <Typography align='center' sx={{height:'10%', m:1, p:0}}>
+      <Typography align='center' sx={{ height: '10%', m: 1, p: 0 }}>
         <img src="../images/BOC-logo.png" alt="BiteShare Logo" width="175" />
       </Typography>
       <hr />
@@ -40,8 +40,16 @@ class ChangePass extends Component {
         <Typography component="h1" variant="h5">
           Change Password
         </Typography>
+        <VerifyPhone />
       </Box>
-      <Verify></Verify>
+      {/* <Box
+        sx={{
+          width: "90%",
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+      </Box> */}
     </>);
   };
 };
