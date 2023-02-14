@@ -57,27 +57,43 @@ exports.sendCode = function (req, res) {
     // get the user object from the DB
     // create a code
     // save a timestamp and the code to the user obj
-    const code = Math.floor(Math.random() * (999999 - 10000 + 1) + 10000);
-    db.User.findOneAndUpdate(req.body, { code: code, codeGenerated: Date.now() })
-        .then(result => {
-            console.log('CODE RESULT', result);
-            if (result) {
-                sendText(`The verification code is: ${code}`, result.phone_num);
+    const code = Math.floor(Math.random() * (999999 - 100000 + 1) + 100000);
+    db.User.findOneAndUpdate(req.body, { code: code, codeGeneratedAt: Date.now() })
+        .then(user => {
+            if (user) {
+                sendText(`Your verification code is: ${code}`, user.phone_num);
                 res.sendStatus(201);
             } else {
-                res.sendStatus(400);
+                res.sendStatus(404);
             }
-        });
+        })
+        .catch(err => res.status(500).send(err.toString()));
 }
 
 exports.verifyCode = function (req, res) {
-    // parse code from req
-    // store current timestamp
-    // retrieve user obj from DB
-    // compare the codes and the timestamps
-    // same: set verified to true and save timestamp
-    // return 201
-    // otherwise return 406
-}
+    const codeToTest = Number(req.body.code) || 0;
+    const timestamp = Date.now();
 
-// console.log(exports.verifyPass('Voeiroak', newPass));
+    db.User.findOne({ phone_num: req.body.phone_num }, 'code codeGeneratedAt')
+        .then(user => {
+            const secondsElapsed = Math.abs(timestamp - user.codeGeneratedAt) / 1000;
+            const isValid = codeToTest && (user.code === codeToTest) && secondsElapsed && (secondsElapsed < 60);
+            user.code = null;
+            user.codeGeneratedAt = null;
+            if (isValid) {
+                user.verified = true;
+                user.verifiedAt = Date.now();
+                res.status(201);
+                return user.save();
+            } else {
+                user.verified = false;
+                user.verifiedAt = null;
+                res.status(406);
+                return user.save();
+            }
+        })
+        .then(result => {
+            res.end();
+        })
+        .catch(err => res.status(500).send(err.toString()));
+}
