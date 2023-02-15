@@ -8,8 +8,8 @@ import Cookies from 'js-cookie';
  *
  */
 
-export const getSession = () => {
-  const jwt = Cookies.get('__session');
+export const getSession = (token) => {
+  const jwt = token || Cookies.get('__session');
   let session;
   try {
     if (jwt) {

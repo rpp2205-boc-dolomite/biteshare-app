@@ -26,7 +26,7 @@ const startTimer = (sec, cb) => {
 };
 
 
-export default function ({ setVerified }) {
+export default function ({ setToken, setVerifiedPhoneNum }) {
   const [phoneNum, setPhoneNum] = useState(null);
   const [input, setInput] = useState('');
   const [alertHidden, setAlertHidden] = useState(true);
@@ -50,12 +50,16 @@ export default function ({ setVerified }) {
   };
 
   const handleVerify = () => {
-    axios.put('/api/verify', {phone_num: phoneNum, code: input});
+    axios.put('/api/verify', {phone_num: phoneNum, code: input})
       .then(response => {
         switch (response.status) {
           case 201:
-            doAlert('Verification Succeeded!', 'success', 8);
-            setTimeout(() => setVerified(true), 2000);
+            doAlert('Verification Succeeded!', 'success');
+
+            setTimeout(() => {
+              setVerifiedPhoneNum(phoneNum);
+              setToken(response.headers.token);
+            }, 2000);
             break;
 
           case 406:
@@ -117,6 +121,7 @@ export default function ({ setVerified }) {
         id="vp-input"
         label={phoneNum ? "Enter Code" : "Enter Your Phone Number"}
         name={phoneNum ? "code" : "phone"}
+        color={phoneNum ? "primary" : "secondary"}
         autoFocus
       />
       <Button

@@ -9,14 +9,33 @@ import {
   LockResetOutlined as LockResetOutlinedIcon
 } from '@mui/icons-material';
 import VerifyPhone from './VerifyPhone.jsx';
+import NewPassword from './NewPassword.jsx';
 
 class ChangePass extends Component {
-  state = {
-    verified: false
-  }
-
   constructor(props) {
     super(props);
+
+    this.state = {
+      verifiedPhoneNum: '',
+      token: ''
+    }
+
+    this.setVerifiedPhoneNum = this.setVerifiedPhoneNum.bind(this);
+    this.setToken = this.setToken.bind(this);
+  }
+
+  setVerifiedPhoneNum(phoneNum) {
+    this.setState({ verifiedPhoneNum: phoneNum });
+  }
+
+  setToken(token) {
+    this.setState({ token });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevState.token && this.state.tokem) {
+
+    }
   }
 
   render() {
@@ -40,7 +59,12 @@ class ChangePass extends Component {
         <Typography component="h1" variant="h5">
           Change Password
         </Typography>
-        <VerifyPhone />
+        {
+          this.state.token ?
+            <NewPassword token={this.state.token} />
+            :
+            <VerifyPhone setToken={this.setToken} setVerifiedPhoneNum={this.setVerifiedPhoneNum} />
+        }
       </Box>
       {/* <Box
         sx={{

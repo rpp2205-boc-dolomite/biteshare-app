@@ -5,11 +5,16 @@ const parsePhoneNumber = require('libphonenumber-js');
 const jwt = require('jsonwebtoken');
 const { sendText } = require('./helpers');
 
+const makeToken = (user_id, name, expiration = '24h') => {
+    return jwt.sign({name, user_id}, process.env.JWT_AUTH_SECRET_KEY, { expiresIn: expiration });
+};
+
 exports.createHash = function (password) {
     var salt = bcrypt.genSaltSync(8)
 
     return bcrypt.hashSync(password, salt, null)
 };
+
 
 exports.verifyLogin = function (req, res) {
     const parsed = parsePhoneNumber(req.body.phone_num, 'US');
@@ -37,10 +42,7 @@ exports.verifyLogin = function (req, res) {
                                 phone_num: user.phone_num,
                                 id: user.id,
                                 friends: user.friends,
-                                token: jwt.sign({
-                                    name: user.name,
-                                    user_id: user.id
-                                }, process.env.JWT_AUTH_SECRET_KEY, { expiresIn: '24h' })
+                                token: makeToken(user.id, user.name)
                             });
 
                         }
@@ -74,8 +76,9 @@ exports.verifyCode = function (req, res) {
     const codeToTest = Number(req.body.code) || 0;
     const timestamp = Date.now();
 
-    db.User.findOne({ phone_num: req.body.phone_num }, 'code codeGeneratedAt')
+    db.User.findOne({ phone_num: req.body.phone_num }, 'code codeGeneratedAt name phone_num')
         .then(user => {
+            console.log('WOW USER', user);
             const secondsElapsed = Math.abs(timestamp - user.codeGeneratedAt) / 1000;
             const isValid = codeToTest && (user.code === codeToTest) && secondsElapsed && (secondsElapsed < 60);
             user.code = null;
@@ -84,6 +87,7 @@ exports.verifyCode = function (req, res) {
                 user.verified = true;
                 user.verifiedAt = Date.now();
                 res.status(201);
+                res.set('token', makeToken(user.id, user.name, '5m'));
                 return user.save();
             } else {
                 user.verified = false;
