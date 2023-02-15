@@ -17,6 +17,7 @@ import { getSession, setSession } from '../../helpers/cookie.js';
 export default function ({ token, done }) {
   const [input, setInput] = useState('');
   const [btnDisabled, setBtnDisabled] = useState(false);
+  const [helperText, setHelperText] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -24,13 +25,13 @@ export default function ({ token, done }) {
 
     const newPass = input;
     if (newPass.length < 8) {
-      document.getElementById('np-input').helperText = "Password must be 8 characters!";
+      setHelperText("Password must be 8 characters!");
     } else {
       const session = getSession(token);
       if (session) {
         const headers = {
           'Authorization': 'Bearer ' + token
-        }
+        };
 
         axios.put('/api/users', { password: newPass }, {
           headers: headers,
@@ -56,6 +57,7 @@ export default function ({ token, done }) {
       onChange={e => setInput(e.target.value)}
       id="np-input"
       label="Enter a New Password"
+      helperText={helperText}
       name="password"
       autoFocus
     />
