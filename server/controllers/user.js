@@ -41,7 +41,7 @@ exports.getUser = function (req, res) {
       .catch(err => res.status(500).send(err.toString()));
   } else {
     db.User.findOne({ phone_num: phoneNum })
-      .then(doc => {console.log(doc); res.status(200).send(doc)})
+      .then(doc => res.status(200).send(doc))
       .catch(err => res.status(500).send(err.toString()));
   }
 };
@@ -104,7 +104,7 @@ exports.updateUser = function (req, res) {
   }
   db.User.findOneAndUpdate({_id: userId}, update, {returnDocument: 'after'})
     .then(result => {
-      console.log('update', result);
+      // console.log('update', result);
       if (result) {
         // res.set({"token": auth.makeToken({user_id: result.id, name: result.name})});
         res.status(203).send('updated');

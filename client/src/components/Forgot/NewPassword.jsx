@@ -21,19 +21,17 @@ export default function ({ token, done }) {
   const handleSubmit = e => {
     e.preventDefault();
     setBtnDisabled(true);
-    console.log('SUBMIT', input);
+
     const newPass = input;
     if (newPass.length < 8) {
-      console.log('NOT LONG ENOUGH')
       document.getElementById('np-input').helperText = "Password must be 8 characters!";
     } else {
       const session = getSession(token);
-      console.log('GET SESS', token, session);
       if (session) {
         const headers = {
           'Authorization': 'Bearer ' + token
         }
-        console.log('DOING PUT');
+
         axios.put('/api/users', { password: newPass }, {
           headers: headers,
           params: {
@@ -41,7 +39,6 @@ export default function ({ token, done }) {
           }
         })
           .then(response => {
-            console.log('PASS UPDATED', response.status);
             setSession(token);
             done();
           })

@@ -19,21 +19,21 @@ exports.createHash = function (password) {
 exports.verifyLogin = function (req, res) {
     const parsed = parsePhoneNumber(req.body.phone_num, 'US');
     if (!parsed) {
-        console.log(req.body);
+        // console.log(req.body);
         res.status(500).send("Connot parse phone number");
         return;
     }
     const phoneNumber = parsed.number;
     db.User.findOne({ phone_num: phoneNumber },).select("+password")
         .then((user) => {
-            console.log('user from DB', user)
+            // console.log('user from DB', user)
             if (user !== null) {
                 bcrypt.compare(req.body.password, user.password, (err, result) => {
                     if (err) {
                         console.log(err);
                         res.sendStatus(500)
                     } else {
-                        console.log('result of compare', result);
+                        // console.log('result of compare', result);
                         if (result === false) {
                             res.status(401).send('The password you have entered is incorrect. Please try again.')
                         } else {
@@ -74,20 +74,18 @@ exports.sendCode = function (req, res) {
 exports.verifyCode = function (req, res) {
     const codeToTest = Number(req.body.code) || 0;
     const timestamp = Date.now();
-    console.log('VERIFY', codeToTest, timestamp, req.body.phone_num);
+    // console.log('VERIFY', codeToTest, timestamp, req.body.phone_num);
     db.User.findOne({ phone_num: req.body.phone_num }, 'code codeGeneratedAt name phone_num')
         .then(user => {
-            console.log('WOW USER', user);
             const secondsElapsed = Math.abs(timestamp - user.codeGeneratedAt) / 1000;
             const isValid = codeToTest && (user.code === codeToTest) && secondsElapsed && (secondsElapsed < 60);
             user.code = null;
             user.codeGeneratedAt = null;
-            console.log('isValid', isValid);
+
             if (isValid) {
                 user.verified = true;
                 user.verifiedAt = Date.now();
                 res.status(201);
-                console.log('GOT HERE');
                 res.set({token: exports.makeToken(user.id, user.name, '5m')});
                 return user.save();
             } else {
