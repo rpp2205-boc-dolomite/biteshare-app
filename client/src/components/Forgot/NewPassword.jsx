@@ -6,6 +6,7 @@ import {
   TextField,
   Button,
   Alert,
+  Navigate
 } from '@mui/material';
 import {
   LockOutlinedIcon,
@@ -15,9 +16,11 @@ import { getSession } from '../../helpers/cookie.js';
 
 export default function ({ token }) {
   const [input, setInput] = useState('');
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   const handleSubmit = e => {
     e.preventDefault();
+    setBtnDisabled(true);
     console.log('SUBMIT', input);
     const newPass = input;
     if (newPass.length < 8) {
@@ -39,6 +42,7 @@ export default function ({ token }) {
         })
           .then(response => {
             console.log('PASS UPDATED', response.status);
+
           })
           .catch(err => {
             console.log(err.toString());
@@ -61,6 +65,7 @@ export default function ({ token }) {
       color="primary"
       variant="contained"
       fullWidth
+      disabled={btnDisabled}
       children=<Typography>Change Password</Typography>
       onClick={handleSubmit}
     />

@@ -5,7 +5,7 @@ const parsePhoneNumber = require('libphonenumber-js');
 const jwt = require('jsonwebtoken');
 const { sendText } = require('./helpers');
 
-const makeToken = (user_id, name, expiration = '24h') => {
+exports.makeToken = (user_id, name, expiration = '24h') => {
     return jwt.sign({name, user_id}, process.env.JWT_AUTH_SECRET_KEY, { expiresIn: expiration });
 };
 
@@ -44,7 +44,6 @@ exports.verifyLogin = function (req, res) {
                                 friends: user.friends,
                                 token: makeToken(user.id, user.name)
                             });
-
                         }
                     }
                 })
@@ -75,7 +74,7 @@ exports.sendCode = function (req, res) {
 exports.verifyCode = function (req, res) {
     const codeToTest = Number(req.body.code) || 0;
     const timestamp = Date.now();
-
+    console.log('VERIFY', codeToTest, timestamp, req.body.phone_num);
     db.User.findOne({ phone_num: req.body.phone_num }, 'code codeGeneratedAt name phone_num')
         .then(user => {
             console.log('WOW USER', user);
@@ -83,11 +82,13 @@ exports.verifyCode = function (req, res) {
             const isValid = codeToTest && (user.code === codeToTest) && secondsElapsed && (secondsElapsed < 60);
             user.code = null;
             user.codeGeneratedAt = null;
+            console.log('isValid', isValid);
             if (isValid) {
                 user.verified = true;
                 user.verifiedAt = Date.now();
                 res.status(201);
-                res.set('token', makeToken(user.id, user.name, '5m'));
+                console.log('GOT HERE');
+                res.set({token: exports.makeToken(user.id, user.name, '5m')});
                 return user.save();
             } else {
                 user.verified = false;

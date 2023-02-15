@@ -59,7 +59,7 @@ export default function ({ setToken, setVerifiedPhoneNum }) {
             setTimeout(() => {
               setVerifiedPhoneNum(phoneNum);
               setToken(response.headers.token);
-            }, 2000);
+            }, 1750);
             break;
 
           case 406:

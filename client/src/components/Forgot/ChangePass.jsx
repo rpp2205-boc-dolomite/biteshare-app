@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { useNavigate } from "react-router-dom";
 import {
   Typography,
   Avatar,
@@ -17,11 +18,13 @@ class ChangePass extends Component {
 
     this.state = {
       verifiedPhoneNum: '',
-      token: ''
+      token: '',
+      complete: false
     }
 
     this.setVerifiedPhoneNum = this.setVerifiedPhoneNum.bind(this);
     this.setToken = this.setToken.bind(this);
+    this.getStep = this.getStep.bind(this);
   }
 
   setVerifiedPhoneNum(phoneNum) {
@@ -32,11 +35,28 @@ class ChangePass extends Component {
     this.setState({ token });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevState.token && this.state.tokem) {
-
+  getStep() {
+    if (this.state.complete) {
+      return <Typography variant="h1" color="green" >Password has been changed! ✅ Redirecting... </Typography>
     }
+
+    return this.state.token ?
+      <NewPassword token={this.state.token} />
+      :
+      <VerifyPhone setToken={this.setToken} setVerifiedPhoneNum={this.setVerifiedPhoneNum} />
   }
+
+  // doRedirect() {
+
+  // }
+
+
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (this.state.complete) {
+
+  //   }
+  // }
 
   render() {
     return (<>
@@ -60,10 +80,7 @@ class ChangePass extends Component {
           Change Password
         </Typography>
         {
-          this.state.token ?
-            <NewPassword token={this.state.token} />
-            :
-            <VerifyPhone setToken={this.setToken} setVerifiedPhoneNum={this.setVerifiedPhoneNum} />
+          this.getStep()
         }
       </Box>
       {/* <Box

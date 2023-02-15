@@ -95,16 +95,20 @@ exports.updateUser = function (req, res) {
   if (update && update.password) {
     update.password = auth.createHash(update.password);
     update.is_guest = false;
+
   }
   // console.log('update', userId,req.body, update);
   if (!userId || !update || !(update instanceof Object)) {
     res.status(400).end();
     return;
   }
-  db.User.updateOne({_id: userId}, update)
+  db.User.findOneAndUpdate({_id: userId}, update, {returnDocument: 'after'})
     .then(result => {
-      // console.log('update', result)
-      res.status(203).send('updated')
+      console.log('update', result);
+      if (result) {
+        // res.set({"token": auth.makeToken({user_id: result.id, name: result.name})});
+        res.status(203).send('updated');
+      }
     })
     .catch(err => res.status(500).send(err.toString()));
   // db.User.findById(userId)
