@@ -5,6 +5,7 @@ const compression = require('compression');
 const helmet = require('helmet');
 const cors = require('cors');
 const authControllers = require('./controllers/auth.js');
+const sessionControlers = require('./controllers/sessions');
 const privateApiRoutes = require('./routers/privateApiRoutes');
 const favicon = require('serve-favicon');
 
@@ -39,12 +40,17 @@ app.use(express.urlencoded({ extended: false }));
 
 //---- Root path '/' ----//
 app.use(express.static(path.join(__dirname, '../client/dist')));
+
 //---- login and signup ----//
 app.post('/api/login/', authControllers.verifyLogin)
+
 //---- Verify user ----//
 app.route('/api/verify')
   .post(authControllers.sendCode)
   .put(authControllers.verifyCode);
+
+//---- Guests ----//
+app.get('/guest', sessionControlers.getOneSession);
 
 //---- private API routes ----//
 app.use('/api', privateApiRoutes);
