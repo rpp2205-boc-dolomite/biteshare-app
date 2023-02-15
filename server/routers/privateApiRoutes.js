@@ -8,7 +8,7 @@ const sessionControlers = require('../controllers/sessions');
 const authControllers = require('../controllers/auth.js');
 const homeController = require('../controllers/home.js');
 const { getBiz } = require('../controllers/yelpBiz.js');
-const { addReactionToSession, addCommentToSession, testInit } = require('../controllers/social');
+const { addReactionToSession, addCommentToSession } = require('../controllers/social');
 
 router.use(verifyToken);
 
@@ -21,12 +21,12 @@ router.put('/friends', friendsControllers.deleteFriend);
 router.get('/users', userControllers.getUser);
 router.post('/users', userControllers.addUser);
 router.put('/users',userControllers.updateUser);
+
 //---sessions ---//
 router.get('/sessions', sessionControlers.getSessions)
 router.post('/sessions', sessionControlers.postSessions);
 router.post('/sessions/status', sessionControlers.updatePaymentStatus);
 router.get('/sessions/friend', sessionControlers.checkIfUserInFriendsList);
-router.get('/guest', sessionControlers.getOneSession);
 
 //---- yelp businesses ---//
 router.get('/biz', (req, res) => {

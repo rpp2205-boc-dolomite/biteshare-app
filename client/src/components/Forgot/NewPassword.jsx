@@ -26,6 +26,9 @@ export default function ({ token, done }) {
     const newPass = input;
     if (newPass.length < 8) {
       setHelperText("Password must be 8 characters!");
+      setBtnDisabled(false);
+      const elem = document.getElementById('np-input');
+      elem.select();
     } else {
       const session = getSession(token);
       if (session) {
@@ -52,6 +55,7 @@ export default function ({ token, done }) {
 
   return <Box>
     <TextField
+      type="password"
       margin="normal"
       fullWidth
       onChange={e => setInput(e.target.value)}
