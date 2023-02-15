@@ -12,9 +12,9 @@ import {
   LockOutlinedIcon,
 } from '@mui/icons-material';
 import axios from 'axios';
-import { getSession } from '../../helpers/cookie.js';
+import { getSession, setSession } from '../../helpers/cookie.js';
 
-export default function ({ token }) {
+export default function ({ token, done }) {
   const [input, setInput] = useState('');
   const [btnDisabled, setBtnDisabled] = useState(false);
 
@@ -42,7 +42,8 @@ export default function ({ token }) {
         })
           .then(response => {
             console.log('PASS UPDATED', response.status);
-
+            setSession(token);
+            done();
           })
           .catch(err => {
             console.log(err.toString());

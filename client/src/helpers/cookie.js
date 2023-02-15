@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 /**
  *    Use this module to get the session data that is stored in a client's browser as a cookie with some base64 encoded data.
@@ -27,9 +28,11 @@ export const getSession = (token) => {
 
 export const setSession = (token) => {
   Cookies.set('__session', token);
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 }
 
 export const logOut = () => {
   Cookies.remove('__session');
   localStorage.clear();
+  delete axios.defaults.headers.common['Authorization'];
 }

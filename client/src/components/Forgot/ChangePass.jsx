@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
 import {
   Typography,
   Avatar,
@@ -19,12 +19,13 @@ class ChangePass extends Component {
     this.state = {
       verifiedPhoneNum: '',
       token: '',
-      complete: false
+      complete: false,
+      delay: 3
     }
 
     this.setVerifiedPhoneNum = this.setVerifiedPhoneNum.bind(this);
     this.setToken = this.setToken.bind(this);
-    this.getStep = this.getStep.bind(this);
+    this.doCountdown = this.doCountdown.bind(this);
   }
 
   setVerifiedPhoneNum(phoneNum) {
@@ -36,19 +37,33 @@ class ChangePass extends Component {
   }
 
   getStep() {
-    if (this.state.complete) {
-      return <Typography variant="h1" color="green" >Password has been changed! ✅ Redirecting... </Typography>
+    if (!this.state.delay && this.state.complete) {
+      return <Navigate to='/home' replace={true}/>
+      // return redirect('/meals');
+    } else if (this.state.complete) {
+      this.doCountdown();
+      return <>
+        <Typography variant="h5" color="green" sx={{ mt: 3 }}>✅</Typography>
+        <Typography variant="h5" color="green" sx={{ mt: 0, mb: 2 }}>Password has been changed!</Typography>
+        <Typography variant="h5" color="green" sx={{ my: 1 }}>Redirecting in ... {this.state.delay}</Typography>
+      </>
     }
 
     return this.state.token ?
-      <NewPassword token={this.state.token} />
+      <NewPassword token={this.state.token} done={() => this.setState({ complete: true })} />
       :
       <VerifyPhone setToken={this.setToken} setVerifiedPhoneNum={this.setVerifiedPhoneNum} />
   }
 
-  // doRedirect() {
-
-  // }
+  doCountdown() {
+    const intervalId = setInterval(() => {
+      if (this.state.delay > 0) {
+        this.setState({ delay: this.state.delay - 1 });
+      } else {
+        clearTimeout(intervalId);
+      }
+    }, 1000);
+  }
 
 
 
