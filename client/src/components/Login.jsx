@@ -48,7 +48,7 @@ export default class SignIn extends React.Component {
       // console.log('BACK IN SUCCESS', reply.data);
       // localStorage.setItem('user', JSON.stringify(reply.data));
       setSession(reply.data.token);
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + reply.data.token;
+      // axios.defaults.headers.common['Authorization'] = 'Bearer ' + reply.data.token;
       this.setState({
         user: true
       })
@@ -134,7 +134,7 @@ export default class SignIn extends React.Component {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link href="/forgot" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>

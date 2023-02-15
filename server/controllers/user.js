@@ -27,21 +27,21 @@ exports.getUser = function (req, res) {
   const userId = req.query.user_id;
   const parsed = req.query.phone_num && parsePhoneNumber(req.query.phone_num, 'US');
   const phoneNum = parsed && parsed.number;
-  console.log('in getUser', userId, phoneNum);
+  // console.log('in getUser', userId, phoneNum);
   if (!userId && !phoneNum) {
 
     res.status(400).end();
     return;
   }
 
-  console.log(userId, phoneNum);
+  // console.log(userId, phoneNum);
   if (userId) {
     db.User.findById(userId)
       .then(doc => res.status(200).send(doc))
       .catch(err => res.status(500).send(err.toString()));
   } else {
     db.User.findOne({ phone_num: phoneNum })
-      .then(doc => {console.log(doc); res.status(200).send(doc)})
+      .then(doc => res.status(200).send(doc))
       .catch(err => res.status(500).send(err.toString()));
   }
 };
@@ -55,7 +55,7 @@ exports.addUser = (req, res) => {
   }
   parsePhoneNumbers(docs);
 
-  console.log('DOCS', docs)
+  // console.log('DOCS', docs)
   if (!docs) {
     res.status(400).send('Not a valid phone number. Please enter a 10 digit phone number.');
     return;
@@ -69,7 +69,7 @@ exports.addUser = (req, res) => {
   //Adds user to db.
       db.User.insertMany(docs)
       .then((results) => {
-        console.log(results)
+        // console.log(results)
         res.status(200).send(results);
       })
       .catch(err => {
@@ -91,23 +91,24 @@ exports.addUser = (req, res) => {
 
 exports.updateUser = function (req, res) {
   const userId = req.query.user_id;
-  if (req.body.password) {
-    req.body.password = auth.createHash(req.body.password)
+  const update = req.body;
+  if (update && update.password) {
+    update.password = auth.createHash(update.password);
+    update.is_guest = false;
+
   }
-  let update = {
-    name:req.body.name,
-    password:req.body.password,
-    is_guest:req.body.isGuest,
-  }
-  console.log('update', userId,req.body, update);
+  // console.log('update', userId,req.body, update);
   if (!userId || !update || !(update instanceof Object)) {
     res.status(400).end();
     return;
   }
-  db.User.updateOne({_id: userId}, update)
+  db.User.findOneAndUpdate({_id: userId}, update, {returnDocument: 'after'})
     .then(result => {
-      console.log('update', result)
-      res.status(203).send('updated')
+      // console.log('update', result);
+      if (result) {
+        // res.set({"token": auth.makeToken({user_id: result.id, name: result.name})});
+        res.status(203).send('updated');
+      }
     })
     .catch(err => res.status(500).send(err.toString()));
   // db.User.findById(userId)
