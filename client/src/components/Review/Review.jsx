@@ -18,7 +18,7 @@ export default function Review(props) {
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  console.log('props in reviews from step: ', props.inputs);
+  // console.log('props in reviews from step: ', props.inputs);
   const info = props.inputs.session.payload;
 
   if(redirect) {

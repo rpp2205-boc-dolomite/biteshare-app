@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 /**
  *    Use this module to get the session data that is stored in a client's browser as a cookie with some base64 encoded data.
@@ -8,27 +9,30 @@ import Cookies from 'js-cookie';
  *
  */
 
-export const getSession = () => {
-  const jwt = Cookies.get('__session')
-  let session
+export const getSession = (token) => {
+  const jwt = token || Cookies.get('__session');
+  let session;
   try {
     if (jwt) {
-      const base64Url = jwt.split('.')[1]
-      const base64 = base64Url.replace('-', '+').replace('_', '/')
+      const base64Url = jwt.split('.')[1];
+      const base64 = base64Url.replace('-', '+').replace('_', '/');
       // what is window.atob ?
       // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/atob
-      session = JSON.parse(window.atob(base64))
+      session = JSON.parse(window.atob(base64));
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-  return session
+  return session;
 }
 
 export const setSession = (token) => {
   Cookies.set('__session', token);
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 }
 
 export const logOut = () => {
-  Cookies.remove('__session')
+  Cookies.remove('__session');
+  localStorage.clear();
+  delete axios.defaults.headers.common['Authorization'];
 }
