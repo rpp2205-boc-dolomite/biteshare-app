@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import {Button, ButtonGroup, Box, Typography, TextField, Modal, Badge, Alert} from '@mui/material';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import axios from 'axios';
 
 // const theme = createTheme({
@@ -36,8 +36,9 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
   const [alert, setAlert] = useState(initAlert);
   const reaction = data.reactions;
   const emojiMap = {thumb:'👍', like:'❤️', fire:'🔥', tooth:'🦷'}
-  const user = JSON.parse(localStorage.getItem('user'));
-
+  //const user = JSON.parse(localStorage.getItem('user'));
+  const { user } = useOutletContext();
+  console.log('react', user);
   const CHARACTER_LIMIT = 120;
 
   const handleOpen = () => setOpen(true);
@@ -46,11 +47,12 @@ const ReactionsComment = ({data, setNeedsUpdate}) => {
   const handleListItemClick = (event, index) => {
 
     setSelectedIndex(index);
-    axios.post(`/api/social/reaction/${data._id}`, { user_id: user.id, emoji: event.target.id})
+    axios.post(`/api/social/reaction/${data._id}`, { user_id: user.user_id, emoji: event.target.id})
     .then((result) => {
       setNeedsUpdate(true);
     })
     .catch((err) => {
+      console.log(err.stack);
       if (err.response.data === 'user already reacted') {
         setAlert({status: true, severity:'warning', msg:`So greedy! Clicked ${emojiMap[event.target.id]}  before! Pick another one.`})
         setTimeout(() => {

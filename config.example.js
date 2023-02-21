@@ -15,4 +15,4 @@ TWILIO_PHONE_NUM="Your twilio phone number"
 YELP_CLIENT_ID="Your yelp client id"
 YELP_TOKEN="Your yelp token"
 //accessing jwt
-JWT_AUTH_SECRET_KEY="Your jwt form auth0 secret key"
+JWT_AUTH_SECRET_KEY="Your JWT secret key"
