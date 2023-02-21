@@ -9,7 +9,7 @@ import Home from '../client/src/components/Dashboard/Home.jsx';
 import RenderRouteWithOutletContext from './RenderWithOutlet.jsx';
 var store = {
   user: {
-    id: "63d5690765b903d98477c097",
+    user_id: "63d5690765b903d98477c097",
     name: "stacey",
     phone_num: "+14086934417",
     friends: ['63d5838a04780bc64888352b', '63d56f15bc52fa12c202aaf4', '63d59928f8f3035eb877d500', '63d57c569e7990832e533c76', '63d56a0483bd4d48f67c9981']

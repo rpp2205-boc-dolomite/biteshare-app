@@ -8,7 +8,7 @@ import MealsList from '../client/src/components/Dashboard/MealsList.jsx';
 import Navbar from '../client/src/components/Dashboard/Navbar.jsx';
 import Home from '../client/src/components/Dashboard/Home.jsx';
 import ReactionsComment from '../client/src/components/Dashboard/ReactionsComment.jsx';
-
+import RenderRouteWithOutletContext from './RenderWithOutlet.jsx';
 const feedData =
   {
       "_id": "63dc8afd1c156adbad6358a3",
@@ -47,10 +47,20 @@ const feedData =
       "comments": []
   }
 
+const mockData={user:{
+    user_id: "63d56a0483bd4d48f67c9981",
+    name: "yuchen"
+  }};
+
+
 
 describe('Reactions rendered', () => {
   test('emojs available', async() => {
-    const { container } = render (<ReactionsComment data={feedData}/>, {wrapper: MemoryRouter});
+    const { container } = render(
+      <RenderRouteWithOutletContext context={mockData}>
+        <ReactionsComment data={feedData}/>
+      </RenderRouteWithOutletContext>);
+
     await waitFor(() => {
       expect(screen.getByText('👍')).toBeDefined();
       expect(screen.getByText('❤️')).toBeDefined();

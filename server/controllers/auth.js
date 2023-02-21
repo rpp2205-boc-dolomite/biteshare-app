@@ -42,7 +42,7 @@ exports.verifyLogin = function (req, res) {
                                 phone_num: user.phone_num,
                                 id: user.id,
                                 friends: user.friends,
-                                token: makeToken(user.id, user.name)
+                                token: exports.makeToken(user.id, user.name)
                             });
                         }
                     }
