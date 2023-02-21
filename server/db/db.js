@@ -26,7 +26,11 @@ const UserSchema = new Schema({
   phone_num: { type: String, required: true, match: /^\+1[0-9]{10}$/g, index: true, unique: true }, // this regex matches strings starting with a plus sign and 1, followed by 10 digits
   password: { type: String, select: false },
   is_guest: Boolean,
-  friends: [{ type: ObjectId, ref: 'User' }]
+  friends: [{ type: ObjectId, ref: 'User' }],
+  code: {type: Number, select: false},
+  codeGeneratedAt: {type: Date, select: false},
+  verified: {type: Boolean, select: false},
+  verifiedAt: {type: Date, select: false}
 }, {
   versionKey: false,
   toJSON: { virtuals: true }, // So `res.json()` and other `JSON.stringify()` functions include virtuals

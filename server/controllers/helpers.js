@@ -1,5 +1,13 @@
 require('dotenv').config();
+const client = require("twilio")(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
+exports.sendText = function (text, number) {
+  client.messages.create({
+    from: process.env.TWILIO_PHONE_NUM,
+    body: text,
+    to: number
+  });
+}
 
 exports.sendTexts = async function (input, id) {
   // this is an async function and returns an array of results
@@ -9,7 +17,6 @@ exports.sendTexts = async function (input, id) {
   if (!Array.isArray(input.friends) || !input.friends.length) { return }
 
   const from = process.env.TWILIO_PHONE_NUM;
-  const client = require("twilio")(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
   const promises = [];
   console.log('here in helper.js', input.friends);
@@ -17,7 +24,7 @@ exports.sendTexts = async function (input, id) {
     console.log('here')
     promises.push(
       client.messages.create({
-        body: `Hi ${element.name}: \n You have been invited to split the bill at ${input.rest_name} \n Please select the link below to view the meal session \n biteshare.ecitytech.net/guest?id1=${id}&id2=${element.id}`,
+        body: `Hi ${element.name}: \n You have been invited to split the bill at ${input.rest_name} \n Please select the link below to view the meal session \n biteshare.ecitytech.net/guest?session_id=${id}`,
         from: process.env.TWILIO_PHONE_NUM,
         to: `${element.phone_num}`
       })
@@ -34,9 +41,6 @@ exports.sendTexts = async function (input, id) {
 };
 
 exports.sendAllFriendHasPaidTexts = function(textBody) {
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-  const client = require('twilio')(accountSid, authToken);
 
   client.messages
     .create({

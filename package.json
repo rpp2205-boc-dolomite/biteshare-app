@@ -9,7 +9,7 @@
     "react-dev": "npx webpack --watch",
     "build": "npx webpack",
     "test": "jest ./test --env=jsdom --coverage",
-    "test-yuchen":"jest test --watch --coverage",
+    "test-yuchen": "jest test --watch --coverage",
     "test-stacey": "jest test/mealsessions.test.js --watch --coverage"
   },
   "repository": {
@@ -64,6 +64,7 @@
     "react-router-dom": "^6.7.0",
     "react-swipeable-list": "^1.7.1",
     "react-uploader": "^3.3.0",
+    "serve-favicon": "^2.5.0",
     "style-loader": "^3.3.1",
     "twilio": "^4.0.0",
     "uploader": "^3.3.0",
