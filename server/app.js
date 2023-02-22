@@ -7,6 +7,7 @@ const cors = require('cors');
 const authControllers = require('./controllers/auth.js');
 const sessionControlers = require('./controllers/sessions');
 const privateApiRoutes = require('./routers/privateApiRoutes');
+const userControllers = require('./controllers/user');
 const favicon = require('serve-favicon');
 
 app.use(helmet({
@@ -43,11 +44,9 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 //---- login and signup ----//
 app.post('/api/login/', authControllers.verifyLogin)
+app.post('/api/signup/', userControllers.signUp)
 
-//---- Verify user ----//
-app.route('/api/verify')
-  .post(authControllers.sendCode)
-  .put(authControllers.verifyCode);
+
 
 //---- Guests ----//
 app.get('/guest', sessionControlers.getOneSession);

@@ -16,12 +16,10 @@ import RestaurantSearch from './Restaurant/RestaurantSearch.jsx';
 import CompletePayment from './CompletePayment.jsx'
 import Steps from './Steps.jsx';
 import Guest from './Guest.jsx';
-import ErrorBoundary from './ErrorBoundary.jsx';
 import PrivateRoute from './PrivateRoute.jsx';
 
 const App = () => {
 
-  //we may need to render different page after login. so i created a simple app components
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
