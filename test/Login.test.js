@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 
 import '@testing-library/jest-dom';
-import SignIn from '../client/src/components/Login.jsx';
+import SignIn from '../client/src/components/Auth/Login.jsx';
 
 test('test runs', async () => {
     expect(1+1).toEqual(2)
@@ -20,7 +20,7 @@ test('Login page should render', async () => {
 //     await waitFor(() => screen.getByText('Sign In'))
 //     var phone_numInput = container.querySelector(`input[name="tel"]`)
 //     var passwordInput = container.querySelector(`input[name="password"]`)
-   
+
 //     fireEvent.change(phone_numInput, {target: {value: '8138209479'}})
 //     fireEvent.change(passwordInput, {target: {value: 'wrong'}})
 //     fireEvent.click(screen.getByText('Sign In'))
@@ -32,7 +32,7 @@ test('Login page should render', async () => {
 //     await waitFor(() => screen.getByText('Sign In'))
 //     var phone_numInput = container.querySelector(`input[name="tel"]`)
 //     var passwordInput = container.querySelector(`input[name="password"]`)
-   
+
 //     fireEvent.change(phone_numInput, {target: {value: '8138209478'}})
 //     fireEvent.change(passwordInput, {target: {value: 'wrong'}})
 //     fireEvent.click(screen.getByText('Sign In'))
@@ -46,7 +46,7 @@ test('Login page should render', async () => {
 //     await waitFor(() => screen.getByText('Sign In'))
 //     var phone_numInput = container.querySelector(`input[name="tel"]`)
 //     var passwordInput = container.querySelector(`input[name="password"]`)
-   
+
 //     fireEvent.change(phone_numInput, {target: {value: '8138209478'}})
 //     fireEvent.change(passwordInput, {target: {value: 'password1'}})
 //     fireEvent.click(screen.getByText('Sign In'))

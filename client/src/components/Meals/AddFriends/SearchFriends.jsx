@@ -4,7 +4,7 @@ import {TextField, Autocomplete, Box, Grid, Container, IconButton, Alert} from '
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import { createFilterOptions } from '@mui/material/Autocomplete';
-import NewFriendDialog from './NewFriendDialog.jsx';
+import NewFriendDialog from '../../Friends/NewFriendDialog.jsx';
 
 const filter = createFilterOptions();
 const SearchFriends = ({inputs, setInputs, id, friends, setFriends, existList, setExistList}) => {

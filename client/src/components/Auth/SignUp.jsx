@@ -36,33 +36,8 @@ export default class SignUp extends React.Component {
       password: data.get('password'),
       isGuest: false
     }
-    // console.log({
-    //   name: data.get('username'),
-    //   phone_num: data.get('tel'),
-    //   password: data.get('password'),
-    // });
+
     axios.post(`/api/signup`, {user})
-    // .then((result) => {
-    //   console.log('res:',result);
-    //   if (!result.data) {
-    //     return axios.post('/api/users', user)
-    //   } else if (result.data.is_guest) {
-    //     // console.log('id', result.data.id);
-    //     return axios.put(`/api/users/?user_id=${result.data.id}`, user)
-    //   } else {
-    //     this.setState({
-    //       error: `You already has an account`
-    //     })
-    //     return null
-    //   }
-    // })
-    // .then((data) => {
-    //   if (data) {
-    //     this.setState({
-    //       success:true,
-    //     })
-    //   }
-    // })
     .then((res) => {
       console.log('result', res);
       if (res.status === 200 || res.status === 203) {
@@ -84,7 +59,6 @@ export default class SignUp extends React.Component {
             })
           }, 2500)
         })
-
       }
 
     })

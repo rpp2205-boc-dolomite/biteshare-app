@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, AppBar, Box, Toolbar, Typography, createTheme} from '@mui/material';
 import { Link } from 'react-router-dom';
-import { logOut } from '../../helpers/cookie.js';
+import { logOut } from '../helpers/cookie.js';
 
 
 function Navbar (props) {

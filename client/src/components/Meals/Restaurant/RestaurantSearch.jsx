@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Navbar from '../Dashboard/Navbar.jsx';
 import {Button, Box, Typography, TextField, List, ListItem, ListItemButton, Slider} from '@mui/material';
 import { Navigate, Link } from 'react-router-dom';
 
@@ -71,7 +70,6 @@ const RestaurantSearch = ({inputs, setInputs}) => {
 
   return (
     <Box>
-    {/* <Navbar /> */}
       <Box
         flex-direction="column"
         alignItems="center"
@@ -93,16 +91,6 @@ const RestaurantSearch = ({inputs, setInputs}) => {
       <Typography align="center" padding="10px">
         <Button onClick={() => {searchLocal(local, radius)}} variant="contained">Show restaurants near me!</Button>
       </Typography>
-      {/*  if we use Steper we don't need the continue button */}
-      {/* <Typography align="center">
-        <Button
-          disabled={!restInfo.name}
-          component={Link}
-          to="/AddFriends"
-          state={{ restInfo }}
-          variant="contained"
-        >Continue</Button>
-    </Typography> */}
       <List
         sx={{
           height: "450px",

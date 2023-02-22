@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
-import Navbar from './Navbar.jsx';
+import Navbar from '../Navbar.jsx';
 import {Button, Box, Typography, Stack, List, ListItem, ListItemButton} from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Link, useLocation } from 'react-router-dom';

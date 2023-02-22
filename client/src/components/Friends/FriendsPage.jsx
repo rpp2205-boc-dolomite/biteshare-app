@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {Alert, Box,Button, List, Typography, Divider, TextField, IconButton} from '@mui/material';
-import Navbar from '../Dashboard/Navbar.jsx';
+import Navbar from '../Navbar.jsx';
 import FriendEntry from './FriendEntry.jsx';
 import Loading from '../Loading.jsx';
 import NewFriendDialog from './NewFriendDialog.jsx';

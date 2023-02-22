@@ -2,10 +2,10 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {TextField, Box, Container, List, ListItem, ListItemText, IconButton, Button} from '@mui/material';
 import SearchFriends from './SearchFriends.jsx';
-import FriendEntry from './FriendEntry.jsx';
+import FriendEntry from '../../Friends/FriendEntry.jsx';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import Navbar from '../Dashboard/Navbar.jsx';
-import Loading from '../Loading.jsx';
+import Navbar from '../../Navbar.jsx';
+import Loading from '../../Loading.jsx';
 import { Navigate, Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom'
 
@@ -13,9 +13,6 @@ import { useLocation } from 'react-router-dom'
 const AddFriends = ({inputs, setInputs}) => {
   const [existList, setExistList] = useState(null)
   const [friends, setFriends] = useState([]);
-  // console.log('friends', friends);
-
-  // console.log('info from steps: ', inputs);
   //call the data to get the users exist friends list
   const getFriends = () => {
     //for test use the defatul id

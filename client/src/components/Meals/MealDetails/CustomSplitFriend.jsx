@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import newId from '../../helpers/newId.js';
-import delay from '../../helpers/delay.js';
+import newId from '../../../helpers/newId.js';
+import delay from '../../../helpers/delay.js';
 import {
   // Box,
   // Input,

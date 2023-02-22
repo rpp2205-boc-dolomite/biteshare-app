@@ -9,13 +9,13 @@ import {
 } from "@mui/material";
 import { Navigate, useOutletContext } from 'react-router-dom';
 
-import MealsList from "./Dashboard/MealsList.jsx";
+import MealsList from "./MealsList.jsx";
 import RestaurantSearch from "./Restaurant/RestaurantSearch.jsx";
 import MealDetails from "./MealDetails/MealDetails.jsx";
-import AddFriends from "./Friends/AddFriends.jsx";
+import AddFriends from "./AddFriends/AddFriends.jsx";
 import Review from './Review/Review.jsx';
-import Navbar from './Dashboard/Navbar.jsx';
-import Loading from './Loading.jsx';
+import Navbar from '../Navbar.jsx';
+import Loading from '../Loading.jsx';
 
 import axios from 'axios';
 const steps = ["Selecting Restaurant", "Add friends", "Meal details", "Review your Meal"];
