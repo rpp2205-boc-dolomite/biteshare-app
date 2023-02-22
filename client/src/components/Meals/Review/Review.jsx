@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Button, Typography, Grid, Stack} from '@mui/material';
 import { Link, useLocation, Navigate } from 'react-router-dom';
-import Navbar from '../Dashboard/Navbar.jsx';
 import ReviewPageList from './ReviewPageList.jsx';
-import Loading from '../Loading.jsx';
+import Loading from '../../Loading.jsx';
 import axios from 'axios';
 
 

@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from './Copyright.jsx';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
-import { setSession } from '../helpers/cookie.js';
+import { setSession } from '../../helpers/cookie.js';
 
 
 //const theme = createTheme();
@@ -33,10 +33,6 @@ export default class SignIn extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     var data = new FormData(event.currentTarget);
-    // console.log({
-    //   phone: data.get('tel'),
-    //   password: data.get('password'),
-    // });
     var phone_num = data.get('tel')
     var password = data.get('password')
     axios.post(`/api/login/`, {

@@ -4,10 +4,10 @@ import {setupServer} from 'msw/node'
 import {render, fireEvent, waitFor, screen, queries, within} from '@testing-library/react'
 import {BrowserRouter, MemoryRouter} from 'react-router-dom'
 import '@testing-library/jest-dom';
-import MealsList from '../client/src/components/Dashboard/MealsList.jsx';
-import Navbar from '../client/src/components/Dashboard/Navbar.jsx';
-import Home from '../client/src/components/Dashboard/Home.jsx';
-import ReactionsComment from '../client/src/components/Dashboard/ReactionsComment.jsx';
+import MealsList from '../client/src/components/Meals/MealsList.jsx';
+import Navbar from '../client/src/components/Navbar.jsx';
+import Home from '../client/src/components/Home/Home.jsx';
+import ReactionsComment from '../client/src/components/Home/ReactionsComment.jsx';
 import RenderRouteWithOutletContext from './RenderWithOutlet.jsx';
 const feedData =
   {

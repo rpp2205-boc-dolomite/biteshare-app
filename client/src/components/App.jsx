@@ -1,27 +1,21 @@
 import React, { useState } from 'react';
 import { Routes, Route, Outlet, Link, useOutletContext } from "react-router-dom";
 import HomePage from './HomePage.jsx';
-import MealsList from './Dashboard/MealsList.jsx';
-import Meal from './Meal.jsx';
-import Home from './Dashboard/Home.jsx';
-import Navbar from './Dashboard/Navbar.jsx';
-import AddFriends from './Friends/AddFriends.jsx';
-import MealDetails from './MealDetails/MealDetails.jsx';
-import Review from './Review/Review.jsx';
-import SignUp from './SignUp.jsx';
-import Login from './Login.jsx';
-import ChangePass from './Forgot/ChangePass.jsx';
+import MealsList from './Meals/MealsList.jsx';
+import Meal from './PaymentAndMeals/Meal.jsx';
+import Home from './Home/Home.jsx';
+import Navbar from './Navbar.jsx';
+import SignUp from './Auth/SignUp.jsx';
+import Login from './Auth/Login.jsx';
+import ChangePass from './Auth/Forgot/ChangePass.jsx';
 import FriendsPage from './Friends/FriendsPage.jsx';
-import RestaurantSearch from './Restaurant/RestaurantSearch.jsx';
-import CompletePayment from './CompletePayment.jsx'
-import Steps from './Steps.jsx';
-import Guest from './Guest.jsx';
-import ErrorBoundary from './ErrorBoundary.jsx';
+import CompletePayment from './PaymentAndMeals/CompletePayment.jsx'
+import Steps from './Meals/Steps.jsx';
+import Guest from './PaymentAndMeals/Guest.jsx';
 import PrivateRoute from './PrivateRoute.jsx';
 
 const App = () => {
 
-  //we may need to render different page after login. so i created a simple app components
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />

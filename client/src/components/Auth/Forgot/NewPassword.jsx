@@ -12,7 +12,7 @@ import {
   LockOutlinedIcon,
 } from '@mui/icons-material';
 import axios from 'axios';
-import { getSession, setSession } from '../../helpers/cookie.js';
+import { getSession, setSession } from '../../../helpers/cookie.js';
 
 export default function ({ token, done }) {
   const [input, setInput] = useState('');

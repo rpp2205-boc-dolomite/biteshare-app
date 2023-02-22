@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "./Dashboard/Navbar.jsx";
+import Navbar from "../Navbar.jsx";
 import axios from "axios";
 import {
   Button,
@@ -22,7 +22,7 @@ import {
 } from "@mui/material";
 import { deepPurple, deepOrange, blue } from "@mui/material/colors";
 import { useLocation, useNavigate } from "react-router-dom";
-import Loading from "./Loading.jsx";
+import Loading from "../Loading.jsx";
 import queryString from "query-string";
 
 const Guest = () => {

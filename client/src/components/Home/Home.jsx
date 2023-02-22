@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Button, Box, Typography, Stack, List, ListItem, ListItemButton, Modal} from '@mui/material';
-import Navbar from './Navbar.jsx';
+import Navbar from '../Navbar.jsx';
 import axios from 'axios';
 import { Link, useLocation, useOutletContext } from 'react-router-dom';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';

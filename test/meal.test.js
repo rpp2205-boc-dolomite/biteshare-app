@@ -2,7 +2,7 @@ import React from "react";
 import { MemoryRouter } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
-import Meal from "../client/src/components/Meal.jsx";
+import Meal from "../client/src/components/PaymentAndMeals/Meal.jsx";
 import RenderRouteWithOutletContext from './RenderWithOutlet.jsx';
 var store = {
   user: {

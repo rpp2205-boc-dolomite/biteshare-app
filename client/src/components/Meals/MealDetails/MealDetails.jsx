@@ -28,10 +28,9 @@ import {
   AttachMoney as AttachMoneyIcon,
 } from '@mui/icons-material';
 import { Link, Navigate } from 'react-router-dom';
-import getHostData from '../../helpers/getHostData';
-import getCurrencyString from '../../helpers/formatCurrency.js';
+import getCurrencyString from '../../../helpers/formatCurrency.js';
 import userObj from './userObject.mjs';
-import withRouter from '../withRouter.jsx';
+//import withRouter from '../withRouter.jsx';
 
 class MealDetails extends Component {
   state = {
