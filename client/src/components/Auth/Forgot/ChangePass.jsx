@@ -18,7 +18,7 @@ class ChangePass extends Component {
 
     this.state = {
       verifiedPhoneNum: '',
-      token: 'sd',
+      token: '',
       complete: false,
       delay: 3
     }
