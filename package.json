@@ -51,6 +51,7 @@
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^9.0.0",
     "libphonenumber-js": "^1.10.18",
+    "logrocket": "^3.0.1",
     "mongoose": "^6.8.4",
     "msw": "^1.0.0",
     "node": "^19.4.0",

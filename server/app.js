@@ -16,7 +16,10 @@ app.use(helmet({
     useDefaults: true,
     directives: {
       connectSrc: ["'self'", "https:"], //["https://api.upload.io", "https://upload-prod-files.s3-accelerate.dualstack.amazonaws.com"],
-      imgSrc: ["'self'", "data:", "blob:", "https:"]
+      imgSrc: ["'self'", "data:", "blob:", "https:"],
+      scriptSrc: ["'self'", "https:", "'unsafe-inline'", "'unsafe-eval'"],
+      scriptSrcElem: ["'self'", "https:", "'unsafe-inline'", "'unsafe-eval'"],
+      workerSrc: ['*', 'data:', 'blob:', "'unsafe-inline'", "'unsafe-eval'"]
     }
   }
 }));

@@ -1,3 +1,5 @@
+import LogRocket from 'logrocket';
+LogRocket.init('si2pqs/biteshare');
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -44,6 +46,11 @@ export default class SignIn extends React.Component {
       // console.log('BACK IN SUCCESS', reply.data);
       // localStorage.setItem('user', JSON.stringify(reply.data));
       setSession(reply.data.token);
+      console.log('REPLY', reply.data);
+      LogRocket.identify(reply.data.id, {
+        name: reply.data.name,
+        phone_num: reply.data.phone_num
+      });
       // axios.defaults.headers.common['Authorization'] = 'Bearer ' + reply.data.token;
       this.setState({
         user: true
