@@ -1,9 +1,12 @@
+import LogRocket from 'logrocket';
+LogRocket.init('si2pqs/biteshare');
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 import App from './components/App.jsx';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BrowserRouter } from "react-router-dom";
 import ErrorBoundary from './components/ErrorBoundary.jsx';
+
 
 const theme = createTheme({
   palette: {
