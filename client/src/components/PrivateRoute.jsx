@@ -1,4 +1,5 @@
 import LogRocket from 'logrocket';
+LogRocket.init('si2pqs/biteshare');
 import React from 'react';
 import { getSession } from '../helpers/cookie.js';
 import { Navigate, Outlet } from 'react-router-dom';
