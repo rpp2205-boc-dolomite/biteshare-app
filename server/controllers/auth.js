@@ -62,7 +62,7 @@ exports.sendCode = function (req, res) {
     db.User.findOneAndUpdate(req.body, { code: code, codeGeneratedAt: Date.now() })
         .then(user => {
             if (user) {
-                sendText(`Your verification code is: ${code}`, user.phone_num);
+                sendText(`Your BiteShare verification code is: ${code}`, user.phone_num);
                 res.sendStatus(201);
             } else {
                 res.sendStatus(404);
