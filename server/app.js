@@ -49,7 +49,10 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 app.post('/api/login/', authControllers.verifyLogin)
 app.post('/api/signup/', userControllers.signUp)
 
-
+//---- Verify user ----//
+app.route('/api/verify')
+  .post(authControllers.sendCode)
+  .put(authControllers.verifyCode);
 
 //---- Guests ----//
 app.get('/guest', sessionControlers.getOneSession);
