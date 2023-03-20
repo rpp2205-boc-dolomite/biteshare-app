@@ -105,3 +105,5 @@ bundle.js.map
 .tern-port
 .DS_Store
 **/.DS_Store
+server/https/*
+!server/https/__*
