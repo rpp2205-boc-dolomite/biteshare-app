@@ -38,8 +38,8 @@ BiteShare is basically an app designed for splitting the bill among a group of w
     npm install
     ```
 
-2.  Edit `config.example.js` file and change name to `.env`
-    Follow the instruction in `config.example.js` file. You will need MongoDB, Twilio, Yelp, JWT accounts.
+2.  Edit `config.example.env` file and change name to `.env`
+    Follow the instruction in `config.example.env` file. You will need MongoDB, Twilio, Yelp, JWT accounts.
     ```
     #===== Node =====================>>
     
